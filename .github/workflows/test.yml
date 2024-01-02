@@ -1,0 +1,66 @@
+name: Test & lint
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+jobs:
+    test:
+        name: "🧪 Run tests"
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres
+                env:
+                    POSTGRES_USER: root
+                    POSTGRES_PASSWORD: password
+                    POSTGRES_DB: orm
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/ci-setup
+
+            - name: Set up test database
+              run: "psql $DATABASE_URL -c 'CREATE SCHEMA casekit AUTHORIZATION root'"
+              env:
+                  DATABASE_URL: "postgresql://root:password@localhost:5432/orm"
+
+            - name: Run tests
+              run: pnpm test
+
+    typecheck:
+        name: "📐 Typecheck"
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/ci-setup
+            - name: Typecheck
+              run: pnpm typecheck
+
+    lint:
+        name: "🧹 Run eslint"
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/ci-setup
+            - name: Lint
+              run: pnpm lint
+
+    prettier:
+        name: "💅 Run prettier"
+        timeout-minutes: 10
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/ci-setup
+            - name: Prettier
+              run: pnpm prettier

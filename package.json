@@ -1,16 +1,46 @@
 {
-  "name": "@casekit/orm",
-  "version": "0.0.1",
-  "description": "A simple ORM",
-  "main": "lib/index",
-  "types": "lib/index",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^5.3.3"
-  }
+    "name": "@casekit/orm",
+    "version": "0.0.1",
+    "description": "A simple ORM",
+    "main": "lib/index",
+    "type": "module",
+    "types": "lib/index",
+    "scripts": {
+        "check:all": "CI=true pnpm test && CI=true pnpm test:types && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",
+        "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+        "prettier": "prettier -c src",
+        "prettier:write": "prettier -w src",
+        "test": "vitest --typecheck",
+        "typecheck": "tsc --noEmit"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@fast-check/vitest": "^0.1.0",
+        "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+        "@types/lodash": "^4.14.202",
+        "@types/pg": "^8.10.9",
+        "@types/pg-format": "^1.0.5",
+        "@typescript-eslint/eslint-plugin": "^7.3.1",
+        "dotenv": "^16.4.5",
+        "eslint-import-resolver-typescript": "^3.6.1",
+        "eslint-plugin-import": "^2.29.1",
+        "fast-check": "^3.16.0",
+        "lodash": "^4.17.21",
+        "pg": "^8.11.3",
+        "ts-toolbelt": "^9.6.0",
+        "typescript": "^5.3.3",
+        "vite-tsconfig-paths": "^4.3.1",
+        "vitest": "^1.1.1",
+        "zod": "^3.22.4"
+    },
+    "peerDependencies": {
+        "pg": "^8.11.3",
+        "zod": "^3.22.4"
+    },
+    "dependencies": {
+        "@casekit/unindent": "^1.0.0",
+        "pg-format": "^1.0.4"
+    }
 }
