@@ -19,8 +19,8 @@
     "devDependencies": {
         "@fast-check/vitest": "^0.1.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
-        "@types/lodash": "^4.14.202",
-        "@types/pg": "^8.10.9",
+        "@types/lodash": "^4.17.0",
+        "@types/pg": "^8.11.4",
         "@types/pg-format": "^1.0.5",
         "@typescript-eslint/eslint-plugin": "^7.3.1",
         "dotenv": "^16.4.5",
@@ -30,9 +30,9 @@
         "lodash": "^4.17.21",
         "pg": "^8.11.3",
         "ts-toolbelt": "^9.6.0",
-        "typescript": "^5.3.3",
-        "vite-tsconfig-paths": "^4.3.1",
-        "vitest": "^1.1.1",
+        "typescript": "^5.4.3",
+        "vite-tsconfig-paths": "^4.3.2",
+        "vitest": "^1.4.0",
         "zod": "^3.22.4"
     },
     "peerDependencies": {
@@ -40,7 +40,7 @@
         "zod": "^3.22.4"
     },
     "dependencies": {
-        "@casekit/unindent": "^1.0.0",
+        "@casekit/unindent": "^1.0.2",
         "pg-format": "^1.0.4"
     }
 }

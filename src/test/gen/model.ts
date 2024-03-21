@@ -9,7 +9,7 @@ export const model = () => {
         fc
             .record<Model>({
                 table: fc.string({ minLength: 1, maxLength: 80 }),
-                schema: fc.constant("casekit"),
+                schema: fc.string({ minLength: 1, maxLength: 80 }),
                 columns: fc.dictionary(fc.string(), column(), {
                     minKeys: 1,
                     maxKeys: 65,
