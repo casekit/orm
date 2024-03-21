@@ -1,13 +1,12 @@
-import { z } from "zod";
-
 import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
+import { ColumnType } from "../schema/helpers/ColumnType";
 import { ModelName } from "../schema/helpers/ModelName";
 import { BaseQuery } from "./BaseQuery";
 
-export type QueryResultRow<
+export type QueryResult<
     S extends SchemaDefinition,
     M extends ModelName<S>,
     Q extends BaseQuery,
 > = Readonly<{
-    [F in Q["select"][number]]: z.infer<S["models"][M]["columns"][F]["schema"]>;
+    [C in Extract<Q["select"][number], string>]: ColumnType<S, M, C>;
 }>;

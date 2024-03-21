@@ -1,12 +1,9 @@
 import { set } from "lodash";
 
-import { QueryBuilder } from "./buildQuery";
+export type ColumnMapping = { path: string | string[]; alias: string };
 
 export const rowToObject =
-    (builder: Pick<QueryBuilder, "columns">) =>
+    (columns: ColumnMapping[]) =>
     (row: Record<string, unknown>): Record<string, unknown> => {
-        return builder.columns.reduce(
-            (acc, c) => set(acc, c.path, row[c.alias]),
-            {},
-        );
+        return columns.reduce((acc, c) => set(acc, c.path, row[c.alias]), {});
     };

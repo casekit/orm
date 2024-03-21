@@ -13,7 +13,7 @@ export const queryToSql = (
         `SELECT ${builder.columns.map((c) => pgfmt(`    %I.%I AS %I`, c.table, c.name, c.alias)).join(",\n")}`,
     );
 
-    sql += pgfmt(`\nFROM %I %I`, table.name, table.alias);
+    sql += pgfmt(`\nFROM %I.%I %I`, table.schema, table.name, table.alias);
 
     return [sql, variables];
 };

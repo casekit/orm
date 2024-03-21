@@ -10,7 +10,7 @@ describe("createTableSql", () => {
     test("it generates a CREATE TABLE command", () => {
         expect(createTableSql(db.models.user)).toEqual(unindent`
             CREATE TABLE casekit."user" (
-                id uuid NOT NULL,
+                id bigint NOT NULL,
                 username text NOT NULL UNIQUE,
                 joined_at timestamp,
                 PRIMARY KEY (id)

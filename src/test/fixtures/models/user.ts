@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const user = createModel({
     columns: {
-        id: { schema: z.string(), type: "uuid", primaryKey: true },
+        id: { schema: z.string(), type: "bigint", primaryKey: true },
         username: { schema: z.string(), type: "text", unique: true },
         joinedAt: {
             schema: z.string().datetime(),

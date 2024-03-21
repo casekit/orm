@@ -53,7 +53,7 @@ const builder: Pick<QueryBuilder, "columns"> = {
 describe("rowToObject", () => {
     test("it converts a flat row with column aliases into a nested object with original field names", () => {
         expect(
-            rowToObject(builder)({
+            rowToObject(builder.columns)({
                 a_0: 3,
                 a_1: "hello it me",
                 a_2: "a very long blog post",

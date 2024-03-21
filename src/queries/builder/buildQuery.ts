@@ -14,6 +14,7 @@ export type QueryBuilder = {
     }[];
     tables: {
         name: string;
+        schema: string;
         alias: string;
     }[];
 };
@@ -37,6 +38,7 @@ export const buildQuery = (
 
     builder.tables.push({
         name: schema.models[m]["table"],
+        schema: schema.models[m]["schema"],
         alias: table,
     });
 

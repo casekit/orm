@@ -4,7 +4,7 @@ import { z } from "zod";
 
 export const post = createModel({
     columns: {
-        id: { schema: z.string(), type: "uuid", primaryKey: true },
+        id: { schema: z.string(), type: "bigint", primaryKey: true },
         title: { schema: z.string(), type: "text" },
         content: { schema: z.string(), type: "text" },
         publishedAt: {

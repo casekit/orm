@@ -1,15 +1,17 @@
 import { ZodSchema, z } from "zod";
-import { BaseQuery } from "~/types/queries/BaseQuery";
+import { CreateParams } from "~/types/queries/CreateParams";
 import { Schema } from "~/types/schema";
 
-export const resultSchema = (
+export const createResultSchema = (
     schema: Schema,
     m: keyof Schema["models"],
-    query: BaseQuery,
+    params: CreateParams<Schema, string>,
 ) => {
+    if (!params.returning) return z.boolean();
+
     const obj: Record<string, ZodSchema<unknown>> = {};
 
-    query.select.forEach((s) => {
+    params.returning?.forEach((s) => {
         const col = schema.models[m].columns[s];
         obj[s] = col.nullable ? col.schema.nullable() : col.schema;
     });
