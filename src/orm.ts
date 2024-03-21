@@ -24,12 +24,12 @@ export class Orm<S extends SchemaDefinition> {
         this.models = populatedSchema.models as DeepRequired<S["models"]>;
     }
 
-    public async findMany<M extends ModelName<S>>(
-        m: M,
-        query: FindManyQuery<S, M>,
-    ): Promise<QueryResultRow<S, M>[]> {
+    public async findMany<
+        M extends ModelName<S>,
+        Q extends FindManyQuery<S, M>,
+    >(m: M, query: Q): Promise<QueryResultRow<S, M, Q>[]> {
         return findMany(this.schema, m, query) as Promise<
-            QueryResultRow<S, M>[]
+            QueryResultRow<S, M, Q>[]
         >;
     }
 }

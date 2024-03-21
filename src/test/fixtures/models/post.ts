@@ -8,7 +8,7 @@ export const post = createModel({
         title: { schema: z.string(), type: "text" },
         content: { schema: z.string(), type: "text" },
         publishedAt: {
-            schema: z.string().datetime(),
+            schema: z.date(),
             type: "timestamp",
             nullable: true,
         },
