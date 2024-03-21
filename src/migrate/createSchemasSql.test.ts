@@ -4,7 +4,7 @@ import { unindent } from "@casekit/unindent";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { createSchemaSql } from "./createSchemaSql";
+import { createSchemasSql } from "./createSchemasSql";
 
 describe("createSchemaSql", () => {
     test("it generates a CREATE SCHEMA command for each unique schema used", () => {
@@ -25,7 +25,7 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemaSql(db.schema)).toEqual(unindent`
+        expect(createSchemasSql(db.schema)).toEqual(unindent`
         CREATE SCHEMA IF NOT EXISTS foo;
 
         CREATE SCHEMA IF NOT EXISTS bar;
@@ -49,7 +49,7 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemaSql(db.schema)).toEqual(unindent`
+        expect(createSchemasSql(db.schema)).toEqual(unindent`
         CREATE SCHEMA IF NOT EXISTS foo;
 
         CREATE SCHEMA IF NOT EXISTS bar;
@@ -73,7 +73,7 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemaSql(db.schema)).toEqual(unindent`
+        expect(createSchemasSql(db.schema)).toEqual(unindent`
         CREATE SCHEMA IF NOT EXISTS public;
 
         CREATE SCHEMA IF NOT EXISTS bar;

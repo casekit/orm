@@ -22,6 +22,7 @@ describe("createTableSql", () => {
 
     beforeEach(async () => {
         await withTransaction(async (client) => {
+            await client.query("CREATE SCHEMA IF NOT EXISTS casekit");
             await client.query("DROP TABLE IF EXISTS casekit.post");
         });
     });

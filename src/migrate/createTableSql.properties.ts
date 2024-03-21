@@ -6,7 +6,7 @@ import pgfmt from "pg-format";
 import * as gen from "~/test/gen";
 import { withRollback } from "~/test/util/withRollback";
 
-import { createSchemaSql } from "./createSchemaSql";
+import { createSchemasSql } from "./createSchemasSql";
 import { createTableSql } from "./createTableSql";
 
 test.prop([gen.model()])("should generate valid DDL", async (model) => {
@@ -14,7 +14,7 @@ test.prop([gen.model()])("should generate valid DDL", async (model) => {
         const db = orm({ models: { model } });
 
         // create the schema
-        await client.query(createSchemaSql(db.schema));
+        await client.query(createSchemasSql(db.schema));
 
         // create the table
         await client.query(createTableSql(model));
