@@ -8,5 +8,6 @@ export default defineConfig({
     test: {
         // ... Specify options here.
         include: ["**/*.(spec|test|properties).ts?(x)"],
+        globalSetup: "src/test/globalSetup.ts",
     },
 });

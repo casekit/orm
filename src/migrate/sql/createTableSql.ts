@@ -15,8 +15,10 @@ export const createTableSql = (model: Model) => {
 
     for (const column of columns) {
         sql += pgfmt(`    %I %s`, column.name, column.type);
-        if (!column.nullable) sql += " NOT NULL";
-        if (column.unique) sql += " UNIQUE";
+        if (!column.nullable) sql += pgfmt(" NOT NULL");
+        if (column.unique) sql += pgfmt(" UNIQUE");
+        if (column.default !== null)
+            sql += pgfmt(" DEFAULT %L", column.default);
         sql += pgfmt(",\n");
     }
 

@@ -20,6 +20,7 @@ export const populateModel = (
                 primaryKey: column.primaryKey ?? false,
                 unique: column.unique ?? false,
                 nullable: column.nullable ?? false,
+                default: column.default ?? null,
             },
         ]),
     ),

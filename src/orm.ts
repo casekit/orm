@@ -39,18 +39,22 @@ export class Orm<S extends SchemaDefinition> {
     }
 
     public async transact<T>(
-        opts = { rollback: false },
         cb: (db: Orm<S>) => Promise<T>,
+        opts = { rollback: false },
     ): Promise<T> {
-        const conn = await this.pool.connect();
-        try {
-            conn.query("BEGIN");
-            return await cb(new Orm<S>(this.schema, conn));
-        } finally {
+        if (!this.poolClient) {
+            const conn = await this.pool.connect();
             try {
-                conn.query(opts.rollback ? "ROLLBACK" : "COMMIT");
+                return await new Orm<S>(this.schema, conn).transact(cb, opts);
             } finally {
                 conn.release();
+            }
+        } else {
+            try {
+                this.poolClient.query("BEGIN");
+                return await cb(new Orm<S>(this.schema, this.poolClient));
+            } finally {
+                this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
             }
         }
     }

@@ -20,8 +20,12 @@ describe("createTableSql", () => {
 
     test("the generated DDL successfully creates a table", async () => {
         await withRollback(async (client) => {
-            await client.query(createTableSql(db.models.post));
-            const result = await client.query("select * from casekit.post");
+            await client.query(
+                createTableSql({ ...db.models.post, table: "post_for_test" }),
+            );
+            const result = await client.query(
+                "select * from casekit.post_for_test",
+            );
             expect(result.fields.map((f) => f.name)).toEqual([
                 "id",
                 "title",

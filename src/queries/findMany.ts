@@ -17,6 +17,5 @@ export const findMany = async (
     const [sql, variables] = queryToSql(builder);
     logger.info("Executing query", { sql, variables });
     const result = await conn.query(sql, variables);
-    console.log(result.rows);
     return result.rows.map(rowToObject(builder.columns));
 };
