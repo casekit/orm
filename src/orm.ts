@@ -10,7 +10,7 @@ import { ModelName } from "./types/schema/helpers/ModelName";
 import { DeepRequired } from "./types/util/DeepRequired";
 
 export class Orm<S extends SchemaDefinition> {
-    schema: Schema;
+    public schema: Schema;
 
     public config: DeepRequired<Config>;
     public models: { [M in keyof S["models"]]: S["models"][M] & Model };
