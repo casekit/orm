@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "@casekit/unindent": "^1.0.2",
-        "pg-format": "^1.0.4"
+        "pg-format": "^1.0.4",
+        "pino": "^8.19.0"
     }
 }

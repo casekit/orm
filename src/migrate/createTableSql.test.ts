@@ -1,36 +1,26 @@
 import { unindent } from "@casekit/unindent";
 
-import { beforeEach, describe, expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { db } from "~/test/fixtures";
 import { withRollback } from "~/test/util/withRollback";
-import { withTransaction } from "~/test/util/withTransaction";
 
 import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {
     test("it generates a CREATE TABLE command", () => {
-        expect(createTableSql(db.models.post)).toEqual(unindent`
-            CREATE TABLE casekit.post (
+        expect(createTableSql(db.models.user)).toEqual(unindent`
+            CREATE TABLE casekit."user" (
                 id uuid NOT NULL,
-                title text NOT NULL,
-                content text NOT NULL,
-                published_at timestamp,
+                username text NOT NULL UNIQUE,
+                joined_at timestamp,
                 PRIMARY KEY (id)
             );
         `);
     });
 
-    beforeEach(async () => {
-        await withTransaction(async (client) => {
-            await client.query("CREATE SCHEMA IF NOT EXISTS casekit");
-            await client.query("DROP TABLE IF EXISTS casekit.post");
-        });
-    });
-
     test("the generated DDL successfully creates a table", async () => {
-        const sql = createTableSql(db.models.post);
         await withRollback(async (client) => {
-            await client.query(sql);
+            await client.query(createTableSql(db.models.post));
             const result = await client.query("select * from casekit.post");
             expect(result.fields.map((f) => f.name)).toEqual([
                 "id",

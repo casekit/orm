@@ -1,9 +1,14 @@
 import { identity } from "lodash";
-import { DeepRequired } from "~/types/util/DeepRequired";
 
 import { Config } from "../types/Config";
 
-export const populateConfig = (config: Config = {}): DeepRequired<Config> => ({
+export type PartialConfig = {
+    naming?: Partial<Config["naming"]>;
+    schema?: Config["schema"];
+    connection?: Config["connection"];
+};
+
+export const createConfig = (config: PartialConfig = {}): Config => ({
     ...config,
     schema: config.schema ?? "public",
     naming: {

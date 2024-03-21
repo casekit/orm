@@ -16,6 +16,7 @@ export const createTableSql = (model: Model) => {
     for (const column of columns) {
         sql += pgfmt(`    %I %s`, column.name, column.type);
         if (!column.nullable) sql += " NOT NULL";
+        if (column.unique) sql += " UNIQUE";
         sql += pgfmt(",\n");
     }
 

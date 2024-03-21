@@ -1,9 +1,8 @@
-import { SchemaDefinition } from "~/types/schema/definition/SchemaDefinition";
-import { DeepRequired } from "~/types/util/DeepRequired";
+import { Schema } from "~/types/schema";
 
 import { validateModel } from "./validateModel";
 
-export const validateSchema = (schema: DeepRequired<SchemaDefinition>) => {
+export const validateSchema = (schema: Schema) => {
     for (const [name, model] of Object.entries(schema.models)) {
         validateModel(schema, name, model);
     }

@@ -1,10 +1,9 @@
 import { Config } from "~/types/Config";
 import { Model } from "~/types/schema";
 import { ModelDefinition } from "~/types/schema/definition/ModelDefinition";
-import { DeepRequired } from "~/types/util/DeepRequired";
 
 export const populateModel = (
-    config: DeepRequired<Config>,
+    config: Config,
     name: string,
     model: ModelDefinition,
 ): Model => ({

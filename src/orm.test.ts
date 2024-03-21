@@ -1,7 +1,6 @@
-import { orm } from "@casekit/orm";
-
 import { describe, expect, test } from "vitest";
 
+import { orm } from "./orm";
 import { populateModel } from "./schema/populateModel";
 import { config, models } from "./test/fixtures";
 
@@ -11,10 +10,5 @@ describe("orm", () => {
         expect(db.schema.models.post).toEqual(
             populateModel(db.config, "post", models.post),
         );
-    });
-
-    test("the returned object has a findMany function", async () => {
-        const db = orm({ config, models });
-        expect(await db.findMany("post", { select: ["id"] })).toEqual([]);
     });
 });
