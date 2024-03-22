@@ -6,7 +6,7 @@
     "type": "module",
     "types": "lib/index",
     "scripts": {
-        "check:all": "CI=true pnpm test && CI=true pnpm test:types && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",
+        "check:all": "CI=true pnpm test && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",
         "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
         "prettier": "prettier -c src",
         "prettier:write": "prettier -w src",

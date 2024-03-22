@@ -1,11 +1,11 @@
 import { ZodSchema, z } from "zod";
-import { CreateParams } from "~/types/queries/CreateParams";
+import { BaseCreateParams } from "~/types/queries/BaseCreateParams";
 import { Schema } from "~/types/schema";
 
 export const createResultSchema = (
     schema: Schema,
     m: keyof Schema["models"],
-    params: CreateParams<Schema, string>,
+    params: BaseCreateParams,
 ) => {
     if (!params.returning) return z.boolean();
 

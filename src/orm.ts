@@ -9,6 +9,7 @@ import { populateSchema } from "./schema/populateSchema";
 import { validateSchema } from "./schema/validateSchema";
 import { Config } from "./types/Config";
 import { Connection } from "./types/Connection";
+import { BaseCreateParams } from "./types/queries/BaseCreateParams";
 import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
@@ -76,8 +77,17 @@ export class Orm<S extends SchemaDefinition> {
         m: M,
         params: P,
     ): Promise<CreateResult<S, M, P>> {
-        const result = await create(this.connection, this.schema, m, params);
-        const parser = createResultSchema(this.schema, m, params);
+        const result = await create(
+            this.connection,
+            this.schema,
+            m,
+            params as BaseCreateParams,
+        );
+        const parser = createResultSchema(
+            this.schema,
+            m,
+            params as BaseCreateParams,
+        );
         return parser.parse(result) as CreateResult<S, M, P>;
     }
 }
