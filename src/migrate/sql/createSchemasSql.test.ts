@@ -25,11 +25,14 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemasSql(db.schema)).toEqual(unindent`
-        CREATE SCHEMA IF NOT EXISTS foo;
+        expect(createSchemasSql(db).toQuery()).toEqual([
+            unindent`
+            CREATE SCHEMA IF NOT EXISTS foo;
 
-        CREATE SCHEMA IF NOT EXISTS bar;
-        `);
+            CREATE SCHEMA IF NOT EXISTS bar;
+            `,
+            [],
+        ]);
     });
 
     test("it pulls schema from the config if not specified on the model", () => {
@@ -49,11 +52,14 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemasSql(db.schema)).toEqual(unindent`
-        CREATE SCHEMA IF NOT EXISTS foo;
+        expect(createSchemasSql(db).toQuery()).toEqual([
+            unindent`
+            CREATE SCHEMA IF NOT EXISTS foo;
 
-        CREATE SCHEMA IF NOT EXISTS bar;
-        `);
+            CREATE SCHEMA IF NOT EXISTS bar;
+            `,
+            [],
+        ]);
     });
 
     test("if no schema is specified at all, it tries to create the public schema", () => {
@@ -73,10 +79,13 @@ describe("createSchemaSql", () => {
         });
 
         const db = orm({ config, models: { a, b } });
-        expect(createSchemasSql(db.schema)).toEqual(unindent`
-        CREATE SCHEMA IF NOT EXISTS public;
+        expect(createSchemasSql(db).toQuery()).toEqual([
+            unindent`
+            CREATE SCHEMA IF NOT EXISTS public;
 
-        CREATE SCHEMA IF NOT EXISTS bar;
-        `);
+            CREATE SCHEMA IF NOT EXISTS bar;
+            `,
+            [],
+        ]);
     });
 });

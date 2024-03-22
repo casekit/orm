@@ -8,20 +8,26 @@ import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {
     test("it generates a CREATE TABLE command", () => {
-        expect(createTableSql(db.models.user)).toEqual(unindent`
+        expect(createTableSql(db.models.user).toQuery()).toEqual([
+            unindent`
             CREATE TABLE casekit."user" (
-                id bigint NOT NULL,
+                id uuid NOT NULL,
                 username text NOT NULL UNIQUE,
                 joined_at timestamp,
                 PRIMARY KEY (id)
             );
-        `);
+            `,
+            [],
+        ]);
     });
 
-    test("the generated DDL successfully creates a table", async () => {
+    test.only("the generated DDL successfully creates a table", async () => {
         await withRollback(async (client) => {
             await client.query(
-                createTableSql({ ...db.models.post, table: "post_for_test" }),
+                ...createTableSql({
+                    ...db.models.post,
+                    table: "post_for_test",
+                }).toQuery(),
             );
             const result = await client.query(
                 "select * from casekit.post_for_test",

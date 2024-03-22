@@ -53,6 +53,6 @@ describe("findMany", () => {
             await db.findMany("post", {
                 select: ["id", "title"],
             }),
-        ).not.toMatchTypeOf<{ id: string; title: string; content: string }[]>();
+        ).not.toMatchTypeOf<{ id: number; title: string; content: string }[]>();
     });
 });

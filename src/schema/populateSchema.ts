@@ -19,5 +19,6 @@ export const populateSchema = <S extends SchemaDefinition>(
     return {
         config,
         models,
+        extensions: schema.extensions ?? [],
     };
 };

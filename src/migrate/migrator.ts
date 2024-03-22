@@ -11,7 +11,7 @@ export class Migrator<S extends SchemaDefinition> {
         this.db = db;
     }
 
-    public async implode(opts = { dryRun: true }) {
+    public async implode(opts = { dryRun: true, output: true }) {
         implode(this.db, opts);
     }
 }

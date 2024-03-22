@@ -5,4 +5,8 @@ import { ModelDefinition } from "./definition/ModelDefinition";
 
 export type Model = DeepRequired<ModelDefinition>;
 export type Column = DeepRequired<ColumnDefinition>;
-export type Schema = { models: Record<string, Model>; config: Config };
+export type Schema = {
+    models: Record<string, Model>;
+    extensions: string[];
+    config: Config;
+};

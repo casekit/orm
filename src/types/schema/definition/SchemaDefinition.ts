@@ -8,5 +8,6 @@ export type SchemaDefinition<
     >,
 > = {
     models: Models;
+    extensions?: string[];
     config?: Config;
 };

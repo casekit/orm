@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { SQLFragment } from "~/util/SqlFragment";
 
 import { DataType } from "../postgres/DataType";
 
@@ -13,5 +14,5 @@ export type ColumnDefinition<ColumnType = unknown> = {
     nullable?: boolean;
     primaryKey?: boolean;
     unique?: boolean;
-    default?: ColumnType;
+    default?: ColumnType | SQLFragment;
 };
