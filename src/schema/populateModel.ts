@@ -2,6 +2,8 @@ import { Config } from "~/types/Config";
 import { Model } from "~/types/schema";
 import { ModelDefinition } from "~/types/schema/definition/ModelDefinition";
 
+import { suggestedColumnSchema } from "./suggestedColumnSchema";
+
 export const populateModel = (
     config: Config,
     name: string,
@@ -21,6 +23,7 @@ export const populateModel = (
                 unique: column.unique ?? false,
                 nullable: column.nullable ?? false,
                 default: column.default ?? null,
+                schema: column.schema ?? suggestedColumnSchema(column.type),
             },
         ]),
     ),
