@@ -1,8 +1,6 @@
-import { z } from "zod";
-
 import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
 import { ColumnName } from "../schema/helpers/ColumnName";
-import { Columns } from "../schema/helpers/Columns";
+import { ColumnType } from "../schema/helpers/ColumnType";
 import { HasDefault } from "../schema/helpers/HasDefault";
 import { IsNullable } from "../schema/helpers/IsNullable";
 import { IsSerial } from "../schema/helpers/IsSerial";
@@ -26,9 +24,7 @@ export type OptionalParams<S extends SchemaDefinition, M extends ModelName<S>> =
     OptionalColumn<S, M> extends never
         ? unknown
         : {
-              [C in OptionalColumn<S, M>]?: z.infer<
-                  Columns<S, M>[C]["schema"]
-              > | null;
+              [C in OptionalColumn<S, M>]?: ColumnType<S, M, C>;
           };
 
 export type RequiredColumn<
@@ -40,7 +36,7 @@ export type RequiredParams<S extends SchemaDefinition, M extends ModelName<S>> =
     RequiredColumn<S, M> extends never
         ? unknown
         : {
-              [C in RequiredColumn<S, M>]: z.infer<Columns<S, M>[C]["schema"]>;
+              [C in RequiredColumn<S, M>]: ColumnType<S, M, C>;
           };
 
 export type CreateParams<S extends SchemaDefinition, M extends ModelName<S>> = {

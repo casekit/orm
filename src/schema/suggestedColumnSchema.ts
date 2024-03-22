@@ -2,6 +2,27 @@ import { z } from "zod";
 import { DataType } from "~/types/schema/postgres/DataType";
 
 /**
+ * This must be kept in sync with suggestedColumnSchema
+ * below, so when a zod schema is not provided we can
+ * still infer the expected type of a field.
+ */
+export type SuggestedColumnType<DataType> = DataType extends
+    | "bigint"
+    | "bigserial"
+    | "double precision"
+    | "integer"
+    | "real"
+    | "smallint"
+    | "smallserial"
+    | "serial"
+    ? number
+    : DataType extends "inet" | "json" | "jsonb" | "money" | "text" | "uuid"
+      ? string
+      : DataType extends "boolean"
+        ? boolean
+        : unknown;
+
+/**
  * TODO figure out if these are reasonable or if there are better
  * alternatives - and what the values should be for the other datatypes
  */
@@ -29,8 +50,11 @@ export const suggestedColumnSchema = (type: DataType) => {
         case "jsonb":
         case "money":
         case "text":
-        case "uuid":
             return z.string();
+        case "uuid":
+            return z.string().uuid();
+        case "boolean":
+            return z.boolean();
         default:
             return z.unknown();
     }
