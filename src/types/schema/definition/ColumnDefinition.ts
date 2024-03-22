@@ -14,5 +14,5 @@ export type ColumnDefinition<ColumnType = unknown> = {
     nullable?: boolean;
     primaryKey?: boolean;
     unique?: boolean;
-    default?: ColumnType | SQLFragment;
+    default?: ColumnType | SQLFragment | null;
 };

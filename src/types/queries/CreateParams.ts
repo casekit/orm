@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
+import { ColumnName } from "../schema/helpers/ColumnName";
 import { Columns } from "../schema/helpers/Columns";
 import { ModelName } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
@@ -23,34 +24,35 @@ export type HasDefault<
     S extends SchemaDefinition,
     M extends ModelName<S>,
     C extends keyof Columns<S, M>,
-> = Columns<S, M>[C]["default"] extends null ? false : true;
+> = null extends Columns<S, M>[C]["default"]
+    ? false
+    : undefined extends Columns<S, M>[C]["default"]
+      ? false
+      : true;
 
-export type OptionalColumns<
+export type OptionalColumn<
     S extends SchemaDefinition,
     M extends ModelName<S>,
-> = Exclude<
-    {
-        [C in keyof Columns<S, M>]: IsNullable<S, M, C> extends true
+> = {
+    [C in ColumnName<S, M>]: IsNullable<S, M, C> extends true
+        ? C
+        : IsSerial<S, M, C> extends true
+          ? C
+          : HasDefault<S, M, C> extends true
             ? C
-            : IsSerial<S, M, C> extends true
-              ? C
-              : HasDefault<S, M, C> extends true
-                ? C
-                : never;
-    }[keyof Columns<S, M>],
-    never
->;
+            : never;
+}[ColumnName<S, M>];
 
-export type RequiredColumns<
+export type RequiredColumn<
     S extends SchemaDefinition,
     M extends ModelName<S>,
-> = Exclude<keyof Columns<S, M>, OptionalColumns<S, M>>;
+> = Exclude<ColumnName<S, M>, OptionalColumn<S, M>>;
 
 export type CreateParams<S extends SchemaDefinition, M extends ModelName<S>> = {
     data: {
-        [C in RequiredColumns<S, M>]: z.infer<Columns<S, M>[C]["schema"]>;
+        [C in RequiredColumn<S, M>]: z.infer<Columns<S, M>[C]["schema"]>;
     } & {
-        [C in OptionalColumns<S, M>]?: z.infer<
+        [C in OptionalColumn<S, M>]?: z.infer<
             Columns<S, M>[C]["schema"]
         > | null;
     };
