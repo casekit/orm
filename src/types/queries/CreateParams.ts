@@ -3,32 +3,11 @@ import { z } from "zod";
 import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
 import { ColumnName } from "../schema/helpers/ColumnName";
 import { Columns } from "../schema/helpers/Columns";
+import { HasDefault } from "../schema/helpers/HasDefault";
+import { IsNullable } from "../schema/helpers/IsNullable";
+import { IsSerial } from "../schema/helpers/IsSerial";
 import { ModelName } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
-
-export type IsSerial<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends keyof Columns<S, M>,
-> = Columns<S, M>[C]["type"] extends "serial" | "bigserial" | "smallserial"
-    ? true
-    : false;
-
-export type IsNullable<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends keyof Columns<S, M>,
-> = Columns<S, M>[C]["nullable"] extends true ? true : false;
-
-export type HasDefault<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends keyof Columns<S, M>,
-> = null extends Columns<S, M>[C]["default"]
-    ? false
-    : undefined extends Columns<S, M>[C]["default"]
-      ? false
-      : true;
 
 export type OptionalColumn<
     S extends SchemaDefinition,
@@ -43,18 +22,28 @@ export type OptionalColumn<
             : never;
 }[ColumnName<S, M>];
 
+export type OptionalParams<S extends SchemaDefinition, M extends ModelName<S>> =
+    OptionalColumn<S, M> extends never
+        ? unknown
+        : {
+              [C in OptionalColumn<S, M>]?: z.infer<
+                  Columns<S, M>[C]["schema"]
+              > | null;
+          };
+
 export type RequiredColumn<
     S extends SchemaDefinition,
     M extends ModelName<S>,
 > = Exclude<ColumnName<S, M>, OptionalColumn<S, M>>;
 
+export type RequiredParams<S extends SchemaDefinition, M extends ModelName<S>> =
+    RequiredColumn<S, M> extends never
+        ? unknown
+        : {
+              [C in RequiredColumn<S, M>]: z.infer<Columns<S, M>[C]["schema"]>;
+          };
+
 export type CreateParams<S extends SchemaDefinition, M extends ModelName<S>> = {
-    data: {
-        [C in RequiredColumn<S, M>]: z.infer<Columns<S, M>[C]["schema"]>;
-    } & {
-        [C in OptionalColumn<S, M>]?: z.infer<
-            Columns<S, M>[C]["schema"]
-        > | null;
-    };
+    data: RequiredParams<S, M> & OptionalParams<S, M>;
     returning?: SelectClause<S, M>;
 };

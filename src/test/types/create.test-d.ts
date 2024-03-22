@@ -1,7 +1,10 @@
+import { createModel, orm } from "@casekit/orm";
+
 import { assertType, describe, expectTypeOf, test } from "vitest";
+import { z } from "zod";
 import { db } from "~/test/fixtures";
 
-describe.skip("create", () => {
+describe("create", () => {
     test("only models that exist can be created", () => {
         assertType(
             db.create(
@@ -68,5 +71,13 @@ describe.skip("create", () => {
                 returning: ["id", "title"],
             }),
         ).not.toMatchTypeOf<{ id: string; title: string; content: string }>();
+    });
+
+    test("when there are no required params, typechecking still works", () => {
+        const foo = createModel({
+            columns: { id: { type: "serial", schema: z.coerce.number() } },
+        });
+        const db = orm({ models: { foo } });
+        assertType(db.create("foo", { data: { id: 3 } }));
     });
 });
