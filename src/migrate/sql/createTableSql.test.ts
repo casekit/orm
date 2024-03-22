@@ -1,8 +1,12 @@
+import { createModel, orm } from "@casekit/orm";
 import { unindent } from "@casekit/unindent";
 
+import { uniqueId } from "lodash";
+import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
+import { z } from "zod";
 import { db } from "~/test/fixtures";
-import { withRollback } from "~/test/util/withRollback";
+import { sql } from "~/util/sql";
 
 import { createTableSql } from "./createTableSql";
 
@@ -11,7 +15,7 @@ describe("createTableSql", () => {
         expect(createTableSql(db.models.user).toQuery()).toEqual([
             unindent`
             CREATE TABLE casekit."user" (
-                id uuid NOT NULL,
+                id uuid NOT NULL DEFAULT uuid_generate_v4(),
                 username text NOT NULL UNIQUE,
                 joined_at timestamp,
                 PRIMARY KEY (id)
@@ -21,23 +25,42 @@ describe("createTableSql", () => {
         ]);
     });
 
-    test.only("the generated DDL successfully creates a table", async () => {
-        await withRollback(async (client) => {
-            await client.query(
-                ...createTableSql({
-                    ...db.models.post,
-                    table: "post_for_test",
-                }).toQuery(),
-            );
-            const result = await client.query(
-                "select * from casekit.post_for_test",
-            );
-            expect(result.fields.map((f) => f.name)).toEqual([
-                "id",
-                "title",
-                "content",
-                "published_at",
-            ]);
+    test("the generated DDL successfully creates a table", async () => {
+        const table = uniqueId("table-");
+        const post = createModel({
+            table,
+            columns: {
+                id: {
+                    schema: z.string().uuid(),
+                    type: "uuid",
+                    primaryKey: true,
+                    default: sql`uuid_generate_v4()`,
+                },
+                title: { schema: z.string(), type: "text" },
+                content: { schema: z.string(), type: "text" },
+                publishedAt: {
+                    schema: z.date(),
+                    type: "timestamp",
+                    nullable: true,
+                },
+            },
         });
+        orm({ models: { post } }).transact(
+            async (db) => {
+                await db.connection.query(
+                    ...createTableSql(db.models.post).toQuery(),
+                );
+                const result = await db.connection.query(
+                    pgfmt("select * from casekit.%I", table),
+                );
+                expect(result.fields.map((f) => f.name)).toEqual([
+                    "id",
+                    "title",
+                    "content",
+                    "published_at",
+                ]);
+            },
+            { rollback: true },
+        );
     });
 });
