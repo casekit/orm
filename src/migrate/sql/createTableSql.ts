@@ -1,6 +1,6 @@
 import pgfmt from "pg-format";
 import { Model } from "~/types/schema";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 
 export const createTableSql = (model: Model): SQLFragment => {
     const columns = Object.values(model.columns);

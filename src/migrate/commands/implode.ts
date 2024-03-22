@@ -1,6 +1,6 @@
 import { Orm } from "~/orm";
 import { Schema } from "~/types/schema";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createSchemasSql } from "../sql/createSchemasSql";

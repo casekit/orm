@@ -2,7 +2,7 @@ import { unindent } from "@casekit/unindent";
 
 import { describe, expect, test } from "vitest";
 
-import { SQLFragment } from "./SqlFragment";
+import { SQLFragment } from "./SQLFragment";
 import { sql } from "./sql";
 
 describe("SQLFragment", () => {

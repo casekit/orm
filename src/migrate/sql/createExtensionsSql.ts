@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
 import { Orm } from "~/orm";
 import { Schema } from "~/types/schema";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 
 export const createExtensionsSql = (db: Orm<Schema>): SQLFragment | null => {
     if (db.schema.extensions.length === 0) return null;

@@ -1,4 +1,4 @@
-import { SQLFragment } from "./SqlFragment";
+import { SQLFragment } from "./SQLFragment";
 
 export const sql = (
     fragments: TemplateStringsArray,

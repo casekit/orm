@@ -1,5 +1,5 @@
 import pgfmt from "pg-format";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 import { interleave } from "~/util/interleave";
 import { sql } from "~/util/sql";
 

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 
 import { DataType } from "../postgres/DataType";
 

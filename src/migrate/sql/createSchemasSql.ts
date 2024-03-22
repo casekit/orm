@@ -2,7 +2,7 @@ import { uniq } from "lodash";
 import pgfmt from "pg-format";
 import { Orm } from "~/orm";
 import { Schema } from "~/types/schema";
-import { SQLFragment } from "~/util/SqlFragment";
+import { SQLFragment } from "~/util/SQLFragment";
 
 export const createSchemasSql = (db: Orm<Schema>): SQLFragment => {
     const schemas = uniq(Object.values(db.models).map((m) => m.schema));
