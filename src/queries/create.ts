@@ -14,9 +14,10 @@ export const create = async (
     params: CreateParams<Schema, string>,
 ) => {
     const builder = buildCreate(schema, m, params);
-    const [sql, variables] = createToSql(builder);
-    logger.info("Executing insert", { sql, variables });
-    const result = await conn.query(sql, variables);
+    const sql = createToSql(builder);
+    logger.info({ message: "Executing insert", sql: sql.toQuery() });
+    console.log(sql.toQuery());
+    const result = await conn.query(...sql.toQuery());
     return params.returning
         ? rowToObject(builder.returning)(result.rows[0])
         : true;

@@ -1,11 +1,13 @@
-import { orm } from "@casekit/orm";
+import { createModel, orm } from "@casekit/orm";
 
 import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
+import { z } from "zod";
+import { createTableSql } from "~/migrate/sql/createTableSql";
 import { config, models } from "~/test/fixtures";
 
 describe("create", () => {
-    test.only("it inserts records into the database", async () => {
+    test("it inserts records into the database", async () => {
         await orm({ config, models }).transact(
             async (db) => {
                 const id = uuid.v4();
@@ -28,6 +30,38 @@ describe("create", () => {
                     id: id,
                     title: "hello it me",
                 });
+            },
+            { rollback: true },
+        );
+    });
+    test("columns of type serial do not need to be specified", async () => {
+        const foo = createModel({
+            columns: {
+                id: {
+                    type: "serial",
+                    schema: z.coerce.number(),
+                    primaryKey: true,
+                },
+                big: { type: "bigserial", schema: z.coerce.number() },
+                small: { type: "smallserial", schema: z.coerce.number() },
+            },
+        });
+        await orm({ config, models: { foo } }).transact(
+            async (db) => {
+                db.connection.query(...createTableSql(db.models.foo).toQuery());
+
+                await db.create("foo", {
+                    data: {},
+                });
+
+                const rows = await db.findMany("foo", {
+                    select: ["id", "big", "small"],
+                });
+
+                expect(rows).toHaveLength(1);
+                expect(rows[0].id).toBeTypeOf("number");
+                expect(rows[0].big).toBeTypeOf("number");
+                expect(rows[0].small).toBeTypeOf("number");
             },
             { rollback: true },
         );

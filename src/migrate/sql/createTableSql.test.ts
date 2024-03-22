@@ -36,7 +36,11 @@ describe("createTableSql", () => {
                     primaryKey: true,
                     default: sql`uuid_generate_v4()`,
                 },
-                title: { schema: z.string(), type: "text" },
+                title: {
+                    schema: z.string(),
+                    type: "text",
+                    default: "My first post",
+                },
                 content: { schema: z.string(), type: "text" },
                 publishedAt: {
                     schema: z.date(),
