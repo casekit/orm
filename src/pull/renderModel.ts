@@ -26,14 +26,16 @@ export const renderModel = (tablename: string, columns: any[]) => {
 
         export const ${model.name} = createModel({
             columns: {
-                ${model.columns.map(
-                    (c) => unindent`
+                ${model.columns
+                    .map(
+                        (c) => unindent`
                 "${c.field}": {
-                    name: ${c.name},
-                    type: ${c.type},${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: sql\`${c.default}\`,\n` : ""}
-                },
+                    name: "${c.name}",
+                    type: "${c.type}",${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: sql\`${c.default}\`,\n` : ""}
+                }
                 `,
-                )}
+                    )
+                    .join(",\n")}
             }
         });
     `;

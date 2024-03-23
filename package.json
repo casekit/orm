@@ -34,14 +34,14 @@
         "vite-tsconfig-paths": "^4.3.2",
         "vitest": "^1.4.0"
     },
-    "peerDependencies": {},
     "dependencies": {
-        "pg": "^8.11.3",
-        "zod": "^3.22.4",
-        "lodash": "^4.17.21",
         "@casekit/unindent": "^1.0.3",
+        "lodash": "^4.17.21",
+        "pg": "^8.11.3",
         "pg-format": "^1.0.4",
         "pino": "^8.19.0",
-        "uuid": "^9.0.1"
+        "prettier": "^3.2.5",
+        "uuid": "^9.0.1",
+        "zod": "^3.22.4"
     }
 }

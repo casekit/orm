@@ -35,14 +35,14 @@ export type ScalarDataType =
     | "text"
     | "time"
     | `time (${number})`
-    | `time (${number}) without timezone`
-    | `time with timezone`
-    | `time (${number}) with timezone`
+    | `time (${number}) without time zone`
+    | `time with time zone`
+    | `time (${number}) with time zone`
     | "timestamp"
     | `timestamp (${number})`
-    | `timestamp (${number}) without timezone`
-    | `timestamp with timezone`
-    | `timestamp (${number}) with timezone`
+    | `timestamp (${number}) without time zone`
+    | `timestamp with time zone`
+    | `timestamp (${number}) with time zone`
     | "tsquery"
     | "tsvector"
     | "txid_snapshot"
