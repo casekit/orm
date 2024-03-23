@@ -20,19 +20,10 @@ export const pull = async (
 
     fs.mkdirSync(opts.outDir, { recursive: true });
 
-    const imports = ["createModel"];
-    if (
-        Object.values(tables)
-            .flat()
-            .find((c) => c.default !== null)
-    ) {
-        imports.push("sql");
-    }
-
-    for (const [tablename, columns] of Object.entries(tables)) {
+    for (const [table, columns] of Object.entries(tables)) {
         fs.writeFileSync(
-            path.resolve(opts.outDir, `${camelCase(tablename)}.ts`),
-            renderModel(tablename, columns),
+            path.resolve(opts.outDir, `${camelCase(table)}.ts`),
+            await renderModel(table, columns),
             { encoding: "utf-8" },
         );
     }

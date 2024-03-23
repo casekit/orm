@@ -1,42 +1,34 @@
-import { unindent } from "@casekit/unindent";
-
 import { camelCase } from "lodash";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const renderModel = (tablename: string, columns: any[]) => {
+import { ColumnMeta } from "./ColumnMeta";
+import { format } from "./format";
+
+const renderDefault = (d: string) => {
+    return d.match(/^\d+$/) ? `${d}` : `sql\`${d}\``;
+};
+
+export const renderModel = async (table: string, columns: ColumnMeta[]) => {
     const imports = ["createModel"];
     if (columns.find((c) => c.default !== null)) {
         imports.push("sql");
     }
 
-    const model = {
-        name: camelCase(tablename),
-        columns: columns.map((c) => ({
-            field: camelCase(c.column_name),
-            name: c.column_name,
-            default: c.column_default,
-            nullable: c.is_nullable,
-            type: c.data_type,
-            elementType: c.element_data_type,
-        })),
-    };
-
-    return unindent`
+    return await format(`
         import { ${imports.join(", ")} } from "@casekit/orm";
 
-        export const ${model.name} = createModel({
+        export const ${camelCase(table)} = createModel({
             columns: {
-                ${model.columns
+                ${columns
                     .map(
-                        (c) => unindent`
-                "${c.field}": {
+                        (c) => `
+                "${camelCase(c.name)}": {
                     name: "${c.name}",
-                    type: "${c.type}",${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: sql\`${c.default}\`,\n` : ""}
+                    type: "${c.type}",${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: ${renderDefault(c.default)},\n` : ""}
                 }
                 `,
                     )
                     .join(",\n")}
             }
         });
-    `;
+    `);
 };
