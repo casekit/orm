@@ -1,6 +1,6 @@
-import { SQLFragment } from "./SQLFragment";
+import { SQLStatement } from "./SQLStatement";
 
 export const sql = (
     fragments: TemplateStringsArray,
     ...variables: readonly unknown[]
-) => new SQLFragment(fragments, variables);
+) => new SQLStatement(fragments, variables);

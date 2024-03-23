@@ -8,14 +8,10 @@ import { createExtensionsSql } from "./createExtensionsSql";
 describe("createExtensionsSql", () => {
     test("it generates a CREATE EXTENSION command for each extension", () => {
         const db = orm({ extensions: ["uuid-ossp", "postgis"], models: {} });
-        expect(createExtensionsSql(db)?.toQuery()).toEqual([
-            unindent`
+        expect(createExtensionsSql(db)?.text).toEqual(unindent`
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
             CREATE EXTENSION IF NOT EXISTS postgis;
-            `,
-            [],
-        ]);
+        `);
     });
 
     test("if no extensions are specified, it returns null", () => {

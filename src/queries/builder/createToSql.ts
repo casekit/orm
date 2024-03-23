@@ -1,12 +1,12 @@
 import pgfmt from "pg-format";
-import { SQLFragment } from "~/util/SQLFragment";
+import { SQLStatement } from "~/util/SQLStatement";
 import { interleave } from "~/util/interleave";
 import { sql } from "~/util/sql";
 
 import { CreateBuilder } from "./buildCreate";
 
-export const createToSql = (builder: CreateBuilder): SQLFragment => {
-    const frag = new SQLFragment();
+export const createToSql = (builder: CreateBuilder): SQLStatement => {
+    const frag = new SQLStatement();
 
     const { table, params, returning } = builder;
 

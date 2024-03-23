@@ -12,17 +12,14 @@ import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {
     test("it generates a CREATE TABLE command", () => {
-        expect(createTableSql(db.models.user).toQuery()).toEqual([
-            unindent`
+        expect(createTableSql(db.models.user).text).toEqual(unindent`
             CREATE TABLE casekit."user" (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
                 username text NOT NULL UNIQUE,
                 joined_at timestamp,
                 PRIMARY KEY (id)
             );
-            `,
-            [],
-        ]);
+        `);
     });
 
     test("the generated DDL successfully creates a table", async () => {
@@ -51,12 +48,12 @@ describe("createTableSql", () => {
         });
         orm({ models: { post } }).transact(
             async (db) => {
-                await db.connection.query(
-                    ...createTableSql(db.models.post).toQuery(),
-                );
+                await db.connection.query(createTableSql(db.models.post));
+
                 const result = await db.connection.query(
                     pgfmt("select * from casekit.%I", table),
                 );
+
                 expect(result.fields.map((f) => f.name)).toEqual([
                     "id",
                     "title",

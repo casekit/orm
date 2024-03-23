@@ -1,6 +1,6 @@
 import { Orm } from "~/orm";
 import { Schema } from "~/types/schema";
-import { SQLFragment } from "~/util/SQLFragment";
+import { SQLStatement } from "~/util/SQLStatement";
 
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
@@ -11,23 +11,21 @@ export const implode = async (
     db: Orm<Schema>,
     { dryRun, output }: { dryRun: boolean; output: boolean },
 ) => {
-    const sql = new SQLFragment();
-    sql.push(createSchemasSql(db));
+    const statement = new SQLStatement();
 
-    const extensionsSql = createExtensionsSql(db);
-    if (extensionsSql) sql.push(extensionsSql);
+    statement.push(createSchemasSql(db));
+    statement.push(createExtensionsSql(db));
 
     for (const model of Object.values(db.models)) {
-        sql.push(dropTableSql(model));
-        sql.push(createTableSql(model));
+        statement.push(dropTableSql(model));
+        statement.push(createTableSql(model));
     }
 
-    if (output) {
-        console.log(sql.toQuery()[0]);
-    }
+    if (output) console.log(statement.text);
+
     if (!dryRun) {
         try {
-            await db.connection.query(...sql.toQuery());
+            await db.connection.query(statement);
         } catch (e) {
             console.log(e);
             throw e;

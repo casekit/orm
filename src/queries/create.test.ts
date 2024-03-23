@@ -50,7 +50,7 @@ describe("create", () => {
         });
         await orm({ config, models: { foo } }).transact(
             async (db) => {
-                db.connection.query(...createTableSql(db.models.foo).toQuery());
+                db.connection.query(createTableSql(db.models.foo));
 
                 await db.create("foo", {
                     data: {},
@@ -83,7 +83,7 @@ describe("create", () => {
         });
         await orm({ config, models: { foo } }).transact(
             async (db) => {
-                db.connection.query(...createTableSql(db.models.foo).toQuery());
+                db.connection.query(createTableSql(db.models.foo));
 
                 await db.create("foo", {
                     data: { name: "hello" },

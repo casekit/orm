@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SQLFragment } from "~/util/SQLFragment";
+import { SQLStatement } from "~/util/SQLStatement";
 
 import { DataType } from "../postgres/DataType";
 
@@ -56,5 +56,5 @@ export type ColumnDefinition<ColumnType = unknown> = {
      *
      * default: sql`uuid_generate_v4()`,
      */
-    default?: ColumnType | SQLFragment | null;
+    default?: ColumnType | SQLStatement | null;
 };
