@@ -15,8 +15,9 @@ describe("createTableSql", () => {
         expect(createTableSql(db.models.user).text).toEqual(unindent`
             CREATE TABLE casekit."user" (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
-                username text NOT NULL UNIQUE,
+                username text NOT NULL,
                 joined_at timestamp,
+                deleted_at timestamp,
                 PRIMARY KEY (id)
             );
         `);

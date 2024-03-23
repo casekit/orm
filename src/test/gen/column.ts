@@ -10,6 +10,9 @@ export const column = () => {
         .tuple(
             fc.record({
                 name: fc.string({ minLength: 1, maxLength: 80 }),
+                primaryKey: fc.constant(false),
+                nullable: fc.boolean(),
+                unique: fc.boolean(),
             }),
             fc.oneof(
                 fc.record({
@@ -33,22 +36,6 @@ export const column = () => {
                     default: fc.oneof(sqldate(), fc.constant(null)),
                 }),
             ),
-            fc.oneof(
-                fc.record({
-                    primaryKey: fc.constant(true),
-                    nullable: fc.constant(false),
-                    unique: fc.boolean(),
-                }),
-                fc.record({
-                    primaryKey: fc.constant(false),
-                    nullable: fc.boolean(),
-                    unique: fc.boolean(),
-                }),
-            ),
         )
-        .map<Column>(([names, type, constraints]) => ({
-            ...names,
-            ...type,
-            ...constraints,
-        }));
+        .map<Column>(([a, b]) => ({ ...a, ...b }));
 };

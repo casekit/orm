@@ -26,4 +26,7 @@ export const populateModel = (
             },
         ]),
     ),
+    constraints: {
+        unique: [...(model.constraints?.unique ?? [])],
+    },
 });

@@ -2,7 +2,7 @@ import { groupBy, mapValues, sortBy } from "lodash";
 import { Client } from "pg";
 
 import { sql } from "../sql";
-import { ColumnMeta } from "./ColumnMeta";
+import { ColumnMeta } from "./types/ColumnMeta";
 
 export const getTables = async (client: Client, schema: string) => {
     const results = await client.query<ColumnMeta>(

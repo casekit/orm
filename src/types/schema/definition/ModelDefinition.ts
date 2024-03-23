@@ -1,3 +1,6 @@
+import { SQLStatement } from "src";
+import { NonEmptyArray } from "src/types/util/NonEmptyArray";
+
 import { ColumnDefinition } from "./ColumnDefinition";
 
 /**
@@ -29,4 +32,12 @@ export type ModelDefinition<
      * and object fields, so must be valid Javascript identifiers.
      */
     columns: Columns;
+
+    constraints?: {
+        unique?: {
+            name?: string;
+            columns: NonEmptyArray<Extract<keyof Columns, string>>;
+            where?: SQLStatement;
+        }[];
+    };
 };

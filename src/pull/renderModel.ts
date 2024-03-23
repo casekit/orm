@@ -1,7 +1,7 @@
 import { camelCase } from "lodash";
 
-import { ColumnMeta } from "./ColumnMeta";
 import { format } from "./format";
+import { ColumnMeta } from "./types/ColumnMeta";
 
 const renderDefault = (d: string) => {
     return d.match(/^\d+$/) ? `${d}` : `sql\`${d}\``;
