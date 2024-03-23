@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
-import { SQLStatement } from "~/util/SQLStatement";
+import { SQLStatement } from "~/sql/SQLStatement";
+import { sql } from "~/sql/sql";
 import { interleave } from "~/util/interleave";
-import { sql } from "~/util/sql";
 
 import { CreateBuilder } from "./buildCreate";
 

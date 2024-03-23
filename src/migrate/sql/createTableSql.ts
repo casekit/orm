@@ -1,6 +1,6 @@
 import pgfmt from "pg-format";
+import { SQLStatement } from "~/sql/SQLStatement";
 import { Model } from "~/types/schema";
-import { SQLStatement } from "~/util/SQLStatement";
 
 export const createTableSql = (model: Model): SQLStatement => {
     const columns = Object.values(model.columns);

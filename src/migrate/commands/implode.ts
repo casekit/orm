@@ -1,6 +1,6 @@
 import { Orm } from "~/orm";
+import { SQLStatement } from "~/sql/SQLStatement";
 import { Schema } from "~/types/schema";
-import { SQLStatement } from "~/util/SQLStatement";
 
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createSchemasSql } from "../sql/createSchemasSql";

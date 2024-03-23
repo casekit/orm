@@ -1,6 +1,6 @@
 import { createModel } from "@casekit/orm";
 
-import { sql } from "~/util/sql";
+import { sql } from "~/sql/sql";
 
 export const post = createModel({
     columns: {

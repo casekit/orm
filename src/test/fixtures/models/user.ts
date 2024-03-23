@@ -1,7 +1,7 @@
 import { createModel } from "@casekit/orm";
 
 import { z } from "zod";
-import { sql } from "~/util/sql";
+import { sql } from "~/sql/sql";
 
 export const user = createModel({
     columns: {

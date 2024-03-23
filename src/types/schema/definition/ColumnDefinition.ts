@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { SQLStatement } from "~/util/SQLStatement";
+import { SQLStatement } from "~/sql/SQLStatement";
 
 import { DataType } from "../postgres/DataType";
 

@@ -5,8 +5,8 @@ import { uniqueId } from "lodash";
 import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
+import { sql } from "~/sql/sql";
 import { db } from "~/test/fixtures";
-import { sql } from "~/util/sql";
 
 import { createTableSql } from "./createTableSql";
 
