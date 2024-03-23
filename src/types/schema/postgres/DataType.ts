@@ -37,11 +37,13 @@ export type ScalarDataType =
     | `time (${number})`
     | `time (${number}) without time zone`
     | `time with time zone`
+    | `time without time zone`
     | `time (${number}) with time zone`
     | "timestamp"
     | `timestamp (${number})`
     | `timestamp (${number}) without time zone`
     | `timestamp with time zone`
+    | `timestamp without time zone`
     | `timestamp (${number}) with time zone`
     | "tsquery"
     | "tsvector"

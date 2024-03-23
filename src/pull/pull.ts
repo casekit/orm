@@ -23,7 +23,11 @@ export const pull = async (
     for (const [table, columns] of Object.entries(tables)) {
         fs.writeFileSync(
             path.resolve(opts.outDir, `${camelCase(table)}.ts`),
-            await renderModel(table, columns),
+            await renderModel({
+                table,
+                columns,
+                uniqueConstraints: uniqueConstraints[table] ?? [],
+            }),
             { encoding: "utf-8" },
         );
     }
