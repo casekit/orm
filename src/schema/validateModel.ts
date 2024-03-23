@@ -1,6 +1,7 @@
 import { uniq } from "lodash";
-import { InvalidModelDefinitionError } from "~/errors";
-import { Model, Schema } from "~/types/schema";
+
+import { InvalidModelDefinitionError } from "../errors";
+import { Model, Schema } from "../types/schema";
 
 export const validateModel = (_schema: Schema, name: string, model: Model) => {
     const columns = Object.values(model.columns);

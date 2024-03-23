@@ -12,11 +12,8 @@
         "forceConsistentCasingInFileNames": true,
         "strict": true,
         "skipLibCheck": true,
-        "baseUrl": "./",
-        "paths": {
-            "@casekit/orm": ["src/index.ts"],
-            "~/*": ["src/*"]
-        }
+        "baseUrl": "."
     },
-    "include": ["src"]
+    "include": ["src"],
+    "exclude": ["lib", "node_modules"]
 }

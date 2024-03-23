@@ -1,10 +1,11 @@
 import { groupBy, mapValues, sortBy } from "lodash";
 import { Client } from "pg";
-import { SQL } from "sql-template-strings";
+
+import { sql } from "../sql";
 
 export const getUniqueConstraints = async (client: Client, schema: string) => {
     const results = await client.query(
-        SQL`select
+        sql`select
              cc.table_name,
              cc.constraint_name,
              cc.column_name,

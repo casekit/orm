@@ -1,6 +1,5 @@
-import { CreateParams } from "~/types/queries/CreateParams";
-import { Schema } from "~/types/schema";
-
+import { CreateParams } from "../../types/queries/CreateParams";
+import { Schema } from "../../types/schema";
 import { tableAlias } from "./tableAlias";
 
 export type CreateBuilder = {

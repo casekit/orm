@@ -1,7 +1,7 @@
 import { uniq } from "lodash";
-import { BaseQuery } from "~/types/queries/BaseQuery";
-import { Schema } from "~/types/schema";
 
+import { BaseQuery } from "../../types/queries/BaseQuery";
+import { Schema } from "../../types/schema";
 import { primaryKey } from "./primaryKey";
 import { tableAlias } from "./tableAlias";
 

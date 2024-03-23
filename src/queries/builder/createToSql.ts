@@ -1,8 +1,7 @@
 import pgfmt from "pg-format";
-import { SQLStatement } from "~/sql/SQLStatement";
-import { sql } from "~/sql/sql";
-import { interleave } from "~/util/interleave";
 
+import { SQLStatement, sql } from "../../sql";
+import { interleave } from "../../util/interleave";
 import { CreateBuilder } from "./buildCreate";
 
 export const createToSql = (builder: CreateBuilder): SQLStatement => {

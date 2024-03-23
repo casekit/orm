@@ -1,8 +1,8 @@
-import { createModel, orm } from "@casekit/orm";
-
 import { assertType, describe, expectTypeOf, test } from "vitest";
 import { z } from "zod";
-import { db } from "~/test/fixtures";
+
+import { createModel, orm } from "../..";
+import { db } from "../fixtures";
 
 describe("create", () => {
     test("only models that exist can be created", () => {

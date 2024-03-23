@@ -1,7 +1,7 @@
 import { fc } from "@fast-check/vitest";
 import { uniqBy } from "lodash";
-import { Model } from "~/types/schema";
 
+import { Model } from "../../types/schema";
 import { column } from "./column";
 
 export const model = () => {

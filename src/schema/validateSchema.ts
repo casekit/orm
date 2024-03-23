@@ -1,5 +1,4 @@
-import { Schema } from "~/types/schema";
-
+import { Schema } from "../types/schema";
 import { validateModel } from "./validateModel";
 
 export const validateSchema = (schema: Schema) => {

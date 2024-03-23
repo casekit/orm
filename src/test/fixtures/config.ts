@@ -1,6 +1,6 @@
-import { createConfig } from "@casekit/orm";
-
 import { snakeCase } from "lodash";
+
+import { createConfig } from "../..";
 
 export const config = createConfig({
     naming: { column: snakeCase },

@@ -1,8 +1,8 @@
-import { orm } from "@casekit/orm";
 import { unindent } from "@casekit/unindent";
 
 import { describe, expect, test } from "vitest";
 
+import { orm } from "../../orm";
 import { createExtensionsSql } from "./createExtensionsSql";
 
 describe("createExtensionsSql", () => {

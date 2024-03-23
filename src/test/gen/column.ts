@@ -1,8 +1,8 @@
 import { fc } from "@fast-check/vitest";
 import { z } from "zod";
-import { Column } from "~/types/schema";
-import { DataType } from "~/types/schema/postgres/DataType";
 
+import { Column } from "../../types/schema";
+import { DataType } from "../../types/schema/postgres/DataType";
 import { sqldate } from "./sqldate";
 
 export const column = () => {

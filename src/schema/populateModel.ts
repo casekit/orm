@@ -1,7 +1,6 @@
-import { Config } from "~/types/Config";
-import { Model } from "~/types/schema";
-import { ModelDefinition } from "~/types/schema/definition/ModelDefinition";
-
+import { Config } from "../types/Config";
+import { Model } from "../types/schema";
+import { ModelDefinition } from "../types/schema/definition/ModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (

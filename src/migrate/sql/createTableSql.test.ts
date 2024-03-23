@@ -1,13 +1,13 @@
-import { createModel, orm } from "@casekit/orm";
 import { unindent } from "@casekit/unindent";
 
 import { uniqueId } from "lodash";
 import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
-import { sql } from "~/sql/sql";
-import { db } from "~/test/fixtures";
 
+import { createModel, orm } from "../..";
+import { sql } from "../../sql";
+import { db } from "../../test/fixtures";
 import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {

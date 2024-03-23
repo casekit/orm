@@ -1,8 +1,9 @@
 import { groupBy } from "lodash";
 import { Client } from "pg";
-import { sql } from "~/sql/sql";
 
-export const getColumns = async (client: Client, schema: string) => {
+import { sql } from "../sql";
+
+export const getTables = async (client: Client, schema: string) => {
     const results = await client.query(
         sql`select
              c.table_name,

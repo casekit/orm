@@ -1,7 +1,5 @@
-import { Orm } from "@casekit/orm";
-
-import { SchemaDefinition } from "~/types/schema/definition/SchemaDefinition";
-
+import { Orm } from "..";
+import { SchemaDefinition } from "../types/schema/definition/SchemaDefinition";
 import { implode } from "./commands/implode";
 
 export class Migrator<S extends SchemaDefinition> {

@@ -1,6 +1,5 @@
-import { migrator } from "@casekit/orm";
-
-import { db } from "~/test/fixtures";
+import { migrator } from "..";
+import { db } from "./fixtures";
 
 export default async function setup() {
     await migrator(db).implode({ dryRun: false, output: false });

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { SQLStatement } from "~/sql/SQLStatement";
 
+import { SQLStatement } from "../../../sql";
 import { DataType } from "../postgres/DataType";
 
 export type ColumnDefinition<ColumnType = unknown> = {

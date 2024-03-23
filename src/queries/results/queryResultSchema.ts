@@ -1,6 +1,7 @@
 import { ZodSchema, z } from "zod";
-import { BaseQuery } from "~/types/queries/BaseQuery";
-import { Schema } from "~/types/schema";
+
+import { BaseQuery } from "../../types/queries/BaseQuery";
+import { Schema } from "../../types/schema";
 
 export const queryResultSchema = (
     schema: Schema,

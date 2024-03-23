@@ -1,11 +1,11 @@
-import { createModel, orm } from "@casekit/orm";
-
 import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
-import { createTableSql } from "~/migrate/sql/createTableSql";
-import { sql } from "~/sql/sql";
-import { config, models } from "~/test/fixtures";
+
+import { createModel, orm } from "..";
+import { createTableSql } from "../migrate/sql/createTableSql";
+import { sql } from "../sql";
+import { config, models } from "../test/fixtures";
 
 describe("create", () => {
     test("it inserts records into the database", async () => {

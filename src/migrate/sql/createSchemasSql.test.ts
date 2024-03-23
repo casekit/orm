@@ -1,9 +1,9 @@
-import { createConfig, createModel, orm } from "@casekit/orm";
 import { unindent } from "@casekit/unindent";
 
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
+import { createConfig, createModel, orm } from "../../";
 import { createSchemasSql } from "./createSchemasSql";
 
 describe("createSchemaSql", () => {

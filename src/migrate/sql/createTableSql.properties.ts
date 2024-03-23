@@ -1,11 +1,10 @@
-import { orm } from "@casekit/orm";
-
 import { test } from "@fast-check/vitest";
 import { isEqual } from "lodash";
 import pgfmt from "pg-format";
-import * as gen from "~/test/gen";
-import { withRollback } from "~/test/util/withRollback";
 
+import { orm } from "../..";
+import * as gen from "../../test/gen";
+import { withRollback } from "../../test/util/withRollback";
 import { createSchemasSql } from "./createSchemasSql";
 import { createTableSql } from "./createTableSql";
 

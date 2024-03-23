@@ -1,5 +1,6 @@
 import { assertType, describe, expectTypeOf, test } from "vitest";
-import { db } from "~/test/fixtures";
+
+import { db } from "../fixtures";
 
 describe("findMany", () => {
     test("only models that exist can be queried", () => {

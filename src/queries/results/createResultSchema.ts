@@ -1,6 +1,7 @@
 import { ZodSchema, z } from "zod";
-import { BaseCreateParams } from "~/types/queries/BaseCreateParams";
-import { Schema } from "~/types/schema";
+
+import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
+import { Schema } from "../../types/schema";
 
 export const createResultSchema = (
     schema: Schema,

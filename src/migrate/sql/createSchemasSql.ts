@@ -1,8 +1,9 @@
 import { uniq } from "lodash";
 import pgfmt from "pg-format";
-import { Orm } from "~/orm";
-import { SQLStatement } from "~/sql/SQLStatement";
-import { Schema } from "~/types/schema";
+
+import { Orm } from "../../orm";
+import { SQLStatement } from "../../sql";
+import { Schema } from "../../types/schema";
 
 export const createSchemasSql = (db: Orm<Schema>): SQLStatement => {
     const schemas = uniq(Object.values(db.models).map((m) => m.schema));

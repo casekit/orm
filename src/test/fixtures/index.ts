@@ -1,5 +1,4 @@
-import { orm } from "@casekit/orm";
-
+import { orm } from "../..";
 import { config } from "./config";
 import * as models from "./models";
 

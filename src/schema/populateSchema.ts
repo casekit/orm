@@ -1,6 +1,5 @@
-import { Schema } from "~/types/schema";
-import { SchemaDefinition } from "~/types/schema/definition/SchemaDefinition";
-
+import { Schema } from "../types/schema";
+import { SchemaDefinition } from "../types/schema/definition/SchemaDefinition";
 import { createConfig } from "./createConfig";
 import { populateModel } from "./populateModel";
 
