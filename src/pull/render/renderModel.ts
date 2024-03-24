@@ -1,8 +1,8 @@
 import { camelCase } from "lodash-es";
 
-import { format } from "./format";
-import { ColumnMeta } from "./types/ColumnMeta";
-import { UniqueConstraint } from "./types/UniqueConstraint";
+import { ColumnMeta } from "../types/ColumnMeta";
+import { UniqueConstraint } from "../types/UniqueConstraint";
+import { format } from "../util/format";
 
 const renderDefault = (d: string) => {
     return d.match(/^\d+$/) ? `${d}` : `sql\`${d}\``;

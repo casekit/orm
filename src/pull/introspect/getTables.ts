@@ -1,8 +1,8 @@
 import { groupBy, mapValues, sortBy } from "lodash-es";
 import pg from "pg";
 
-import { sql } from "../sql";
-import { ColumnMeta } from "./types/ColumnMeta";
+import { sql } from "../../sql";
+import { ColumnMeta } from "../types/ColumnMeta";
 
 export const getTables = async (client: pg.Client, schema: string) => {
     const results = await client.query<ColumnMeta>(

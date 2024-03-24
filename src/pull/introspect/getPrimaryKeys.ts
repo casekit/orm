@@ -1,7 +1,7 @@
 import { groupBy, mapValues, sortBy } from "lodash-es";
 import pg from "pg";
 
-import { sql } from "../sql";
+import { sql } from "../../sql";
 
 export const getPrimaryKeys = async (client: pg.Client, schema: string) => {
     const results = await client.query(

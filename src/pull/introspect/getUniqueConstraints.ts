@@ -1,9 +1,9 @@
 import { groupBy } from "lodash-es";
 import pg from "pg";
 
-import { sql } from "../sql";
-import { parseCreateUniqueIndexStatement } from "./parseCreateUniqueIndexStatement";
-import { UniqueConstraint } from "./types/UniqueConstraint";
+import { sql } from "../../sql";
+import { parseCreateUniqueIndexStatement } from "../parse/parseCreateUniqueIndexStatement";
+import { UniqueConstraint } from "../types/UniqueConstraint";
 
 /**
  * Doing this with string manipulation in this way feels pretty hacky,

@@ -3,10 +3,10 @@ import { camelCase } from "lodash-es";
 import path from "path";
 import pg from "pg";
 
-import { getPrimaryKeys } from "./getPrimaryKeys";
-import { getTables } from "./getTables";
-import { getUniqueConstraints } from "./getUniqueConstraints";
-import { renderModel } from "./renderModel";
+import { getPrimaryKeys } from "./introspect/getPrimaryKeys";
+import { getTables } from "./introspect/getTables";
+import { getUniqueConstraints } from "./introspect/getUniqueConstraints";
+import { renderModel } from "./render/renderModel";
 
 export const pull = async (
     client: pg.Client,

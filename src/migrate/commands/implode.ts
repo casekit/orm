@@ -4,6 +4,7 @@ import { Schema } from "../../types/schema";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
 import { createTableSql } from "../sql/createTableSql";
+import { createUniqueConstraintSql } from "../sql/createUniqueConstraintSql";
 import { dropTableSql } from "../sql/dropTableSql";
 
 export const implode = async (
@@ -12,12 +13,15 @@ export const implode = async (
 ) => {
     const statement = new SQLStatement();
 
-    statement.push(createSchemasSql(db));
-    statement.push(createExtensionsSql(db));
+    statement.push(createSchemasSql(db), "\n");
+    statement.push(createExtensionsSql(db), "\n");
 
     for (const model of Object.values(db.models)) {
-        statement.push(dropTableSql(model));
-        statement.push(createTableSql(model));
+        statement.push(dropTableSql(model), "\n");
+        statement.push(createTableSql(model), "\n");
+        for (const constraint of model.constraints.unique) {
+            statement.push(createUniqueConstraintSql(model, constraint), "\n");
+        }
     }
 
     if (output) console.log(statement.text);
