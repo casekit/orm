@@ -15,7 +15,6 @@ export const pull = async (
     const tables = await getTables(client, opts.schema);
     // eslint-disable-next-line
     const primaryKeys = await getPrimaryKeys(client, opts.schema);
-    // eslint-disable-next-line
     const uniqueConstraints = await getUniqueConstraints(client, opts.schema);
 
     fs.mkdirSync(opts.outDir, { recursive: true });

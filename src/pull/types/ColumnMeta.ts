@@ -5,5 +5,6 @@ export type ColumnMeta = {
     default: string | null;
     nullable: boolean;
     type: string;
-    elementType: string;
+    elementtype: string;
+    cardinality: number;
 };

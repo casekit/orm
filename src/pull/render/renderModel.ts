@@ -1,4 +1,4 @@
-import { camelCase } from "lodash-es";
+import { camelCase, times } from "lodash-es";
 
 import { ColumnMeta } from "../types/ColumnMeta";
 import { UniqueConstraint } from "../types/UniqueConstraint";
@@ -6,6 +6,19 @@ import { format } from "../util/format";
 
 const renderDefault = (d: string) => {
     return d.match(/^\d+$/) ? `${d}` : `sql\`${d}\``;
+};
+
+const renderType = (column: ColumnMeta) => {
+    if (column.type === "ARRAY") {
+        return (
+            column.elementtype +
+            times(column.cardinality)
+                .map(() => "[]")
+                .join("")
+        );
+    } else {
+        return column.type;
+    }
 };
 
 export const renderModel = async ({
@@ -32,7 +45,7 @@ export const renderModel = async ({
                         (c) => `
                 "${camelCase(c.name)}": {
                     name: "${c.name}",
-                    type: "${c.type}",${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: ${renderDefault(c.default)},\n` : ""} }
+                    type: "${renderType(c)}",${c.nullable ? `\nnullable: true,\n` : ""}${c.default ? `\ndefault: ${renderDefault(c.default)},\n` : ""} }
                 `,
                     )
                     .join(",\n")}

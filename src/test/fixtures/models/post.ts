@@ -14,5 +14,9 @@ export const post = createModel({
             type: "timestamp",
             nullable: true,
         },
+        tags: {
+            type: "text[][][][]",
+            nullable: true,
+        },
     },
 });
