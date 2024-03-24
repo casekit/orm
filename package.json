@@ -1,5 +1,5 @@
 {
-    "name": "@casekit/orm",
+    "name": "@casekit/orm2",
     "version": "0.0.1",
     "description": "A simple ORM",
     "main": "lib/index.js",
