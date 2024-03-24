@@ -1,4 +1,4 @@
-import { Pool, PoolClient } from "pg";
+import pg from "pg";
 import { z } from "zod";
 
 import { create } from "./queries/create";
@@ -24,18 +24,18 @@ export class Orm<S extends SchemaDefinition> {
     public config: Config;
     public models: { [M in keyof S["models"]]: S["models"][M] & Model };
 
-    private pool: Pool;
-    private poolClient?: PoolClient;
+    private pool: pg.Pool;
+    private poolClient?: pg.PoolClient;
 
     public get connection(): Connection {
         return this.poolClient ?? this.pool;
     }
 
-    constructor(schema: Schema, poolClient?: PoolClient) {
+    constructor(schema: Schema, poolClient?: pg.PoolClient) {
         this.schema = schema;
         this.config = schema.config;
         this.models = schema.models as DeepRequired<S["models"]>;
-        this.pool = new Pool(schema.config.connection ?? {});
+        this.pool = new pg.Pool(schema.config.connection ?? {});
         this.poolClient = poolClient;
     }
 

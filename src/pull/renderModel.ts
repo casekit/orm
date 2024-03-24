@@ -1,4 +1,4 @@
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 
 import { format } from "./format";
 import { ColumnMeta } from "./types/ColumnMeta";

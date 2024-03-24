@@ -1,4 +1,4 @@
-import { identity } from "lodash";
+import { identity } from "lodash-es";
 
 import { Config } from "../types/Config";
 

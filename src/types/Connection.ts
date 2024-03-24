@@ -1,3 +1,3 @@
-import { Client, Pool, PoolClient } from "pg";
+import pg from "pg";
 
-export type Connection = Pool | PoolClient | Client;
+export type Connection = pg.Pool | pg.PoolClient | pg.Client;

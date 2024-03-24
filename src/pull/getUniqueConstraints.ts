@@ -1,5 +1,5 @@
-import { groupBy } from "lodash";
-import { Client } from "pg";
+import { groupBy } from "lodash-es";
+import pg from "pg";
 
 import { sql } from "../sql";
 import { parseCreateUniqueIndexStatement } from "./parseCreateUniqueIndexStatement";
@@ -13,7 +13,7 @@ import { UniqueConstraint } from "./types/UniqueConstraint";
  * information_schema * or pg_catalog tables though.
  */
 export const getUniqueConstraints = async (
-    client: Client,
+    client: pg.Client,
     schema: string,
 ): Promise<Record<string, UniqueConstraint[]>> => {
     const results = await client.query<{

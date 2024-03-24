@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import { uniq } from "lodash-es";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 import { Schema } from "../../types/schema";

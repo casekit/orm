@@ -1,7 +1,7 @@
 import fs from "fs";
-import { camelCase } from "lodash";
+import { camelCase } from "lodash-es";
 import path from "path";
-import { Client } from "pg";
+import pg from "pg";
 
 import { getPrimaryKeys } from "./getPrimaryKeys";
 import { getTables } from "./getTables";
@@ -9,7 +9,7 @@ import { getUniqueConstraints } from "./getUniqueConstraints";
 import { renderModel } from "./renderModel";
 
 export const pull = async (
-    client: Client,
+    client: pg.Client,
     opts: { schema: string; outDir: string },
 ) => {
     const tables = await getTables(client, opts.schema);

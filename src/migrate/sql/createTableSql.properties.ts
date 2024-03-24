@@ -1,5 +1,5 @@
 import { test } from "@fast-check/vitest";
-import { isEqual } from "lodash";
+import { isEqual } from "lodash-es";
 import pgfmt from "pg-format";
 
 import { orm } from "../..";

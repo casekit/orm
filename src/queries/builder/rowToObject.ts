@@ -1,4 +1,4 @@
-import { set } from "lodash";
+import { set } from "lodash-es";
 
 export type ColumnMapping = { path: string | string[]; alias: string };
 

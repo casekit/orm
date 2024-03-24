@@ -1,9 +1,9 @@
-import { Client } from "pg";
+import pg from "pg";
 
 export const withRollback = async <T>(
-    cb: (client: Client) => Promise<T>,
+    cb: (client: pg.Client) => Promise<T>,
 ): Promise<T> => {
-    const client = new Client();
+    const client = new pg.Client();
     try {
         await client.connect();
         await client.query("BEGIN");

@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import { uniq } from "lodash-es";
 import pgfmt from "pg-format";
 
 import { Orm } from "../../orm";

@@ -1,4 +1,4 @@
-import { uniq } from "lodash";
+import { uniq } from "lodash-es";
 
 import { InvalidModelDefinitionError } from "../errors";
 import { Model, Schema } from "../types/schema";

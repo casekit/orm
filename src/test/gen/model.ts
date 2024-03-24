@@ -1,5 +1,5 @@
 import { fc } from "@fast-check/vitest";
-import { uniqBy } from "lodash";
+import { uniqBy } from "lodash-es";
 
 import { Model } from "../../types/schema";
 import { column } from "./column";

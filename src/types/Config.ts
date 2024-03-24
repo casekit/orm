@@ -1,4 +1,4 @@
-import { PoolConfig } from "pg";
+import pg from "pg";
 
 export type Config = {
     naming: {
@@ -6,5 +6,5 @@ export type Config = {
         table: (s: string) => string;
     };
     schema: string;
-    connection?: PoolConfig;
+    connection?: pg.PoolConfig;
 };

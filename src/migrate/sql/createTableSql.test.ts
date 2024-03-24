@@ -1,6 +1,6 @@
 import { unindent } from "@casekit/unindent";
 
-import { uniqueId } from "lodash";
+import { uniqueId } from "lodash-es";
 import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
