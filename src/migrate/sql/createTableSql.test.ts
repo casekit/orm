@@ -31,7 +31,6 @@ describe("createTableSql", () => {
                 id: {
                     schema: z.string().uuid(),
                     type: "uuid",
-                    primaryKey: true,
                     default: sql`uuid_generate_v4()`,
                 },
                 title: {

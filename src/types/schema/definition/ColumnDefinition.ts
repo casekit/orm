@@ -32,16 +32,6 @@ export type ColumnDefinition<ColumnType = unknown> = {
     nullable?: boolean;
 
     /**
-     * Is this column the model's primary key (or a component of its primary key?)
-     */
-    primaryKey?: boolean;
-
-    /**
-     * Does this column have a unique constraint?
-     */
-    unique?: boolean;
-
-    /**
      * Does this column have a default value? This can be either a value such as a number or string,
      * or if you want to specify a SQL function for the default, you can use the `sql` tagged
      * template literal. So examples would include:

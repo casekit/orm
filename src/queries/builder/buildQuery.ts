@@ -2,7 +2,6 @@ import { uniq } from "lodash-es";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 import { Schema } from "../../types/schema";
-import { primaryKey } from "./primaryKey";
 import { tableAlias } from "./tableAlias";
 
 export type QueryBuilder = {
@@ -43,7 +42,7 @@ export const buildQuery = (
     });
 
     // make sure we always select the model's primary key - we'll strip it out later
-    const select = uniq([...query.select, ...primaryKey(model)]);
+    const select = uniq([...query.select, ...model.constraints.primaryKey]);
 
     for (const f of select) {
         builder.columns.push({

@@ -13,14 +13,14 @@ describe("createSchemaSql", () => {
         const a = createModel({
             schema: "foo",
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 
         const b = createModel({
             schema: "bar",
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 
@@ -36,14 +36,14 @@ describe("createSchemaSql", () => {
 
         const a = createModel({
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 
         const b = createModel({
             schema: "bar",
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 
@@ -59,14 +59,14 @@ describe("createSchemaSql", () => {
 
         const a = createModel({
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 
         const b = createModel({
             schema: "bar",
             columns: {
-                id: { type: "uuid", primaryKey: true, schema: z.string() },
+                id: { type: "uuid", schema: z.string() },
             },
         });
 

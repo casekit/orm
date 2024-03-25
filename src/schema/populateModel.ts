@@ -18,8 +18,6 @@ export const populateModel = (
                 ...column,
                 fieldName: name,
                 name: column.name ?? config.naming.column(name),
-                primaryKey: column.primaryKey ?? false,
-                unique: column.unique ?? false,
                 nullable: column.nullable ?? false,
                 default: column.default ?? null,
                 schema: column.schema ?? suggestedColumnSchema(column.type),
@@ -27,6 +25,8 @@ export const populateModel = (
         ]),
     ),
     constraints: {
+        ...model.constraints,
+        primaryKey: model.constraints?.primaryKey ?? [],
         unique: [...(model.constraints?.unique ?? [])],
     },
 });

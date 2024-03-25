@@ -1,7 +1,5 @@
-import { SQLStatement } from "src";
-import { NonEmptyArray } from "src/types/util/NonEmptyArray";
-
 import { ColumnDefinition } from "./ColumnDefinition";
+import { UniqueConstraint } from "./UniqueConstraint";
 
 /**
  * Configuration object for a database model.
@@ -34,10 +32,7 @@ export type ModelDefinition<
     columns: Columns;
 
     constraints?: {
-        unique?: {
-            name?: string;
-            columns: NonEmptyArray<Extract<keyof Columns, string>>;
-            where?: SQLStatement;
-        }[];
+        primaryKey: string[];
+        unique?: UniqueConstraint<Columns>[];
     };
 };

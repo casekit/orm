@@ -2,10 +2,11 @@ import pgfmt from "pg-format";
 
 import { SQLStatement } from "../../sql";
 import { Model } from "../../types/schema";
+import { interleave } from "../../util/interleave";
 
 export const createTableSql = (model: Model): SQLStatement => {
     const columns = Object.values(model.columns);
-    const primaryKeys = columns.filter((c) => c.primaryKey);
+    const primaryKey = model.constraints.primaryKey;
 
     const statement = new SQLStatement();
 
@@ -13,29 +14,38 @@ export const createTableSql = (model: Model): SQLStatement => {
         pgfmt("CREATE TABLE %I.%I (\n", model.schema ?? "public", model.table),
     );
 
-    for (const column of columns) {
-        statement.push(pgfmt(`    %I %s`, column.name, column.type));
-
-        if (!column.nullable) statement.push(pgfmt(" NOT NULL"));
-
-        if (column.unique) statement.push(pgfmt(" UNIQUE"));
-
-        if (column.default instanceof SQLStatement) {
-            statement.push(" DEFAULT ");
-            statement.push(column.default);
-        } else if (column.default !== null && column.default !== undefined) {
-            statement.push(pgfmt(" DEFAULT %L", column.default));
-        }
-
-        statement.push(pgfmt(",\n"));
-    }
-
     statement.push(
-        pgfmt(
-            `    PRIMARY KEY (${primaryKeys.map(() => "%I").join(", ")})`,
-            ...primaryKeys.map((c) => c.name),
+        ...interleave(
+            columns.map((column) => {
+                const definition = new SQLStatement(
+                    pgfmt(`    %I %s`, column.name, column.type),
+                );
+
+                if (!column.nullable) definition.push(pgfmt(" NOT NULL"));
+
+                if (column.default instanceof SQLStatement) {
+                    definition.push(" DEFAULT ");
+                    definition.push(column.default);
+                } else if (
+                    column.default !== null &&
+                    column.default !== undefined
+                ) {
+                    definition.push(pgfmt(" DEFAULT %L", column.default));
+                }
+                return definition;
+            }),
+            ",\n",
         ),
     );
+
+    if (primaryKey.length > 0) {
+        statement.push(
+            pgfmt(
+                `,\n    PRIMARY KEY (${primaryKey.map(() => "%I").join(", ")})`,
+                ...primaryKey,
+            ),
+        );
+    }
 
     statement.push(pgfmt("\n);"));
 

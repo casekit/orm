@@ -1,39 +1,47 @@
 import { fc } from "@fast-check/vitest";
-import { uniqBy } from "lodash-es";
+import { drop, take, uniqBy } from "lodash-es";
 
 import { Model } from "../../types/schema";
 import { column } from "./column";
 
 export const model = () => {
     return fc
-        .record<Model>({
-            table: fc.string({ minLength: 1, maxLength: 80 }),
-            schema: fc.string({ minLength: 1, maxLength: 80 }),
-            columns: fc.dictionary(fc.string(), column(), {
-                minKeys: 1,
-                maxKeys: 65,
+        .tuple(
+            fc.record<Omit<Model, "constraints">>({
+                table: fc.string({ minLength: 1, maxLength: 80 }),
+                schema: fc.string({ minLength: 1, maxLength: 80 }),
+                columns: fc.dictionary(fc.string({ minLength: 1 }), column(), {
+                    minKeys: 1,
+                    maxKeys: 65,
+                }),
             }),
-            constraints: fc.record({
-                unique: fc.constant([]),
-            }),
-        })
-        .map<Model>((model) => {
+            fc.integer({ min: 0, max: 2 }), // no of primary keys
+            fc.integer({ min: 0, max: 2 }), // no of unique constraints
+        )
+        .map<Model>(([model, numPrimaryKeyColumns, numUniqueColumns]) => {
             // remove any duplicate column names
             const columns = uniqBy(
                 Object.entries(model.columns),
                 ([, c]) => c.name,
             );
 
-            // make the first column in the list the primary key
-            const [head, ...tail] = columns;
-            const pk = [
-                head[0],
-                { ...head[1], primaryKey: true, nullable: false },
-            ];
+            // take the first n columns as the primary key, if one has been specified
+            const primaryKeyColumns = take(columns, numPrimaryKeyColumns);
+
+            // and columns after it as the unique columns, if they have been specified
+            const uniqueKeyColumns = take(
+                drop(columns, numPrimaryKeyColumns),
+                numUniqueColumns,
+            );
 
             return {
                 ...model,
-                columns: Object.fromEntries([pk, ...tail]),
+                constraints: {
+                    primaryKey: primaryKeyColumns.map(([, c]) => c.name),
+                    unique: uniqueKeyColumns.map(([, c]) => ({
+                        columns: [c.name],
+                    })),
+                },
             };
         });
 };

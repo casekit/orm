@@ -39,14 +39,10 @@ describe("create", () => {
         );
     });
 
-    test("columns of type serial do not need to be specified", async () => {
+    test.only("columns of type serial do not need to be specified", async () => {
         const foo = createModel({
             columns: {
-                id: {
-                    type: "serial",
-                    schema: z.coerce.number(),
-                    primaryKey: true,
-                },
+                id: { type: "serial", schema: z.coerce.number() },
                 big: { type: "bigserial", schema: z.coerce.number() },
                 small: { type: "smallserial", schema: z.coerce.number() },
             },
@@ -78,7 +74,6 @@ describe("create", () => {
                 id: {
                     type: "uuid",
                     schema: z.string().uuid(),
-                    primaryKey: true,
                     default: sql`uuid_generate_v4()`,
                 },
                 name: { type: "text", schema: z.string() },

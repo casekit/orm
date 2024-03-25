@@ -24,19 +24,4 @@ export const validateModel = (_schema: Schema, name: string, model: Model) => {
             { model: [name, model] },
         );
     }
-
-    if (columns.filter((c) => c.primaryKey).length === 0) {
-        throw new InvalidModelDefinitionError("Model has no primary key", {
-            model: [name, model],
-        });
-    }
-
-    if (columns.filter((c) => c.primaryKey).length > 1) {
-        throw new InvalidModelDefinitionError(
-            "Composite primary keys are not yet supported",
-            {
-                model: [name, model],
-            },
-        );
-    }
 };
