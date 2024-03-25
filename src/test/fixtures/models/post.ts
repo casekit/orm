@@ -10,6 +10,7 @@ export const post = createModel({
         },
         title: { type: "text" },
         content: { type: "text" },
+        authorId: { type: "uuid" },
         publishedAt: {
             type: "timestamp",
             nullable: true,

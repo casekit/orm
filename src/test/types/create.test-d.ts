@@ -1,3 +1,4 @@
+import * as uuid from "uuid";
 import { assertType, describe, expectTypeOf, test } from "vitest";
 import { z } from "zod";
 
@@ -37,7 +38,7 @@ describe("create", () => {
     test("only existing fields can be included in the returning clause", () => {
         assertType(
             db.create("post", {
-                data: { title: "hello", content: "it me" },
+                data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: [
                     "id",
                     // @ts-expect-error non-existing fields can't be returned
@@ -50,7 +51,7 @@ describe("create", () => {
     test("without a returning clause, the return type is a boolean indicating success", async () => {
         expectTypeOf(
             await db.create("post", {
-                data: { title: "hello", content: "it me" },
+                data: { title: "hello", content: "it me", authorId: uuid.v4() },
             }),
         ).toMatchTypeOf<boolean>();
     });
@@ -58,7 +59,7 @@ describe("create", () => {
     test("with a returning clause, the return type is an object containing the specified fields", async () => {
         expectTypeOf(
             await db.create("post", {
-                data: { title: "hello", content: "it me" },
+                data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: ["id", "title"],
             }),
         ).toMatchTypeOf<{ id: string; title: string }>();
@@ -67,7 +68,7 @@ describe("create", () => {
     test("non-selected fields are not included in the result type", async () => {
         expectTypeOf(
             await db.create("post", {
-                data: { title: "hello", content: "it me" },
+                data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: ["id", "title"],
             }),
         ).not.toMatchTypeOf<{ id: string; title: string; content: string }>();

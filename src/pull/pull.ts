@@ -13,7 +13,6 @@ export const pull = async (
     opts: { schema: string; outDir: string },
 ) => {
     const tables = await getTables(client, opts.schema);
-    // eslint-disable-next-line
     const primaryKeys = await getPrimaryKeys(client, opts.schema);
     const uniqueConstraints = await getUniqueConstraints(client, opts.schema);
 
@@ -25,6 +24,7 @@ export const pull = async (
             await renderModel({
                 table,
                 columns,
+                primaryKey: primaryKeys[table] ?? [],
                 uniqueConstraints: uniqueConstraints[table] ?? [],
             }),
             { encoding: "utf-8" },

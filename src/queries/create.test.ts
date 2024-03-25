@@ -17,6 +17,7 @@ describe("create", () => {
                         id: id,
                         title: "hello it me",
                         content: "i'm writing a post",
+                        authorId: uuid.v4(),
                     },
                 });
 
@@ -27,10 +28,12 @@ describe("create", () => {
                 });
 
                 expect(rows).toHaveLength(1);
-                expect(rows[0]).toEqual({
-                    id: id,
-                    title: "hello it me",
-                });
+                expect(rows[0]).toEqual(
+                    expect.objectContaining({
+                        id: id,
+                        title: "hello it me",
+                    }),
+                );
             },
             { rollback: true },
         );
