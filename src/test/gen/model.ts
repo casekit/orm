@@ -15,7 +15,7 @@ export const model = () => {
                     maxKeys: 65,
                 }),
             }),
-            fc.integer({ min: 0, max: 2 }), // no of primary keys
+            fc.integer({ min: 1, max: 2 }), // no of primary keys
             fc.integer({ min: 0, max: 2 }), // no of unique constraints
         )
         .map<Model>(([model, numPrimaryKeyColumns, numUniqueColumns]) => {
@@ -36,6 +36,7 @@ export const model = () => {
 
             return {
                 ...model,
+                columns: Object.fromEntries(columns),
                 constraints: {
                     primaryKey: primaryKeyColumns.map(([, c]) => c.name),
                     unique: uniqueKeyColumns.map(([, c]) => ({

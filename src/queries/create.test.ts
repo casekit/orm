@@ -39,7 +39,7 @@ describe("create", () => {
         );
     });
 
-    test.only("columns of type serial do not need to be specified", async () => {
+    test("columns of type serial do not need to be specified", async () => {
         const foo = createModel({
             columns: {
                 id: { type: "serial", schema: z.coerce.number() },
