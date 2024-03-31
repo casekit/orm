@@ -1,11 +1,8 @@
-import { snakeCase } from "lodash-es";
 import { z } from "zod";
 
 import { SQLStatement } from "../..";
 import { Config } from "../Config";
-import { ColumnDefinition } from "./definition/ColumnDefinition";
 import { ForeignKey } from "./definition/ForeignKey";
-import { ModelDefinition } from "./definition/ModelDefinition";
 import { UniqueConstraint } from "./definition/UniqueConstraint";
 import { DataType } from "./postgres/DataType";
 
