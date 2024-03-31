@@ -2,6 +2,7 @@ import { Orm } from "../../orm";
 import { SQLStatement } from "../../sql";
 import { Schema } from "../../types/schema";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
+import { createForeignKeyConstraintSql } from "../sql/createForeignKeyConstraintSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
 import { createTableSql } from "../sql/createTableSql";
 import { createUniqueConstraintSql } from "../sql/createUniqueConstraintSql";
@@ -21,6 +22,12 @@ export const implode = async (
         statement.push(createTableSql(model), "\n");
         for (const constraint of model.uniqueConstraints) {
             statement.push(createUniqueConstraintSql(model, constraint), "\n");
+        }
+        for (const foreignKey of model.foreignKeys) {
+            statement.push(
+                createForeignKeyConstraintSql(model, foreignKey),
+                "\n",
+            );
         }
     }
 

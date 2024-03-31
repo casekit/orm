@@ -43,9 +43,9 @@ describe("createForeignKeyConstraintSql", () => {
             .join("\n");
 
         expect(result).toEqual(unindent`
-             ALTER TABLE casekit.foo ADD CONSTRAINT FOREIGN KEY (bar_id, baz_id) REFERENCES casekit.quux (bar_id, baz_id) ON UPDATE CASCADE;
-             ALTER TABLE casekit.foo ADD CONSTRAINT FOREIGN KEY (bar_id) REFERENCES casekit.bar (id);
-             ALTER TABLE casekit.foo ADD CONSTRAINT FOREIGN KEY (baz_id) REFERENCES casekit.baz (id);
+             ALTER TABLE casekit.foo ADD CONSTRAINT foo_bar_id_baz_id_fkey FOREIGN KEY (bar_id, baz_id) REFERENCES casekit.quux (bar_id, baz_id) ON UPDATE CASCADE;
+             ALTER TABLE casekit.foo ADD CONSTRAINT foo_bar_id_fkey FOREIGN KEY (bar_id) REFERENCES casekit.bar (id);
+             ALTER TABLE casekit.foo ADD CONSTRAINT foo_baz_id_fkey FOREIGN KEY (baz_id) REFERENCES casekit.baz (id);
         `);
     });
 });

@@ -10,12 +10,14 @@ export const createForeignKeyConstraintSql = (
 ) => {
     const statement = new SQLStatement();
     statement.push(
-        pgfmt(
-            `ALTER TABLE %I.%I ADD CONSTRAINT FOREIGN KEY (`,
-            model.schema,
-            model.table,
-        ),
+        pgfmt(`ALTER TABLE %I.%I ADD CONSTRAINT `, model.schema, model.table),
     );
+
+    statement.push(
+        pgfmt("%I", [model.table, ...constraint.columns, "fkey"].join("_")),
+    );
+
+    statement.push(pgfmt(` FOREIGN KEY (`, model.schema, model.table));
     statement.push(constraint.columns.map((c) => pgfmt("%I", c)).join(", "));
     statement.push(")");
     statement.push(
