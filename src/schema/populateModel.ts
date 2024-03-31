@@ -1,5 +1,6 @@
 import { Config } from "../types/Config";
 import { Model } from "../types/schema";
+import { ForeignKey } from "../types/schema/definition/ForeignKey";
 import { ModelDefinition } from "../types/schema/definition/ModelDefinition";
 import { UniqueConstraint } from "../types/schema/definition/UniqueConstraint";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
@@ -26,28 +27,66 @@ export const populateModel = (
         model.primaryKey ??
         Object.entries(model.columns)
             .filter(([, c]) => c.primaryKey)
-            .map(([name]) => name);
+            .map(([name, c]) => c.name ?? config.naming.column(name));
 
     const uniqueConstraints = [
         ...(model.uniqueConstraints ?? []),
         ...Object.entries(model.columns)
             .filter(([, c]) => c.unique)
-            .map(([name, { unique }]) => {
-                if (unique === true) {
+            .map(([name, c]) => {
+                if (c.unique === true) {
                     return { columns: [name] };
-                } else if (unique === false) {
+                } else if (c.unique === false) {
                     throw new Error(
                         "can't happen but let's make typescript happy",
                     );
                 } else {
                     return {
-                        columns: [name],
-                        where: unique?.where,
-                        nullsNotDistinct: unique?.nullsNotDistinct,
+                        columns: [name ?? config.naming.column(name)],
+                        where: c.unique?.where,
+                        nullsNotDistinct: c.unique?.nullsNotDistinct,
                     };
                 }
             }),
     ] as UniqueConstraint[];
+
+    const foreignKeys = [
+        ...(model.foreignKeys ?? []).map((fk) => ({
+            ...fk,
+            references: {
+                ...fk.references,
+                schema:
+                    fk.references.schema ??
+                    model.schema ??
+                    config.schema ??
+                    "public",
+            },
+        })),
+        ...Object.entries(model.columns)
+            .filter(([, c]) => c.references)
+            .map(([name, c]) => {
+                if (!c.references) {
+                    throw new Error(
+                        "can't happen but let's make typescript happy",
+                    );
+                } else {
+                    return {
+                        columns: [c.name ?? config.naming.column(name)],
+                        references: {
+                            schema:
+                                c.references.schema ??
+                                model.schema ??
+                                config.schema ??
+                                "public",
+                            table: c.references.table,
+                            columns: [c.references.column],
+                        },
+                        onUpdate: c.references.onUpdate,
+                        onDelete: c.references.onDelete,
+                    };
+                }
+            }),
+    ] as ForeignKey[];
 
     return {
         ...model,
@@ -56,6 +95,6 @@ export const populateModel = (
         columns,
         primaryKey,
         uniqueConstraints,
-        foreignKeys: [],
+        foreignKeys,
     };
 };

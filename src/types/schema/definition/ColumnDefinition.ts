@@ -66,6 +66,7 @@ export type ColumnDefinition<ColumnType = unknown> = {
      * and what should happen on update or delete.
      */
     references?: {
+        schema?: string;
         table: string;
         column: string;
         onUpdate?: SQLStatement;
