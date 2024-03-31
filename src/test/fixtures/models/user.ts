@@ -10,8 +10,8 @@ export const user = createModel({
         joinedAt: { schema: z.date(), type: "timestamp", nullable: true },
         deletedAt: { schema: z.date(), type: "timestamp", nullable: true },
     },
-    constraints: {
-        primaryKey: ["id"],
-        unique: [{ columns: ["username"], where: sql`deleted_at IS NULL` }],
-    },
+    primaryKey: ["id"],
+    uniqueConstraints: [
+        { columns: ["username"], where: sql`deleted_at IS NULL` },
+    ],
 });

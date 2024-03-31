@@ -19,7 +19,7 @@ export const implode = async (
     for (const model of Object.values(db.models)) {
         statement.push(dropTableSql(model), "\n");
         statement.push(createTableSql(model), "\n");
-        for (const constraint of model.constraints.unique) {
+        for (const constraint of model.uniqueConstraints) {
             statement.push(createUniqueConstraintSql(model, constraint), "\n");
         }
     }

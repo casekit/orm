@@ -6,7 +6,7 @@ import { interleave } from "../../util/interleave";
 
 export const createTableSql = (model: Model): SQLStatement => {
     const columns = Object.values(model.columns);
-    const primaryKey = model.constraints.primaryKey;
+    const primaryKey = model.primaryKey;
 
     const statement = new SQLStatement();
 

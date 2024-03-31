@@ -1,14 +1,9 @@
 import { SQLStatement } from "../../..";
 import { NonEmptyArray } from "../../util/NonEmptyArray";
-import { ColumnDefinition } from "./ColumnDefinition";
 
-export type UniqueConstraint<
-    Columns extends Record<string, ColumnDefinition> = Record<
-        string,
-        ColumnDefinition
-    >,
-> = {
+export type UniqueConstraint = {
     name?: string;
-    columns: NonEmptyArray<Extract<keyof Columns, string>>;
+    columns: NonEmptyArray<string>;
     where?: SQLStatement;
+    nullsNotDistinct?: boolean;
 };

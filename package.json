@@ -18,6 +18,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@casekit/unindent": "^1.0.3",
         "@fast-check/vitest": "^0.1.0",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/lodash-es": "^4.17.12",
@@ -35,7 +36,6 @@
         "vitest": "^1.4.0"
     },
     "dependencies": {
-        "@casekit/unindent": "^1.0.3",
         "lodash-es": "^4.17.21",
         "pg": "^8.11.3",
         "pg-format": "^1.0.4",

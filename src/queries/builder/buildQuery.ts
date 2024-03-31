@@ -42,7 +42,7 @@ export const buildQuery = (
     });
 
     // make sure we always select the model's primary key - we'll strip it out later
-    const select = uniq([...query.select, ...model.constraints.primaryKey]);
+    const select = uniq([...query.select, ...model.primaryKey]);
 
     for (const f of select) {
         builder.columns.push({

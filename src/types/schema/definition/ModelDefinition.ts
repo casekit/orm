@@ -1,4 +1,5 @@
 import { ColumnDefinition } from "./ColumnDefinition";
+import { ForeignKey } from "./ForeignKey";
 import { UniqueConstraint } from "./UniqueConstraint";
 
 /**
@@ -31,8 +32,21 @@ export type ModelDefinition<
      */
     columns: Columns;
 
-    constraints?: {
-        primaryKey: string[];
-        unique?: UniqueConstraint<Columns>[];
-    };
+    /**
+     * If the table's primary key contains multiple columns, specify them here.
+     * If the primary key is on a single column, you can specify it here or in the column definition.
+     */
+    primaryKey?: string[];
+
+    /**
+     * If the table has unique constraints that span multiple columns, you must specify them here.
+     * If the unique constraint is on a single column, you can specify it here or in the column definition.
+     */
+    uniqueConstraints?: UniqueConstraint[];
+
+    /**
+     * If the table has foreign keys, you must specify them here. If the foreign key is on a single column,
+     * you can specify it here or in the column definition.
+     */
+    foreignKeys?: ForeignKey[];
 };

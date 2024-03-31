@@ -4,4 +4,5 @@ export type UniqueConstraint = {
     name: string;
     columns: string[];
     where?: string;
+    nullsNotDistinct?: boolean;
 };

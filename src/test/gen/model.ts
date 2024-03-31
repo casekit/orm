@@ -2,18 +2,22 @@ import { fc } from "@fast-check/vitest";
 import { drop, take, uniqBy } from "lodash-es";
 
 import { Model } from "../../types/schema";
+import { UniqueConstraint } from "../../types/schema/definition/UniqueConstraint";
 import { column } from "./column";
 
 export const model = () => {
     return fc
         .tuple(
-            fc.record<Omit<Model, "constraints">>({
+            fc.record<Model>({
                 table: fc.string({ minLength: 1, maxLength: 80 }),
                 schema: fc.string({ minLength: 1, maxLength: 80 }),
                 columns: fc.dictionary(fc.string({ minLength: 1 }), column(), {
                     minKeys: 1,
                     maxKeys: 65,
                 }),
+                primaryKey: fc.constant([]),
+                uniqueConstraints: fc.constant([]),
+                foreignKeys: fc.constant([]),
             }),
             fc.integer({ min: 1, max: 2 }), // no of primary keys
             fc.integer({ min: 0, max: 2 }), // no of unique constraints
@@ -34,15 +38,19 @@ export const model = () => {
                 numUniqueColumns,
             );
 
+            const primaryKey = primaryKeyColumns.map(
+                ([, c]) => c.name as string,
+            );
+
+            const uniqueConstraints = uniqueKeyColumns.map(([, c]) => ({
+                columns: [c.name as string],
+            })) as UniqueConstraint[];
+
             return {
                 ...model,
                 columns: Object.fromEntries(columns),
-                constraints: {
-                    primaryKey: primaryKeyColumns.map(([, c]) => c.name),
-                    unique: uniqueKeyColumns.map(([, c]) => ({
-                        columns: [c.name],
-                    })),
-                },
+                primaryKey,
+                uniqueConstraints,
             };
         });
 };

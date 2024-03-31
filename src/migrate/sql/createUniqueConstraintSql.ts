@@ -5,7 +5,7 @@ import { Model } from "../../types/schema";
 
 export const createUniqueConstraintSql = (
     model: Model,
-    constraint: Model["constraints"]["unique"][0],
+    constraint: Model["uniqueConstraints"][0],
 ) => {
     const statement = new SQLStatement();
     statement.push(

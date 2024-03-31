@@ -8,6 +8,7 @@ export type ColumnDefinition<ColumnType = unknown> = {
      * The postgresql datatype of the column.
      */
     type: DataType;
+
     /**
      * The name of the column in the database. If not specified,
      * it will be inferred based on the model's field name,
@@ -47,4 +48,29 @@ export type ColumnDefinition<ColumnType = unknown> = {
      * default: sql`uuid_generate_v4()`,
      */
     default?: ColumnType | SQLStatement | null;
+
+    /**
+     * Is this column unique? If so, you can specify a where clause to
+     * specify a partial unique index, and whether nulls should be considered
+     * distinct.
+     */
+    unique?: boolean | { where?: SQLStatement; nullsNotDistinct?: boolean };
+
+    /**
+     * Is this column a single-column primary key?
+     */
+    primaryKey?: boolean;
+
+    /**
+     * Is this column a foreign key? If so, you can specify the table and column it references,
+     * and what should happen on update or delete.
+     */
+    references?:
+        | {
+              model: string;
+              column: string;
+              onUpdate?: SQLStatement;
+              onDelete?: SQLStatement;
+          }
+        | false;
 };

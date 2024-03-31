@@ -49,10 +49,13 @@ describe("renderModel", () => {
 
             export const myTable = createModel({
                 columns: {
-                    id: { type: "uuid", default: sql\`uuid_generate_v4()\` },
-                    name: { type: "text", nullable: true },
+                    id: {
+                        type: "uuid",
+                        default: sql\`uuid_generate_v4()\`,
+                        primaryKey: true,
+                    },
+                    name: { type: "text", nullable: true, unique: true },
                 },
-                constraints: { primaryKey: ["id"], unique: [{ columns: ["name"] }] },
             });
         ` + "\n",
         );
