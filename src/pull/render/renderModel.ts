@@ -13,7 +13,11 @@ type Definition = {
 };
 
 const renderDefault = (d: string) => {
-    return d.match(/^\d+$/) ? `${d}` : `sql\`${d}\``;
+    return d.match(/^\d+$/)
+        ? `${d}`
+        : d.match(/::text$/)
+          ? d.replace(/::text$/, "")
+          : `sql\`${d}\``;
 };
 
 const renderType = (column: ColumnMeta) => {
@@ -29,36 +33,17 @@ const renderType = (column: ColumnMeta) => {
     }
 };
 
-export const renderColumn = (def: Definition) => (column: ColumnMeta) => {
-    const uniqueConstraint = def.uniqueConstraints.find((uc) => {
-        return uc.columns.length === 1 && uc.columns[0] === column.name;
-    });
-
+export const renderColumn = (column: ColumnMeta) => {
     const definition = [
+        `name: "${column.name}"`,
         `type: "${renderType(column)}"`,
         column.nullable ? "nullable: true" : null,
         column.default ? `default: ${renderDefault(column.default)}` : null,
-        def.primaryKey.length === 1 && def.primaryKey[0] === column.name
-            ? "primaryKey: true"
-            : null,
-        uniqueConstraint
-            ? renderColumnUniqueConstraint(uniqueConstraint)
-            : null,
     ]
         .filter(identity)
         .join(", ");
 
-    return `"${column.name}": { ${definition} }`;
-};
-
-export const renderColumnUniqueConstraint = (
-    uniqueConstraint: UniqueConstraint,
-) => {
-    if (uniqueConstraint.nullsNotDistinct || uniqueConstraint.where) {
-        return `unique: { ${uniqueConstraint.nullsNotDistinct ? "nullsNotDistinct: true," : ""} ${uniqueConstraint.where ? `where: sql\`${uniqueConstraint.where}\`` : ""}`;
-    } else {
-        return `unique: true`;
-    }
+    return `"${camelCase(column.name)}": { ${definition} }`;
 };
 
 export const renderUniqueConstraint = (constraint: UniqueConstraint) => {
@@ -66,8 +51,7 @@ export const renderUniqueConstraint = (constraint: UniqueConstraint) => {
 };
 
 export const renderUniqueConstraints = (constraints: UniqueConstraint[]) => {
-    if (constraints.length === 0) return null;
-    return `unique: [ ${constraints.map(renderUniqueConstraint).join(", ")} ]`;
+    return `uniqueConstraints: [ ${constraints.map(renderUniqueConstraint).join(", ")} ]`;
 };
 
 export const renderModel = async (def: Definition) => {
@@ -76,28 +60,22 @@ export const renderModel = async (def: Definition) => {
         imports.push("sql");
     }
 
-    const constraints = [
-        def.primaryKey.length > 1
-            ? `primaryKey: [${def.primaryKey.map(quote).join(", ")}]`
-            : null,
-        renderUniqueConstraints(
-            def.uniqueConstraints.filter((c) => c.columns.length > 1),
-        ),
-    ]
-        .filter(identity)
-        .join(",\n");
-
     const lines: string[] = [];
 
-    lines.push(
-        `columns: { ${def.columns.map(renderColumn(def)).join(",\n")} }`,
-    );
+    lines.push(`columns: { ${def.columns.map(renderColumn).join(",\n")} }`);
+
+    if (def.primaryKey.length > 0) {
+        lines.push(`primaryKey: [${def.primaryKey.map(quote).join(", ")}]`);
+    }
+
+    if (def.uniqueConstraints.length > 0) {
+        lines.push(renderUniqueConstraints(def.uniqueConstraints));
+    }
 
     return await format(`
         import { ${imports.join(", ")} } from "@casekit/orm";
 
         export const ${camelCase(def.table)} = createModel({
             ${lines.join(",\n")}
-            ${constraints}
         });`);
 };

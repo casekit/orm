@@ -2,10 +2,11 @@ import pgfmt from "pg-format";
 
 import { SQLStatement } from "../..";
 import { Model } from "../../types/schema";
+import { UniqueConstraint } from "../../types/schema/definition/UniqueConstraint";
 
 export const createUniqueConstraintSql = (
     model: Model,
-    constraint: Model["uniqueConstraints"][0],
+    constraint: UniqueConstraint,
 ) => {
     const statement = new SQLStatement();
     statement.push(
@@ -13,6 +14,9 @@ export const createUniqueConstraintSql = (
     );
     statement.push(constraint.columns.map((c) => pgfmt("%I", c)).join(", "));
     statement.push(")");
+    if (constraint.nullsNotDistinct) {
+        statement.push(" NULLS NOT DISTINCT");
+    }
     if (constraint.where) {
         statement.push(" WHERE (");
         statement.push(constraint.where);

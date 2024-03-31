@@ -65,12 +65,10 @@ export type ColumnDefinition<ColumnType = unknown> = {
      * Is this column a foreign key? If so, you can specify the table and column it references,
      * and what should happen on update or delete.
      */
-    references?:
-        | {
-              model: string;
-              column: string;
-              onUpdate?: SQLStatement;
-              onDelete?: SQLStatement;
-          }
-        | false;
+    references?: {
+        table: string;
+        column: string;
+        onUpdate?: SQLStatement;
+        onDelete?: SQLStatement;
+    };
 };
