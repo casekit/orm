@@ -24,9 +24,8 @@ export class Orm<
         string,
         ModelDefinition
     >,
-    S extends PopulatedSchema<Models> = PopulatedSchema<Models>,
 > {
-    public schema: S;
+    public schema: PopulatedSchema<Models>;
     public config: Config;
     public models: PopulatedSchema<Models>["models"];
 
@@ -37,7 +36,7 @@ export class Orm<
         return this.poolClient ?? this.pool;
     }
 
-    constructor(schema: S, poolClient?: pg.PoolClient) {
+    constructor(schema: PopulatedSchema<Models>, poolClient?: pg.PoolClient) {
         this.schema = schema;
         this.config = schema.config;
         this.models = schema.models;
