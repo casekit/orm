@@ -2,8 +2,8 @@
     "name": "@casekit/orm",
     "version": "0.0.2-snapshot.5",
     "description": "A simple ORM",
-    "main": "lib/index",
-    "types": "lib/index",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
     "scripts": {
         "build": "rm -rf lib && tsc",
         "check:all": "CI=true pnpm test && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",
