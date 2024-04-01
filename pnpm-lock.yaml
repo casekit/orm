@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@casekit/unindent':
-    specifier: ^1.0.3
-    version: 1.0.3
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -31,6 +28,9 @@ dependencies:
     version: 3.22.4
 
 devDependencies:
+  '@casekit/unindent':
+    specifier: ^1.0.3
+    version: 1.0.3
   '@fast-check/vitest':
     specifier: ^0.1.0
     version: 0.1.0(vitest@1.4.0)
@@ -212,7 +212,7 @@ packages:
 
   /@casekit/unindent@1.0.3:
     resolution: {integrity: sha512-5Z5NSo2u9QU7CZt9Lk4gMcx0uA73oYfAbKfoi9GkQaThe1MAD4hxZ1mimqb0a2GaNXm1t2arji2jeHqVqtnz+g==}
-    dev: false
+    dev: true
 
   /@esbuild/aix-ppc64@0.20.2:
     resolution: {integrity: sha512-D+EBOJHXdNZcLJRBkhENNG8Wji2kgc9AZ9KiPr1JuZjsNtyHzrsfLRrY0tk2H2aoFu6RANO1y1iPPUCDYWkb5g==}
