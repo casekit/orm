@@ -35,17 +35,42 @@ const renderType = (column: ColumnMeta) => {
     }
 };
 
-export const renderColumn = (column: ColumnMeta) => {
+export const renderColumn = (def: Definition) => (column: ColumnMeta) => {
+    const primaryKey =
+        def.primaryKey.length === 1 && def.primaryKey[0] === column.name;
+
+    const unique = def.uniqueConstraints.find(
+        (uc) => uc.columns.length === 1 && uc.columns[0] === column.name,
+    );
+
+    const references = def.foreignKeys.find(
+        (fk) =>
+            fk.columnsFrom.length === 1 && fk.columnsFrom[0] === column.name,
+    );
+
     const definition = [
         `name: "${column.name}"`,
         `type: "${renderType(column)}"`,
+        primaryKey ? "primaryKey: true" : null,
+        unique ? `unique: ${renderColumnUniqueConstraint(unique)}` : null,
         column.nullable ? "nullable: true" : null,
         column.default ? `default: ${renderDefault(column.default)}` : null,
+        references
+            ? `references: { table: ${quote(references.tableTo)}, column: ${quote(references.columnsTo[0])} }`
+            : null,
     ]
         .filter(identity)
         .join(", ");
 
     return `"${camelCase(column.name)}": { ${definition} }`;
+};
+
+export const renderColumnUniqueConstraint = (constraint: UniqueConstraint) => {
+    if (constraint.nullsNotDistinct || constraint.where) {
+        return `{${constraint.nullsNotDistinct ? " nullsNotDistinct: true," : ""}${constraint.where ? ` where: sql\`${constraint.where}\`},` : ""}`;
+    } else {
+        return "true";
+    }
 };
 
 export const renderUniqueConstraint = (constraint: UniqueConstraint) => {
@@ -78,18 +103,28 @@ export const renderModel = async (def: Definition) => {
 
     const lines: string[] = [];
 
-    lines.push(`columns: { ${def.columns.map(renderColumn).join(",\n")} }`);
+    lines.push(
+        `columns: { ${def.columns.map(renderColumn(def)).join(",\n")} }`,
+    );
 
-    if (def.primaryKey.length > 0) {
+    if (def.primaryKey.length > 1) {
         lines.push(`primaryKey: [${def.primaryKey.map(quote).join(", ")}]`);
     }
 
-    if (def.uniqueConstraints.length > 0) {
-        lines.push(renderUniqueConstraints(def.uniqueConstraints));
+    const multiColumnUniqueConstraints = def.uniqueConstraints.filter(
+        (uc) => uc.columns.length > 1,
+    );
+
+    if (multiColumnUniqueConstraints.length > 0) {
+        lines.push(renderUniqueConstraints(multiColumnUniqueConstraints));
     }
 
-    if (def.foreignKeys.length > 0) {
-        lines.push(renderForeignKeys(def.foreignKeys));
+    const multiColumnForeignKeys = def.foreignKeys.filter(
+        (fk) => fk.columnsFrom.length > 1,
+    );
+
+    if (multiColumnForeignKeys.length > 0) {
+        lines.push(renderForeignKeys(multiColumnForeignKeys));
     }
 
     return await format(`
