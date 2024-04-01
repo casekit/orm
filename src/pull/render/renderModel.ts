@@ -19,7 +19,9 @@ const renderDefault = (d: string) => {
         ? `${d}`
         : d.match(/::text$/)
           ? d.replace(/::text$/, "")
-          : `sql\`${d}\``;
+          : ["true", "false"].includes(d)
+            ? d
+            : `sql\`${d}\``;
 };
 
 const renderType = (column: ColumnMeta) => {
