@@ -1,6 +1,6 @@
 {
     "name": "@casekit/orm",
-    "version": "0.0.2-snapshot.3",
+    "version": "0.0.2-snapshot.4",
     "description": "A simple ORM",
     "main": "lib/index",
     "types": "lib/index",
