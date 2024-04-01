@@ -17,7 +17,7 @@ import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
 import { PopulatedSchema } from "./types/schema";
 import { SchemaDefinition2 } from "./types/schema/definition/SchemaDefinition";
-import { ModelName, ModelName2 } from "./types/schema/helpers/ModelName";
+import { ModelName } from "./types/schema/helpers/ModelName";
 
 export class Orm<
     Models extends Record<string, ModelDefinition> = Record<
@@ -74,7 +74,7 @@ export class Orm<
     }
 
     public async findMany<
-        M extends ModelName2<Models>,
+        M extends ModelName<Models>,
         Q extends FindManyQuery<Models, M>,
     >(m: M, query: Q): Promise<QueryResult<Models, M, Q>[]> {
         const results = await findMany(this.connection, this.schema, m, query);
@@ -83,7 +83,7 @@ export class Orm<
     }
 
     public async create<
-        M extends ModelName<S>,
+        M extends ModelName<Models>,
         P extends CreateParams<Models, M>,
     >(m: M, params: P): Promise<CreateResult<Models, M, P>> {
         const result = await create(

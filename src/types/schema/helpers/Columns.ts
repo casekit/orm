@@ -1,7 +1,7 @@
 import { ModelDefinitions } from "../definition/ModelDefinitions";
-import { ModelName2 } from "./ModelName";
+import { ModelName } from "./ModelName";
 
 export type Columns<
     Models extends ModelDefinitions,
-    M extends ModelName2<Models>,
+    M extends ModelName<Models>,
 > = Models[M]["columns"];

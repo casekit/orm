@@ -1,9 +1,9 @@
 import { ModelDefinitions } from "../definition/ModelDefinitions";
 import { Columns } from "./Columns";
-import { ModelName2 } from "./ModelName";
+import { ModelName } from "./ModelName";
 
 export type IsNullable<
     Models extends ModelDefinitions,
-    M extends ModelName2<Models>,
+    M extends ModelName<Models>,
     C extends keyof Columns<Models, M>,
 > = Columns<Models, M>[C]["nullable"] extends true ? true : false;
