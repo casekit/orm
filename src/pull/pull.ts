@@ -3,6 +3,7 @@ import { camelCase } from "lodash-es";
 import path from "path";
 import pg from "pg";
 
+import { getForeignKeys } from "./introspect/getForeignKeys";
 import { getPrimaryKeys } from "./introspect/getPrimaryKeys";
 import { getTables } from "./introspect/getTables";
 import { getUniqueConstraints } from "./introspect/getUniqueConstraints";
@@ -15,6 +16,7 @@ export const pull = async (
     const tables = await getTables(client, opts.schema);
     const primaryKeys = await getPrimaryKeys(client, opts.schema);
     const uniqueConstraints = await getUniqueConstraints(client, opts.schema);
+    const foreignKeys = await getForeignKeys(client, opts.schema);
 
     fs.mkdirSync(opts.outDir, { recursive: true });
 
@@ -26,6 +28,7 @@ export const pull = async (
                 columns,
                 primaryKey: primaryKeys[table] ?? [],
                 uniqueConstraints: uniqueConstraints[table] ?? [],
+                foreignKeys: foreignKeys[table] ?? [],
             }),
             { encoding: "utf-8" },
         );

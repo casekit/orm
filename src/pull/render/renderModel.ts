@@ -1,6 +1,7 @@
 import { camelCase, identity, times } from "lodash-es";
 
 import { ColumnMeta } from "../types/ColumnMeta";
+import { ForeignKey } from "../types/ForeignKey";
 import { UniqueConstraint } from "../types/UniqueConstraint";
 import { format } from "../util/format";
 import { quote } from "../util/quote";
@@ -10,6 +11,7 @@ type Definition = {
     columns: ColumnMeta[];
     primaryKey: string[];
     uniqueConstraints: UniqueConstraint[];
+    foreignKeys: ForeignKey[];
 };
 
 const renderDefault = (d: string) => {
@@ -54,6 +56,20 @@ export const renderUniqueConstraints = (constraints: UniqueConstraint[]) => {
     return `uniqueConstraints: [ ${constraints.map(renderUniqueConstraint).join(", ")} ]`;
 };
 
+export const renderForeignKey = (constraint: ForeignKey) => {
+    return `{
+        columns: [${constraint.columnsFrom.map(quote).join(", ")}],
+        references: {
+             table: ${quote(constraint.tableTo)},
+             columns: [${constraint.columnsTo.map(quote).join(", ")}]
+        }
+    }`;
+};
+
+export const renderForeignKeys = (constraints: ForeignKey[]) => {
+    return `foreignKeys: [ ${constraints.map(renderForeignKey).join(", ")} ]`;
+};
+
 export const renderModel = async (def: Definition) => {
     const imports = ["createModel"];
     if (def.columns.find((c) => c.default !== null)) {
@@ -70,6 +86,10 @@ export const renderModel = async (def: Definition) => {
 
     if (def.uniqueConstraints.length > 0) {
         lines.push(renderUniqueConstraints(def.uniqueConstraints));
+    }
+
+    if (def.foreignKeys.length > 0) {
+        lines.push(renderForeignKeys(def.foreignKeys));
     }
 
     return await format(`

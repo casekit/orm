@@ -41,6 +41,7 @@ describe("renderModel", () => {
                         where: undefined,
                     },
                 ],
+                foreignKeys: [],
                 primaryKey: ["id"],
             }),
         ).toEqual(
@@ -105,6 +106,7 @@ describe("renderModel", () => {
                     },
                 ],
                 primaryKey: ["id"],
+                foreignKeys: [],
             }),
         ).toEqual(
             unindent`
