@@ -50,11 +50,14 @@ describe("renderModel", () => {
 
             export const myTable = createModel({
                 columns: {
-                    id: { name: "id", type: "uuid", default: sql\`uuid_generate_v4()\` },
-                    name: { name: "name", type: "text", nullable: true },
+                    id: {
+                        name: "id",
+                        type: "uuid",
+                        primaryKey: true,
+                        default: sql\`uuid_generate_v4()\`,
+                    },
+                    name: { name: "name", type: "text", unique: true, nullable: true },
                 },
-                primaryKey: ["id"],
-                uniqueConstraints: [{ columns: ["name"] }],
             });
         ` + "\n",
         );
@@ -114,12 +117,20 @@ describe("renderModel", () => {
 
             export const myTable = createModel({
                 columns: {
-                    id: { name: "id", type: "uuid", default: sql\`uuid_generate_v4()\` },
-                    name: { name: "name", type: "text", nullable: true },
+                    id: {
+                        name: "id",
+                        type: "uuid",
+                        primaryKey: true,
+                        default: sql\`uuid_generate_v4()\`,
+                    },
+                    name: {
+                        name: "name",
+                        type: "text",
+                        unique: { where: sql\`deleted_at IS NULL\` },
+                        nullable: true,
+                    },
                     deletedAt: { name: "deleted_at", type: "timestamp", nullable: true },
                 },
-                primaryKey: ["id"],
-                uniqueConstraints: [{ columns: ["name"], where: sql\`deleted_at IS NULL\` }],
             });
         ` + "\n",
         );

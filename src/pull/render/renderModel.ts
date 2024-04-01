@@ -67,7 +67,7 @@ export const renderColumn = (def: Definition) => (column: ColumnMeta) => {
 
 export const renderColumnUniqueConstraint = (constraint: UniqueConstraint) => {
     if (constraint.nullsNotDistinct || constraint.where) {
-        return `{${constraint.nullsNotDistinct ? " nullsNotDistinct: true," : ""}${constraint.where ? ` where: sql\`${constraint.where}\`},` : ""}`;
+        return `{${constraint.nullsNotDistinct ? " nullsNotDistinct: true," : ""}${constraint.where ? ` where: sql\`${constraint.where}\`}` : ""}`;
     } else {
         return "true";
     }
