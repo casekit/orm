@@ -3,26 +3,27 @@ import { unindent } from "@casekit/unindent";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { createConfig, createModel, orm } from "../../";
+import { createConfig, orm } from "../../";
+import { ModelDefinition } from "../../types/schema/definition/ModelDefinition";
 import { createSchemasSql } from "./createSchemasSql";
 
 describe("createSchemaSql", () => {
     test("it generates a CREATE SCHEMA command for each unique schema used", () => {
         const config = createConfig({});
 
-        const a = createModel({
+        const a = {
             schema: "foo",
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
-        const b = createModel({
+        const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
         const db = orm({ config, models: { a, b } });
         expect(createSchemasSql(db).text).toEqual(unindent`
@@ -34,18 +35,18 @@ describe("createSchemaSql", () => {
     test("it pulls schema from the config if not specified on the model", () => {
         const config = createConfig({ schema: "foo" });
 
-        const a = createModel({
+        const a = {
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
-        const b = createModel({
+        const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
         const db = orm({ config, models: { a, b } });
         expect(createSchemasSql(db).text).toEqual(unindent`
@@ -57,18 +58,18 @@ describe("createSchemaSql", () => {
     test("if no schema is specified at all, it tries to create the public schema", () => {
         const config = createConfig({});
 
-        const a = createModel({
+        const a = {
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
-        const b = createModel({
+        const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
 
         const db = orm({ config, models: { a, b } });
         expect(createSchemasSql(db).text).toEqual(unindent`

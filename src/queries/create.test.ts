@@ -2,7 +2,7 @@ import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { createModel, orm } from "..";
+import { ModelDefinition, orm } from "..";
 import { createTableSql } from "../migrate/sql/createTableSql";
 import { sql } from "../sql";
 import { config, models } from "../test/fixtures";
@@ -40,13 +40,13 @@ describe("create", () => {
     });
 
     test("columns of type serial do not need to be specified", async () => {
-        const foo = createModel({
+        const foo = {
             columns: {
                 id: { type: "serial", schema: z.coerce.number() },
                 big: { type: "bigserial", schema: z.coerce.number() },
                 small: { type: "smallserial", schema: z.coerce.number() },
             },
-        });
+        } satisfies ModelDefinition;
         await orm({ config, models: { foo } }).transact(
             async (db) => {
                 db.connection.query(createTableSql(db.models.foo));
@@ -69,7 +69,7 @@ describe("create", () => {
     });
 
     test("columns with default values do not need to be specified", async () => {
-        const foo = createModel({
+        const foo = {
             columns: {
                 id: {
                     type: "uuid",
@@ -78,7 +78,7 @@ describe("create", () => {
                 },
                 name: { type: "text", schema: z.string() },
             },
-        });
+        } satisfies ModelDefinition;
         await orm({ config, models: { foo } }).transact(
             async (db) => {
                 db.connection.query(createTableSql(db.models.foo));

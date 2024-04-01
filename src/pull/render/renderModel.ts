@@ -96,7 +96,7 @@ export const renderForeignKeys = (constraints: ForeignKey[]) => {
 };
 
 export const renderModel = async (def: Definition) => {
-    const imports = ["createModel"];
+    const imports = ["type ModelDefinition"];
     if (def.columns.find((c) => c.default !== null)) {
         imports.push("sql");
     }
@@ -130,7 +130,7 @@ export const renderModel = async (def: Definition) => {
     return await format(`
         import { ${imports.join(", ")} } from "@casekit/orm";
 
-        export const ${camelCase(def.table)} = createModel({
+        export const ${camelCase(def.table)} = {
             ${lines.join(",\n")}
-        });`);
+        } satisfies ModelDefinition;`);
 };

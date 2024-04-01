@@ -5,9 +5,10 @@ import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { createModel, orm } from "../..";
+import { orm } from "../..";
 import { sql } from "../../sql";
 import { db } from "../../test/fixtures";
+import { ModelDefinition } from "../../types/schema/definition/ModelDefinition";
 import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {
@@ -25,7 +26,7 @@ describe("createTableSql", () => {
 
     test("the generated DDL successfully creates a table", async () => {
         const table = uniqueId("table-");
-        const post = createModel({
+        const post = {
             table,
             columns: {
                 id: {
@@ -45,7 +46,7 @@ describe("createTableSql", () => {
                     nullable: true,
                 },
             },
-        });
+        } satisfies ModelDefinition;
         orm({ models: { post } }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.post));

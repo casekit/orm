@@ -2,14 +2,15 @@ import { unindent } from "@casekit/unindent";
 
 import { describe, expect, test } from "vitest";
 
-import { createConfig, createModel, orm, sql } from "../../";
+import { createConfig, orm, sql } from "../../";
+import { ModelDefinition } from "../../types/schema/definition/ModelDefinition";
 import { createForeignKeyConstraintSql } from "./createForeignKeyConstraintSql";
 
 describe("createForeignKeyConstraintSql", () => {
     test("it generates an ALTER TABLE command for the specified foreign key constraint", () => {
         const config = createConfig({});
 
-        const foo = createModel({
+        const foo = {
             schema: "casekit",
             columns: {
                 id: { type: "uuid" },
@@ -34,7 +35,7 @@ describe("createForeignKeyConstraintSql", () => {
                     onUpdate: sql`CASCADE`,
                 },
             ],
-        });
+        } satisfies ModelDefinition;
 
         const db = orm({ config, models: { foo } });
 

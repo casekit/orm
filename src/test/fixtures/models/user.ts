@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { createModel } from "../../..";
 import { sql } from "../../../sql";
+import { ModelDefinition } from "../../../types/schema/definition/ModelDefinition";
 
-export const user = createModel({
+export const user = {
     columns: {
         id: { type: "uuid", default: sql`uuid_generate_v4()` },
         username: { schema: z.string(), type: "text" },
@@ -14,4 +14,4 @@ export const user = createModel({
     uniqueConstraints: [
         { columns: ["username"], where: sql`deleted_at IS NULL` },
     ],
-});
+} satisfies ModelDefinition;

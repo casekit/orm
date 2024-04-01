@@ -1,7 +1,7 @@
-import { createModel } from "../../..";
 import { sql } from "../../../sql";
+import { ModelDefinition } from "../../../types/schema/definition/ModelDefinition";
 
-export const post = createModel({
+export const post = {
     columns: {
         id: {
             type: "uuid",
@@ -18,4 +18,4 @@ export const post = createModel({
         publishedAt: { type: "timestamp", nullable: true },
         tags: { type: "text[][][][]", nullable: true },
     },
-});
+} satisfies ModelDefinition;

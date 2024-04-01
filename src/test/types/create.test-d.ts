@@ -2,7 +2,7 @@ import * as uuid from "uuid";
 import { assertType, describe, expectTypeOf, test } from "vitest";
 import { z } from "zod";
 
-import { createModel, orm } from "../..";
+import { ModelDefinition, orm } from "../..";
 import { db } from "../fixtures";
 
 describe("create", () => {
@@ -75,9 +75,9 @@ describe("create", () => {
     });
 
     test("when there are no required params, typechecking still works", () => {
-        const foo = createModel({
+        const foo = {
             columns: { id: { type: "serial", schema: z.coerce.number() } },
-        });
+        } satisfies ModelDefinition;
         const db = orm({ models: { foo } });
         assertType(db.create("foo", { data: { id: 3 } }));
     });

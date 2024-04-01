@@ -46,9 +46,9 @@ describe("renderModel", () => {
             }),
         ).toEqual(
             unindent`
-            import { createModel, sql } from "@casekit/orm";
+            import { type ModelDefinition, sql } from "@casekit/orm";
 
-            export const myTable = createModel({
+            export const myTable = {
                 columns: {
                     id: {
                         name: "id",
@@ -58,7 +58,7 @@ describe("renderModel", () => {
                     },
                     name: { name: "name", type: "text", unique: true, nullable: true },
                 },
-            });
+            } satisfies ModelDefinition;
         ` + "\n",
         );
     });
@@ -113,9 +113,9 @@ describe("renderModel", () => {
             }),
         ).toEqual(
             unindent`
-            import { createModel, sql } from "@casekit/orm";
+            import { type ModelDefinition, sql } from "@casekit/orm";
 
-            export const myTable = createModel({
+            export const myTable = {
                 columns: {
                     id: {
                         name: "id",
@@ -131,7 +131,7 @@ describe("renderModel", () => {
                     },
                     deletedAt: { name: "deleted_at", type: "timestamp", nullable: true },
                 },
-            });
+            } satisfies ModelDefinition;
         ` + "\n",
         );
     });
