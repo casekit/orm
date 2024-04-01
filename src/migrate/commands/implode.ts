@@ -1,6 +1,5 @@
 import { Orm } from "../../orm";
 import { SQLStatement } from "../../sql";
-import { Schema } from "../../types/schema";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createForeignKeyConstraintSql } from "../sql/createForeignKeyConstraintSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
@@ -9,7 +8,7 @@ import { createUniqueConstraintSql } from "../sql/createUniqueConstraintSql";
 import { dropTableSql } from "../sql/dropTableSql";
 
 export const implode = async (
-    db: Orm<Schema>,
+    db: Orm,
     { dryRun, output }: { dryRun: boolean; output: boolean },
 ) => {
     const statement = new SQLStatement();

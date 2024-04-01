@@ -1,7 +1,7 @@
-import { SchemaDefinition } from "../definition/SchemaDefinition";
-import { ModelName } from "./ModelName";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
+import { ModelName2 } from "./ModelName";
 
 export type Columns<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-> = S["models"][M]["columns"];
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
+> = Models[M]["columns"];

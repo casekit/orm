@@ -1,6 +1,7 @@
 import pg from "pg";
 import { z } from "zod";
 
+import { ModelDefinition } from ".";
 import { create } from "./queries/create";
 import { findMany } from "./queries/findMany";
 import { createResultSchema } from "./queries/results/createResultSchema";
@@ -14,15 +15,20 @@ import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { Model, Schema } from "./types/schema";
-import { SchemaDefinition } from "./types/schema/definition/SchemaDefinition";
-import { ModelName } from "./types/schema/helpers/ModelName";
-import { DeepRequired } from "./types/util/DeepRequired";
+import { PopulatedSchema } from "./types/schema";
+import { SchemaDefinition2 } from "./types/schema/definition/SchemaDefinition";
+import { ModelName, ModelName2 } from "./types/schema/helpers/ModelName";
 
-export class Orm<S extends SchemaDefinition> {
-    public schema: Schema;
+export class Orm<
+    Models extends Record<string, ModelDefinition> = Record<
+        string,
+        ModelDefinition
+    >,
+    S extends PopulatedSchema<Models> = PopulatedSchema<Models>,
+> {
+    public schema: S;
     public config: Config;
-    public models: { [M in keyof S["models"]]: S["models"][M] & Model };
+    public models: PopulatedSchema<Models>["models"];
 
     private pool: pg.Pool;
     private poolClient?: pg.PoolClient;
@@ -31,29 +37,32 @@ export class Orm<S extends SchemaDefinition> {
         return this.poolClient ?? this.pool;
     }
 
-    constructor(schema: Schema, poolClient?: pg.PoolClient) {
+    constructor(schema: S, poolClient?: pg.PoolClient) {
         this.schema = schema;
         this.config = schema.config;
-        this.models = schema.models as DeepRequired<S["models"]>;
+        this.models = schema.models;
         this.pool = new pg.Pool(schema.config.connection ?? {});
         this.poolClient = poolClient;
     }
 
     public async transact<T>(
-        cb: (db: Orm<S>) => Promise<T>,
+        cb: (db: Orm<Models>) => Promise<T>,
         opts = { rollback: false },
     ): Promise<T> {
         if (!this.poolClient) {
             const conn = await this.pool.connect();
             try {
-                return await new Orm<S>(this.schema, conn).transact(cb, opts);
+                return await new Orm<Models>(this.schema, conn).transact(
+                    cb,
+                    opts,
+                );
             } finally {
                 conn.release();
             }
         } else {
             try {
                 this.poolClient.query("BEGIN");
-                return await cb(new Orm<S>(this.schema, this.poolClient));
+                return await cb(new Orm<Models>(this.schema, this.poolClient));
             } finally {
                 this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
             }
@@ -65,18 +74,18 @@ export class Orm<S extends SchemaDefinition> {
     }
 
     public async findMany<
-        M extends ModelName<S>,
-        Q extends FindManyQuery<S, M>,
-    >(m: M, query: Q): Promise<QueryResult<S, M, Q>[]> {
+        M extends ModelName2<Models>,
+        Q extends FindManyQuery<Models, M>,
+    >(m: M, query: Q): Promise<QueryResult<Models, M, Q>[]> {
         const results = await findMany(this.connection, this.schema, m, query);
         const parser = z.array(queryResultSchema(this.schema, m, query));
-        return parser.parse(results) as QueryResult<S, M, Q>[];
+        return parser.parse(results) as QueryResult<Models, M, Q>[];
     }
 
-    public async create<M extends ModelName<S>, P extends CreateParams<S, M>>(
-        m: M,
-        params: P,
-    ): Promise<CreateResult<S, M, P>> {
+    public async create<
+        M extends ModelName<S>,
+        P extends CreateParams<Models, M>,
+    >(m: M, params: P): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
             this.schema,
@@ -88,12 +97,14 @@ export class Orm<S extends SchemaDefinition> {
             m,
             params as BaseCreateParams,
         );
-        return parser.parse(result) as CreateResult<S, M, P>;
+        return parser.parse(result) as CreateResult<Models, M, P>;
     }
 }
 
-export const orm = <S extends SchemaDefinition>(schema: S): Orm<S> => {
+export const orm = <Models extends Record<string, ModelDefinition>>(
+    schema: SchemaDefinition2<Models>,
+): Orm<Models> => {
     const populatedSchema = populateSchema(schema);
     validateSchema(populatedSchema);
-    return new Orm<S>(populatedSchema);
+    return new Orm<Models>(populatedSchema);
 };

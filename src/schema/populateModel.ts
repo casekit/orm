@@ -1,5 +1,5 @@
 import { Config } from "../types/Config";
-import { Model } from "../types/schema";
+import { PopulatedModel } from "../types/schema";
 import { ForeignKey } from "../types/schema/definition/ForeignKey";
 import { ModelDefinition } from "../types/schema/definition/ModelDefinition";
 import { UniqueConstraint } from "../types/schema/definition/UniqueConstraint";
@@ -9,7 +9,7 @@ export const populateModel = (
     config: Config,
     name: string,
     model: ModelDefinition,
-): Model => {
+): PopulatedModel<ModelDefinition> => {
     const columns = Object.fromEntries(
         Object.entries(model.columns).map(([name, column]) => [
             name,

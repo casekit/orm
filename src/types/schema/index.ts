@@ -1,10 +1,44 @@
 import { z } from "zod";
 
-import { SQLStatement } from "../..";
+import { ModelDefinition, SQLStatement } from "../..";
 import { Config } from "../Config";
+import { ColumnDefinition } from "./definition/ColumnDefinition";
 import { ForeignKey } from "./definition/ForeignKey";
 import { UniqueConstraint } from "./definition/UniqueConstraint";
 import { DataType } from "./postgres/DataType";
+
+export type PopulatedColumn<
+    Column extends ColumnDefinition<unknown>,
+    ColumnType = unknown,
+> = {
+    name: string;
+    type: Column["type"];
+    schema: z.ZodType<ColumnType>;
+    nullable: boolean;
+    default?: ColumnType | SQLStatement | null;
+};
+
+export type PopulatedModel<Model extends ModelDefinition> = {
+    table: string;
+    schema: string;
+    primaryKey: string[];
+    uniqueConstraints: UniqueConstraint[];
+    foreignKeys: ForeignKey[];
+    columns: {
+        [C in keyof Model["columns"]]: PopulatedColumn<Model["columns"][C]>;
+    };
+};
+
+export type PopulatedSchema<
+    Models extends Record<string, ModelDefinition> = Record<
+        string,
+        ModelDefinition
+    >,
+> = {
+    models: { [M in keyof Models]: PopulatedModel<Models[M]> };
+    extensions: string[];
+    config: Config;
+};
 
 /**
  * These types are derived from the ModelDefinition and ColumnDefinition types,
@@ -31,7 +65,6 @@ export type Column<ColumnType = unknown> = {
     nullable: boolean;
     default?: ColumnType | SQLStatement | null;
 };
-
 export type Schema = {
     models: Record<string, Model>;
     extensions: string[];

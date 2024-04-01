@@ -1,45 +1,54 @@
-import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
-import { ColumnName } from "../schema/helpers/ColumnName";
+import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
+import { ColumnName2 } from "../schema/helpers/ColumnName";
 import { ColumnType } from "../schema/helpers/ColumnType";
 import { HasDefault } from "../schema/helpers/HasDefault";
 import { IsNullable } from "../schema/helpers/IsNullable";
 import { IsSerial } from "../schema/helpers/IsSerial";
-import { ModelName } from "../schema/helpers/ModelName";
+import { ModelName2 } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
 
 export type OptionalColumn<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
 > = {
-    [C in ColumnName<S, M>]: IsNullable<S, M, C> extends true
+    [C in ColumnName2<Models, M>]: IsNullable<Models, M, C> extends true
         ? C
-        : IsSerial<S, M, C> extends true
+        : IsSerial<Models, M, C> extends true
           ? C
-          : HasDefault<S, M, C> extends true
+          : HasDefault<Models, M, C> extends true
             ? C
             : never;
-}[ColumnName<S, M>];
+}[ColumnName2<Models, M>];
 
-export type OptionalParams<S extends SchemaDefinition, M extends ModelName<S>> =
-    OptionalColumn<S, M> extends never
+export type OptionalParams<
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
+> =
+    OptionalColumn<Models, M> extends never
         ? unknown
         : {
-              [C in OptionalColumn<S, M>]?: ColumnType<S, M, C>;
+              [C in OptionalColumn<Models, M>]?: ColumnType<Models, M, C>;
           };
 
 export type RequiredColumn<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-> = Exclude<ColumnName<S, M>, OptionalColumn<S, M>>;
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
+> = Exclude<ColumnName2<Models, M>, OptionalColumn<Models, M>>;
 
-export type RequiredParams<S extends SchemaDefinition, M extends ModelName<S>> =
-    RequiredColumn<S, M> extends never
+export type RequiredParams<
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
+> =
+    RequiredColumn<Models, M> extends never
         ? unknown
         : {
-              [C in RequiredColumn<S, M>]: ColumnType<S, M, C>;
+              [C in RequiredColumn<Models, M>]: ColumnType<Models, M, C>;
           };
 
-export type CreateParams<S extends SchemaDefinition, M extends ModelName<S>> = {
-    data: RequiredParams<S, M> & OptionalParams<S, M>;
-    returning?: SelectClause<S, M>;
+export type CreateParams<
+    Models extends ModelDefinitions,
+    M extends ModelName2<Models>,
+> = {
+    data: RequiredParams<Models, M> & OptionalParams<Models, M>;
+    returning?: SelectClause<Models, M>;
 };
