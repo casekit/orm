@@ -3,7 +3,6 @@
     "version": "0.0.2-snapshot.3",
     "description": "A simple ORM",
     "main": "lib/index",
-    "type": "module",
     "types": "lib/index",
     "scripts": {
         "build": "rm -rf lib && tsc",
