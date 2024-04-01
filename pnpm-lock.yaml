@@ -20,6 +20,9 @@ dependencies:
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
+  ts-toolbelt:
+    specifier: ^9.6.0
+    version: 9.6.0
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
@@ -64,9 +67,6 @@ devDependencies:
   fast-check:
     specifier: ^3.16.0
     version: 3.16.0
-  ts-toolbelt:
-    specifier: ^9.6.0
-    version: 9.6.0
   typescript:
     specifier: ^5.4.3
     version: 5.4.3
@@ -3065,7 +3065,7 @@ packages:
 
   /ts-toolbelt@9.6.0:
     resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
-    dev: true
+    dev: false
 
   /tsconfck@3.0.3(typescript@5.4.3):
     resolution: {integrity: sha512-4t0noZX9t6GcPTfBAbIbbIU4pfpCwh0ueq3S4O/5qXI1VwK1outmxhe9dOiEWqMz3MW2LKgDTpqWV+37IWuVbA==}
