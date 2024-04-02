@@ -2,10 +2,10 @@ import { Orm } from "..";
 import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
 import { implode } from "./commands/implode";
 
-export class Migrator<Models extends ModelDefinitions> {
-    public db: Orm<Models>;
+export class Migrator {
+    public db: Orm;
 
-    constructor(db: Orm<Models>) {
+    constructor(db: Orm) {
         this.db = db;
     }
 

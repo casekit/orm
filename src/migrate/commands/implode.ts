@@ -1,6 +1,5 @@
 import { Orm } from "../../orm";
 import { SQLStatement } from "../../sql";
-import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createForeignKeyConstraintSql } from "../sql/createForeignKeyConstraintSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
@@ -8,8 +7,8 @@ import { createTableSql } from "../sql/createTableSql";
 import { createUniqueConstraintSql } from "../sql/createUniqueConstraintSql";
 import { dropSchemasSql } from "../sql/dropSchemasSql";
 
-export const implode = async <Models extends ModelDefinitions>(
-    db: Orm<Models>,
+export const implode = async (
+    db: Orm,
     { dryRun, output }: { dryRun: boolean; output: boolean },
 ) => {
     const statement = new SQLStatement();

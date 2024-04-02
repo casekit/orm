@@ -3,11 +3,8 @@ import pgfmt from "pg-format";
 
 import { Orm } from "../../orm";
 import { SQLStatement } from "../../sql";
-import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
 
-export const dropSchemasSql = <Models extends ModelDefinitions>(
-    db: Orm<Models>,
-): SQLStatement => {
+export const dropSchemasSql = (db: Orm): SQLStatement => {
     const schemas = uniq(Object.values(db.models).map((m) => m.schema));
 
     return new SQLStatement(
