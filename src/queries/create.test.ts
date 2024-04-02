@@ -11,13 +11,20 @@ describe("create", () => {
     test("it inserts records into the database", async () => {
         await orm({ config, models }).transact(
             async (db) => {
-                const id = uuid.v4();
+                const userId = uuid.v4();
+                const postId = uuid.v4();
+                await db.create("user", {
+                    data: {
+                        id: userId,
+                        username: "russell",
+                    },
+                });
                 const result = await db.create("post", {
                     data: {
-                        id: id,
+                        id: postId,
+                        authorId: userId,
                         title: "hello it me",
                         content: "i'm writing a post",
-                        authorId: uuid.v4(),
                     },
                 });
 
@@ -30,7 +37,7 @@ describe("create", () => {
                 expect(rows).toHaveLength(1);
                 expect(rows[0]).toEqual(
                     expect.objectContaining({
-                        id: id,
+                        id: postId,
                         title: "hello it me",
                     }),
                 );
