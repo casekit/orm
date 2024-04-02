@@ -18,12 +18,7 @@ import { QueryResult } from "./types/queries/QueryResult";
 import { PopulatedSchema } from "./types/schema";
 import { SchemaDefinition2 } from "./types/schema/definition/SchemaDefinition";
 import { ModelName } from "./types/schema/helpers/ModelName";
-
-export type DisallowExtraKeys<Base, T extends Base> = {
-    [K in keyof T]: T[K];
-} & {
-    [K in keyof T as K extends keyof Base ? never : K]: never;
-};
+import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
     Models extends Record<string, ModelDefinition> = Record<
@@ -81,7 +76,10 @@ export class Orm<
     public async findMany<
         M extends ModelName<Models>,
         Q extends FindManyQuery<Models, M>,
-    >(m: M, query: Q): Promise<QueryResult<Models, M, Q>[]> {
+    >(
+        m: M,
+        query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
+    ): Promise<QueryResult<Models, M, Q>[]> {
         const results = await findMany(this.connection, this.schema, m, query);
         const parser = z.array(queryResultSchema(this.schema, m, query));
         return parser.parse(results) as QueryResult<Models, M, Q>[];
