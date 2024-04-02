@@ -1,11 +1,12 @@
-import { SchemaDefinition } from "../definition/SchemaDefinition";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
+import { ColumnName } from "./ColumnName";
 import { Columns } from "./Columns";
 import { ModelName } from "./ModelName";
 
 export type IsSerial<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends keyof Columns<S, M>,
-> = Columns<S, M>[C]["type"] extends "serial" | "bigserial" | "smallserial"
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+    C extends ColumnName<Models, M>,
+> = Columns<Models, M>[C]["type"] extends "serial" | "bigserial" | "smallserial"
     ? true
     : false;

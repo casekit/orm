@@ -1,9 +1,9 @@
-import { SchemaDefinition } from "../definition/SchemaDefinition";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
 import { Columns } from "./Columns";
 import { ModelName } from "./ModelName";
 
 export type IsNullable<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends keyof Columns<S, M>,
-> = Columns<S, M>[C]["nullable"] extends true ? true : false;
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+    C extends keyof Columns<Models, M>,
+> = Columns<Models, M>[C]["nullable"] extends true ? true : false;

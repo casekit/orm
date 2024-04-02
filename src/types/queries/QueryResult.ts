@@ -1,12 +1,12 @@
-import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
+import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
 import { ColumnType } from "../schema/helpers/ColumnType";
 import { ModelName } from "../schema/helpers/ModelName";
 import { BaseQuery } from "./BaseQuery";
 
 export type QueryResult<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
     Q extends BaseQuery,
 > = Readonly<{
-    [C in Extract<Q["select"][number], string>]: ColumnType<S, M, C>;
+    [C in Extract<Q["select"][number], string>]: ColumnType<Models, M, C>;
 }>;

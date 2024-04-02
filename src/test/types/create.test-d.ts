@@ -81,4 +81,19 @@ describe("create", () => {
         const db = orm({ models: { foo } });
         assertType(db.create("foo", { data: { id: 3 } }));
     });
+
+    test("when all required fields are provided, excess property checking still works", async () => {
+        assertType(
+            await db.create("post", {
+                data: {
+                    title: "hello",
+                    content: "it me",
+                    authorId: uuid.v4(),
+                    // @ts-expect-error non-existing properties can't be included
+                    wrong: 2,
+                },
+                returning: ["id", "title"],
+            }),
+        );
+    });
 });

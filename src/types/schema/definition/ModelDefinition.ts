@@ -5,12 +5,7 @@ import { UniqueConstraint } from "./UniqueConstraint";
 /**
  * Configuration object for a database model.
  */
-export type ModelDefinition<
-    Columns extends Record<string, ColumnDefinition> = Record<
-        string,
-        ColumnDefinition
-    >,
-> = {
+export type ModelDefinition = {
     /**
      * The name of the model's table. If not specified, the table name will be
      * derived from the model name, with any transform function specified in
@@ -30,7 +25,7 @@ export type ModelDefinition<
      * definitions. The keys of this map will be used in generated functions
      * and object fields, so must be valid Javascript identifiers.
      */
-    columns: Columns;
+    columns: Record<string, ColumnDefinition>;
 
     /**
      * If the table's primary key contains multiple columns, specify them here.

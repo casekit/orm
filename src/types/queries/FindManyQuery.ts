@@ -1,10 +1,10 @@
-import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
+import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
 import { ModelName } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
 
 export type FindManyQuery<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
 > = {
-    select: SelectClause<S, M>;
+    select: SelectClause<Models, M>;
 };

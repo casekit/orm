@@ -1,7 +1,7 @@
-import { SchemaDefinition } from "../definition/SchemaDefinition";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
 import { ModelName } from "./ModelName";
 
 export type ColumnName<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-> = Extract<keyof S["models"][M]["columns"], string>;
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+> = Extract<keyof Models[M]["columns"], string>;

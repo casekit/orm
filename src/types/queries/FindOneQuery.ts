@@ -1,7 +1,10 @@
-import { SchemaDefinition } from "../schema/definition/SchemaDefinition";
+import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
 import { ModelName } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
 
-export type FindOneQuery<S extends SchemaDefinition, M extends ModelName<S>> = {
-    select: SelectClause<S, M>;
+export type FindOneQuery<
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+> = {
+    select: SelectClause<Models, M>;
 };

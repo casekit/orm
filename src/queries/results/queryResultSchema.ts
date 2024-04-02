@@ -1,11 +1,12 @@
 import { ZodSchema, z } from "zod";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
-import { Schema } from "../../types/schema";
+import { PopulatedSchema } from "../../types/schema";
+import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
 
-export const queryResultSchema = (
-    schema: Schema,
-    m: keyof Schema["models"],
+export const queryResultSchema = <Models extends ModelDefinitions>(
+    schema: PopulatedSchema<Models>,
+    m: string,
     query: BaseQuery,
 ) => {
     const obj: Record<string, ZodSchema<unknown>> = {};

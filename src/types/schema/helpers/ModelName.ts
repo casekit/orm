@@ -1,6 +1,6 @@
-import { SchemaDefinition } from "../definition/SchemaDefinition";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
 
-export type ModelName<S extends SchemaDefinition> = Extract<
-    keyof S["models"],
+export type ModelName<Models extends ModelDefinitions> = Extract<
+    keyof Models,
     string
 >;

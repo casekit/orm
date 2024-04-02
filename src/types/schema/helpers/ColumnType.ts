@@ -1,23 +1,23 @@
 import { z } from "zod";
 
 import { SuggestedColumnType } from "../../../schema/suggestedColumnSchema";
-import { SchemaDefinition } from "../definition/SchemaDefinition";
+import { ModelDefinitions } from "../definition/ModelDefinitions";
 import { ColumnName } from "./ColumnName";
 import { ModelName } from "./ModelName";
 
 type NonNullableColumnType<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends ColumnName<S, M>,
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+    C extends ColumnName<Models, M>,
 > =
-    S["models"][M]["columns"][C]["schema"] extends z.ZodType<unknown>
-        ? z.infer<S["models"][M]["columns"][C]["schema"]>
-        : SuggestedColumnType<S["models"][M]["columns"][C]["type"]>;
+    Models[M]["columns"][C]["schema"] extends z.ZodType<unknown>
+        ? z.infer<Models[M]["columns"][C]["schema"]>
+        : SuggestedColumnType<Models[M]["columns"][C]["type"]>;
 
 export type ColumnType<
-    S extends SchemaDefinition,
-    M extends ModelName<S>,
-    C extends ColumnName<S, M>,
-> = S["models"][M]["columns"][C]["nullable"] extends true
-    ? NonNullableColumnType<S, M, C> | null
-    : NonNullableColumnType<S, M, C>;
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+    C extends ColumnName<Models, M>,
+> = Models[M]["columns"][C]["nullable"] extends true
+    ? NonNullableColumnType<Models, M, C> | null
+    : NonNullableColumnType<Models, M, C>;

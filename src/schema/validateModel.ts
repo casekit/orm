@@ -1,9 +1,14 @@
 import { uniq } from "lodash-es";
 
+import { ModelDefinition } from "..";
 import { InvalidModelDefinitionError } from "../errors";
-import { Model, Schema } from "../types/schema";
+import { PopulatedModel, PopulatedSchema } from "../types/schema";
 
-export const validateModel = (_schema: Schema, name: string, model: Model) => {
+export const validateModel = (
+    _schema: PopulatedSchema<Record<string, ModelDefinition>>,
+    name: string,
+    model: PopulatedModel<ModelDefinition>,
+) => {
     const columns = Object.values(model.columns);
 
     if (model.table === "") {

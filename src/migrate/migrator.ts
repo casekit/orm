@@ -1,11 +1,11 @@
 import { Orm } from "..";
-import { SchemaDefinition } from "../types/schema/definition/SchemaDefinition";
+import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
 import { implode } from "./commands/implode";
 
-export class Migrator<S extends SchemaDefinition> {
-    public db: Orm<S>;
+export class Migrator<Models extends ModelDefinitions> {
+    public db: Orm<Models>;
 
-    constructor(db: Orm<S>) {
+    constructor(db: Orm<Models>) {
         this.db = db;
     }
 
@@ -14,5 +14,5 @@ export class Migrator<S extends SchemaDefinition> {
     }
 }
 
-export const migrator = <S extends SchemaDefinition>(db: Orm<S>) =>
+export const migrator = <Models extends ModelDefinitions>(db: Orm<Models>) =>
     new Migrator(db);
