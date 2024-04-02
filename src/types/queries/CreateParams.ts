@@ -52,3 +52,17 @@ export type CreateParams<
     data: RequiredParams<Models, M> & OptionalParams<Models, M>;
     returning?: SelectClause<Models, M>;
 };
+
+export type Exactly<T, U> = T extends object
+    ? U extends object
+        ? { [K in keyof T]: K extends keyof U ? Exactly<T[K], U[K]> : never }
+        : never
+    : U;
+
+export type ConstrainedCreateParams<
+    Models extends ModelDefinitions,
+    M extends ModelName<Models>,
+    P extends CreateParams<Models, M>,
+> = Omit<P, "data"> & {
+    data: Exactly<P["data"], CreateParams<Models, M>["data"]>;
+};
