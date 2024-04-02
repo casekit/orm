@@ -11,10 +11,7 @@ import { validateSchema } from "./schema/validateSchema";
 import { Config } from "./types/Config";
 import { Connection } from "./types/Connection";
 import { BaseCreateParams } from "./types/queries/BaseCreateParams";
-import {
-    ConstrainedCreateParams,
-    CreateParams,
-} from "./types/queries/CreateParams";
+import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
@@ -22,11 +19,11 @@ import { PopulatedSchema } from "./types/schema";
 import { SchemaDefinition2 } from "./types/schema/definition/SchemaDefinition";
 import { ModelName } from "./types/schema/helpers/ModelName";
 
-export type Exactly<T, U> = T extends object
-    ? U extends object
-        ? { [K in keyof T]: K extends keyof U ? Exactly<T[K], U[K]> : never }
-        : never
-    : U;
+export type DisallowExtraKeys<Base, T extends Base> = {
+    [K in keyof T]: T[K];
+} & {
+    [K in keyof T as K extends keyof Base ? never : K]: never;
+};
 
 export class Orm<
     Models extends Record<string, ModelDefinition> = Record<
@@ -93,12 +90,10 @@ export class Orm<
     public async create<
         M extends ModelName<Models>,
         P extends CreateParams<Models, M>,
-        _P extends ConstrainedCreateParams<
-            Models,
-            M,
-            P
-        > = ConstrainedCreateParams<Models, M, P>,
-    >(m: M, params: _P): Promise<CreateResult<Models, M, _P>> {
+    >(
+        m: M,
+        params: DisallowExtraKeys<CreateParams<Models, M>, P>,
+    ): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
             this.schema,
@@ -110,7 +105,7 @@ export class Orm<
             m,
             params as BaseCreateParams,
         );
-        return parser.parse(result) as CreateResult<Models, M, _P>;
+        return parser.parse(result) as CreateResult<Models, M, P>;
     }
 }
 
