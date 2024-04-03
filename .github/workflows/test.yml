@@ -9,13 +9,17 @@ jobs:
         name: "🧪 Run tests"
         timeout-minutes: 10
         runs-on: ubuntu-latest
+        env:
+            PGUSER: casekit
+            PGPASSWORD: password
+            PGDATABASE: orm
         services:
             postgres:
                 image: postgres
                 env:
-                    POSTGRES_USER: root
-                    POSTGRES_PASSWORD: password
-                    POSTGRES_DB: orm
+                    POSTGRES_USER: ${{ env.PGUSER }}
+                    POSTGRES_PASSWORD: ${{ env.PGPASSWORD }}
+                    POSTGRES_DB: ${{ env.PGDATABASE }}
                 options: >-
                     --health-cmd pg_isready
                     --health-interval 10s
