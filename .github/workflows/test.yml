@@ -4,6 +4,8 @@ on:
         branches: [main]
     pull_request:
         branches: [main]
+permissions:
+    contents: write
 jobs:
     test:
         name: "🧪 Run tests"
