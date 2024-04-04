@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: build",
+            "detail": "rm -rf lib && tsc"
+        },
+        {
+            "type": "npm",
+            "script": "check:all",
+            "problemMatcher": [],
+            "label": "npm: check:all",
+            "detail": "CI=true pnpm test && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck"
+        },
+        {
+            "type": "npm",
+            "script": "build",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: build",
+            "detail": "rm -rf lib && tsc"
+        }
+    ]
+}
