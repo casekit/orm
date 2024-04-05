@@ -65,8 +65,8 @@ devDependencies:
     specifier: ^2.29.1
     version: 2.29.1(@typescript-eslint/parser@7.3.1)(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
   fast-check:
-    specifier: ^3.16.0
-    version: 3.16.0
+    specifier: ^3.17.1
+    version: 3.17.1
   typescript:
     specifier: ^5.4.3
     version: 5.4.3
@@ -463,7 +463,7 @@ packages:
     peerDependencies:
       vitest: '>=0.28.1 <1.0.0 || ^1'
     dependencies:
-      fast-check: 3.16.0
+      fast-check: 3.17.1
       vitest: 1.4.0
     dev: true
 
@@ -1695,8 +1695,8 @@ packages:
       strip-final-newline: 3.0.0
     dev: true
 
-  /fast-check@3.16.0:
-    resolution: {integrity: sha512-k8GtQHi4pJoRQ1gVDFQno+/FVkowo/ehiz/aCj9O/D7HRWb1sSFzNrw+iPVU8QlWtH+jNwbuN+dDVg3QkS56DQ==}
+  /fast-check@3.17.1:
+    resolution: {integrity: sha512-jIKXJVe6ZO0SpwEgVtEVujTf8TwjI9wMXFJCjsDHUB3RroUbXBgF4kOSz3A7MW0UR26aqsoB8i9O2mjtjERAiA==}
     engines: {node: '>=8.0.0'}
     dependencies:
       pure-rand: 6.1.0
