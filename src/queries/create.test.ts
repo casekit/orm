@@ -12,7 +12,14 @@ describe("create", () => {
         await orm({ config, models }).transact(
             async (db) => {
                 const userId = uuid.v4();
+                const tenantId = uuid.v4();
                 const postId = uuid.v4();
+                await db.create("tenant", {
+                    data: {
+                        id: tenantId,
+                        name: "popovapark",
+                    },
+                });
                 await db.create("user", {
                     data: {
                         id: userId,
@@ -23,6 +30,7 @@ describe("create", () => {
                     data: {
                         id: postId,
                         authorId: userId,
+                        tenantId: tenantId,
                         title: "hello it me",
                         content: "i'm writing a post",
                     },

@@ -17,5 +17,10 @@ export const post = {
         },
         publishedAt: { type: "timestamp", nullable: true },
         tags: { type: "text[][][][]", nullable: true },
+        tenantId: {
+            type: "uuid",
+            references: { table: "tenant", column: "id" },
+            default: "00000000-0000-0000-0000-000000000000",
+        },
     },
 } satisfies ModelDefinition;
