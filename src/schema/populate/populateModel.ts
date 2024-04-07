@@ -15,7 +15,7 @@ export const populateModel = (
     const columns = mapValues(model.columns, (column, name) => ({
         name: column.name ?? config.naming.column(name),
         type: column.type,
-        schema: column.schema ?? suggestedColumnSchema(column.type),
+        zodSchema: column.zodSchema ?? suggestedColumnSchema(column.type),
         nullable: column.nullable ?? false,
         default: column.default ?? null,
     }));

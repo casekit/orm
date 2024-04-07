@@ -30,18 +30,18 @@ describe("createTableSql", () => {
             table,
             columns: {
                 id: {
-                    schema: z.string().uuid(),
+                    zodSchema: z.string().uuid(),
                     type: "uuid",
                     default: sql`uuid_generate_v4()`,
                 },
                 title: {
-                    schema: z.string(),
+                    zodSchema: z.string(),
                     type: "text",
                     default: "My first post",
                 },
-                content: { schema: z.string(), type: "text" },
+                content: { zodSchema: z.string(), type: "text" },
                 publishedAt: {
-                    schema: z.date(),
+                    zodSchema: z.date(),
                     type: "timestamp",
                     nullable: true,
                 },

@@ -19,7 +19,7 @@ export type QueryBuilder = {
 };
 
 export const buildQuery = (
-    schema: BaseConfiguration,
+    config: BaseConfiguration,
     m: string,
     query: BaseQuery,
     path: string[] = [],
@@ -30,14 +30,14 @@ export const buildQuery = (
         tables: [],
     };
 
-    const model = schema.models[m];
+    const model = config.models[m];
 
     const table = tableAlias(tableIndex);
     let colIndex = 0;
 
     builder.tables.push({
-        name: schema.models[m]["table"],
-        schema: schema.models[m]["schema"],
+        name: config.models[m]["table"],
+        schema: config.models[m]["schema"],
         alias: table,
     });
 

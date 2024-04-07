@@ -6,9 +6,9 @@ import { ModelDefinition } from "../../../types/schema/definitions/ModelDefiniti
 export const user = {
     columns: {
         id: { type: "uuid", default: sql`uuid_generate_v4()` },
-        username: { schema: z.string(), type: "text" },
-        joinedAt: { schema: z.date(), type: "timestamp", nullable: true },
-        deletedAt: { schema: z.date(), type: "timestamp", nullable: true },
+        username: { zodSchema: z.string(), type: "text" },
+        joinedAt: { zodSchema: z.date(), type: "timestamp", nullable: true },
+        deletedAt: { zodSchema: z.date(), type: "timestamp", nullable: true },
     },
     primaryKey: ["id"],
     uniqueConstraints: [

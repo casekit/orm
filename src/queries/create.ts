@@ -9,11 +9,11 @@ import { rowToObject } from "./builder/rowToObject";
 
 export const create = async (
     conn: Connection,
-    schema: BaseConfiguration,
+    config: BaseConfiguration,
     m: string,
     params: BaseCreateParams,
 ) => {
-    const builder = buildCreate(schema, m, params);
+    const builder = buildCreate(config, m, params);
     const statement = createToSql(builder);
     logger.info({
         message: "Executing insert",

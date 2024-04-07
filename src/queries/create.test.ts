@@ -57,9 +57,9 @@ describe("create", () => {
     test("columns of type serial do not need to be specified", async () => {
         const foo = {
             columns: {
-                id: { type: "serial", schema: z.coerce.number() },
-                big: { type: "bigserial", schema: z.coerce.number() },
-                small: { type: "smallserial", schema: z.coerce.number() },
+                id: { type: "serial", zodSchema: z.coerce.number() },
+                big: { type: "bigserial", zodSchema: z.coerce.number() },
+                small: { type: "smallserial", zodSchema: z.coerce.number() },
             },
         } satisfies ModelDefinition;
         await orm({
@@ -92,10 +92,10 @@ describe("create", () => {
             columns: {
                 id: {
                     type: "uuid",
-                    schema: z.string().uuid(),
+                    zodSchema: z.string().uuid(),
                     default: sql`uuid_generate_v4()`,
                 },
-                name: { type: "text", schema: z.string() },
+                name: { type: "text", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
         await orm({

@@ -5,7 +5,7 @@ import { BaseModel } from "src/types/base/BaseModel";
 import { InvalidModelDefinitionError } from "../../errors";
 
 export const validateModel = (
-    _schema: BaseConfiguration,
+    _config: BaseConfiguration,
     name: string,
     model: BaseModel,
 ) => {
