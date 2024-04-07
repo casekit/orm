@@ -1,4 +1,4 @@
-import { BaseModel } from "./types/schema/BaseModel";
+import { BaseModel } from "./types/schema/base/BaseModel";
 
 type OrmErrorMeta = {
     model?: [string, BaseModel];

@@ -14,9 +14,9 @@ import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { BaseConfiguration } from "./types/schema/BaseConfiguration";
-import { BaseModel } from "./types/schema/BaseModel";
 import { Configuration } from "./types/schema/Configuration";
+import { BaseConfiguration } from "./types/schema/base/BaseConfiguration";
+import { BaseModel } from "./types/schema/base/BaseModel";
 import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./types/schema/definitions/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
@@ -27,8 +27,13 @@ export class Orm<
     Relations extends
         RelationsDefinitions<Models> = RelationsDefinitions<Models>,
 > {
-    public schema: Configuration<Models, Relations>;
+    public schema: BaseConfiguration;
     public config: Config;
+
+    /**
+     * As a nicety, we expose the models directly on the Orm instance with literal keys
+     * for the models. The deeper values are not literally typed however.
+     */
     public get models(): {
         [M in ModelName<Models>]: BaseModel;
     } {
@@ -45,7 +50,7 @@ export class Orm<
     }
 
     constructor(schema: BaseConfiguration, poolClient?: pg.PoolClient) {
-        this.schema = schema as Configuration<Models, Relations>;
+        this.schema = schema;
         this.config = schema.config;
         this.pool = new pg.Pool(schema.config.connection ?? {});
         this.poolClient = poolClient;
@@ -59,7 +64,7 @@ export class Orm<
             const conn = await this.pool.connect();
             try {
                 return await new Orm<Models, Relations>(
-                    this.schema as BaseConfiguration,
+                    this.schema,
                     conn,
                 ).transact(cb, opts);
             } finally {
@@ -69,10 +74,7 @@ export class Orm<
             try {
                 this.poolClient.query("BEGIN");
                 return await cb(
-                    new Orm<Models, Relations>(
-                        this.schema as BaseConfiguration,
-                        this.poolClient,
-                    ),
+                    new Orm<Models, Relations>(this.schema, this.poolClient),
                 );
             } finally {
                 this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
@@ -91,15 +93,8 @@ export class Orm<
         m: M,
         query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
     ): Promise<QueryResult<Models, M, Q>[]> {
-        const results = await findMany(
-            this.connection,
-            this.schema as BaseConfiguration,
-            m,
-            query,
-        );
-        const parser = z.array(
-            queryResultSchema(this.schema as BaseConfiguration, m, query),
-        );
+        const results = await findMany(this.connection, this.schema, m, query);
+        const parser = z.array(queryResultSchema(this.schema, m, query));
         return parser.parse(results) as QueryResult<Models, M, Q>[];
     }
 
@@ -112,12 +107,12 @@ export class Orm<
     ): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
-            this.schema as BaseConfiguration,
+            this.schema,
             m,
             params as BaseCreateParams,
         );
         const parser = createResultSchema(
-            this.schema as BaseConfiguration,
+            this.schema,
             m,
             params as BaseCreateParams,
         );

@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../..";
-import { BaseModel } from "../../types/schema/BaseModel";
+import { BaseModel } from "../../types/schema/base/BaseModel";
 import { ForeignKey } from "../../types/schema/constraints/ForeignKey";
 
 export const createForeignKeyConstraintSql = (

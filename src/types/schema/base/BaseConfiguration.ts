@@ -1,4 +1,4 @@
-import { Config } from "../Config";
+import { Config } from "../../Config";
 import { BaseModels } from "./BaseModels";
 import { BaseRelations } from "./BaseRelations";
 

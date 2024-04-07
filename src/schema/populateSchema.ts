@@ -1,5 +1,5 @@
-import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
-import { BaseModels } from "src/types/schema/BaseModels";
+import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
+import { BaseModels } from "src/types/schema/base/BaseModels";
 
 import { Configuration } from "../types/schema/Configuration";
 import { ModelDefinitions } from "../types/schema/definitions/ModelDefinitions";

@@ -1,6 +1,6 @@
 import { uniq } from "lodash-es";
-import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
-import { BaseModel } from "src/types/schema/BaseModel";
+import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
+import { BaseModel } from "src/types/schema/base/BaseModel";
 
 import { InvalidModelDefinitionError } from "../errors";
 

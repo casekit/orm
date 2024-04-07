@@ -1,6 +1,6 @@
+import { ForeignKey } from "../constraints/ForeignKey";
+import { UniqueConstraint } from "../constraints/UniqueConstraint";
 import { BaseColumn } from "./BaseColumn";
-import { ForeignKey } from "./constraints/ForeignKey";
-import { UniqueConstraint } from "./constraints/UniqueConstraint";
 
 export type BaseModel = {
     table: string;

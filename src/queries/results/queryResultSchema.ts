@@ -1,4 +1,4 @@
-import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";

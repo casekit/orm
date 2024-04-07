@@ -1,5 +1,5 @@
 import { uniq } from "lodash-es";
-import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 import { tableAlias } from "./tableAlias";

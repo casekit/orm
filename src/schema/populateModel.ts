@@ -1,4 +1,4 @@
-import { BaseModel } from "src/types/schema/BaseModel";
+import { BaseModel } from "src/types/schema/base/BaseModel";
 
 import { Config } from "../types/Config";
 import { ForeignKey } from "../types/schema/constraints/ForeignKey";
