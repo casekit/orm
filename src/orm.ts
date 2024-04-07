@@ -5,26 +5,25 @@ import { create } from "./queries/create";
 import { findMany } from "./queries/findMany";
 import { createResultSchema } from "./queries/results/createResultSchema";
 import { queryResultSchema } from "./queries/results/queryResultSchema";
-import { populateConfiguration } from "./schema/populateConfiguration";
-import { validateSchema } from "./schema/validateSchema";
+import { populateConfiguration } from "./schema/populate/populateConfiguration";
+import { validateConfiguration } from "./schema/validate/validateConfiguration";
 import { Configuration } from "./types/Configuration";
 import { Connection } from "./types/Connection";
+import { BaseConfiguration } from "./types/base/BaseConfiguration";
+import { BaseModel } from "./types/base/BaseModel";
 import { BaseCreateParams } from "./types/queries/BaseCreateParams";
 import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { BaseConfiguration } from "./types/schema/base/BaseConfiguration";
-import { BaseModel } from "./types/schema/base/BaseModel";
 import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./types/schema/definitions/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
-    Models extends ModelDefinitions = ModelDefinitions,
-    Relations extends
-        RelationsDefinitions<Models> = RelationsDefinitions<Models>,
+    Models extends ModelDefinitions,
+    Relations extends RelationsDefinitions<Models>,
 > {
     public schema: BaseConfiguration;
 
@@ -124,6 +123,6 @@ export const orm = <
     schema: Configuration<Models, Relations>,
 ): Orm<Models, Relations> => {
     const populatedSchema = populateConfiguration(schema);
-    validateSchema(populatedSchema);
+    validateConfiguration(populatedSchema);
     return new Orm<Models, Relations>(populatedSchema);
 };

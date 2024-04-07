@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../../sql";
-import { BaseModel } from "../../types/schema/base/BaseModel";
+import { BaseModel } from "../../types/base/BaseModel";
 import { interleave } from "../../util/interleave";
 
 export const createTableSql = (model: BaseModel): SQLStatement => {

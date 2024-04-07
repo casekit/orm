@@ -1,8 +1,8 @@
 import { uniq } from "lodash-es";
-import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
-import { BaseModel } from "src/types/schema/base/BaseModel";
+import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseModel } from "src/types/base/BaseModel";
 
-import { InvalidModelDefinitionError } from "../errors";
+import { InvalidModelDefinitionError } from "../../errors";
 
 export const validateModel = (
     _schema: BaseConfiguration,

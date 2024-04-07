@@ -1,12 +1,13 @@
 import { Orm } from "..";
+import { BaseOrm } from "../types/base/BaseOrm";
 import { ModelDefinitions } from "../types/schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/schema/definitions/RelationsDefinitions";
 import { implode } from "./commands/implode";
 
 export class Migrator {
-    public db: Orm;
+    public db: BaseOrm;
 
-    constructor(db: Orm) {
+    constructor(db: BaseOrm) {
         this.db = db;
     }
 
@@ -20,4 +21,4 @@ export const migrator = <
     Relations extends RelationsDefinitions<Models>,
 >(
     db: Orm<Models, Relations>,
-) => new Migrator(db as Orm);
+) => new Migrator(db as BaseOrm);

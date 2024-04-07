@@ -1,5 +1,5 @@
-import { ForeignKey } from "../constraints/ForeignKey";
-import { UniqueConstraint } from "../constraints/UniqueConstraint";
+import { ForeignKey } from "../schema/constraints/ForeignKey";
+import { UniqueConstraint } from "../schema/constraints/UniqueConstraint";
 import { BaseColumn } from "./BaseColumn";
 
 export type BaseModel = {

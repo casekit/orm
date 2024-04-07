@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { DataType } from "../types/schema/postgres/DataType";
+import { DataType } from "../../types/schema/postgres/DataType";
 
 /**
  * This must be kept in sync with suggestedColumnSchema

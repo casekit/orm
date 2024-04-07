@@ -1,4 +1,4 @@
-import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
+import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 
 import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
 import { tableAlias } from "./tableAlias";

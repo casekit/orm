@@ -1,6 +1,5 @@
 import pg from "pg";
 
-import { Config } from "./Config";
 import { ModelDefinitions } from "./schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./schema/definitions/RelationsDefinitions";
 
@@ -11,7 +10,6 @@ export type Configuration<
     models: Models;
     relations?: Relations;
     extensions?: string[];
-    config?: Config;
     schema?: string;
     naming?: {
         column?: (s: string) => string;

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { SuggestedColumnType } from "../../../schema/suggestedColumnSchema";
+import { SuggestedColumnType } from "../../../schema/populate/suggestedColumnSchema";
 import { ModelDefinitions } from "../definitions/ModelDefinitions";
 import { ColumnName } from "./ColumnName";
 import { ModelName } from "./ModelName";

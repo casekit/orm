@@ -1,4 +1,4 @@
-import { BaseConfiguration } from "src/types/schema/base/BaseConfiguration";
+import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";

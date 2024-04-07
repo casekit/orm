@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../../sql";
-import { BaseModel } from "../../types/schema/base/BaseModel";
+import { BaseModel } from "../../types/base/BaseModel";
 
 export const dropTableSql = (model: BaseModel): SQLStatement => {
     const statement = pgfmt(
