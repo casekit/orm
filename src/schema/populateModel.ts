@@ -1,13 +1,13 @@
 import { BaseModel } from "src/types/schema/base/BaseModel";
 
-import { Config } from "../types/Config";
+import { BaseConfiguration } from "../types/schema/base/BaseConfiguration";
 import { ForeignKey } from "../types/schema/constraints/ForeignKey";
 import { UniqueConstraint } from "../types/schema/constraints/UniqueConstraint";
 import { ModelDefinition } from "../types/schema/definitions/ModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (
-    config: Config,
+    config: Pick<BaseConfiguration, "naming" | "schema">,
     name: string,
     model: ModelDefinition,
 ): BaseModel => {

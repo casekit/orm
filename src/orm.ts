@@ -5,16 +5,15 @@ import { create } from "./queries/create";
 import { findMany } from "./queries/findMany";
 import { createResultSchema } from "./queries/results/createResultSchema";
 import { queryResultSchema } from "./queries/results/queryResultSchema";
-import { populateSchema } from "./schema/populateSchema";
+import { populateConfiguration } from "./schema/populateConfiguration";
 import { validateSchema } from "./schema/validateSchema";
-import { Config } from "./types/Config";
+import { Configuration } from "./types/Configuration";
 import { Connection } from "./types/Connection";
 import { BaseCreateParams } from "./types/queries/BaseCreateParams";
 import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { Configuration } from "./types/schema/Configuration";
 import { BaseConfiguration } from "./types/schema/base/BaseConfiguration";
 import { BaseModel } from "./types/schema/base/BaseModel";
 import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
@@ -28,7 +27,6 @@ export class Orm<
         RelationsDefinitions<Models> = RelationsDefinitions<Models>,
 > {
     public schema: BaseConfiguration;
-    public config: Config;
 
     /**
      * As a nicety, we expose the models directly on the Orm instance with literal keys
@@ -51,8 +49,7 @@ export class Orm<
 
     constructor(schema: BaseConfiguration, poolClient?: pg.PoolClient) {
         this.schema = schema;
-        this.config = schema.config;
-        this.pool = new pg.Pool(schema.config.connection ?? {});
+        this.pool = new pg.Pool(schema.connection ?? {});
         this.poolClient = poolClient;
     }
 
@@ -126,7 +123,7 @@ export const orm = <
 >(
     schema: Configuration<Models, Relations>,
 ): Orm<Models, Relations> => {
-    const populatedSchema = populateSchema(schema);
+    const populatedSchema = populateConfiguration(schema);
     validateSchema(populatedSchema);
     return new Orm<Models, Relations>(populatedSchema);
 };

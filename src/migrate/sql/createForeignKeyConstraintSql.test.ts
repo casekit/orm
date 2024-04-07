@@ -2,14 +2,12 @@ import { unindent } from "@casekit/unindent";
 
 import { describe, expect, test } from "vitest";
 
-import { createConfig, orm, sql } from "../../";
+import { orm, sql } from "../../";
 import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
 import { createForeignKeyConstraintSql } from "./createForeignKeyConstraintSql";
 
 describe("createForeignKeyConstraintSql", () => {
     test("it generates an ALTER TABLE command for the specified foreign key constraint", () => {
-        const config = createConfig({});
-
         const foo = {
             schema: "casekit",
             columns: {
@@ -37,7 +35,7 @@ describe("createForeignKeyConstraintSql", () => {
             ],
         } satisfies ModelDefinition;
 
-        const db = orm({ config, models: { foo } });
+        const db = orm({ models: { foo } });
 
         const result = db.models.foo.foreignKeys
             .map((fk) => createForeignKeyConstraintSql(db.models.foo, fk).text)

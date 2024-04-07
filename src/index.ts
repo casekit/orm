@@ -3,5 +3,3 @@ export { type Migrator, migrator } from "./migrate";
 export { pull } from "./pull";
 export { sql, SQLStatement } from "./sql";
 export { type ModelDefinition } from "./types/schema/definitions/ModelDefinition";
-
-export { createConfig } from "./schema/createConfig";
