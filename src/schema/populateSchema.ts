@@ -1,9 +1,13 @@
 import { PopulatedSchema } from "../types/schema";
-import { SchemaDefinition } from "../types/schema/definition/SchemaDefinition";
+import { Configuration } from "../types/schema/definition/Configuration";
+import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
 import { createConfig } from "./createConfig";
 import { populateModel } from "./populateModel";
 
-export const populateSchema = <S extends SchemaDefinition>(
+export const populateSchema = <
+    Models extends ModelDefinitions,
+    S extends Configuration<Models>,
+>(
     schema: S,
 ): PopulatedSchema<S["models"]> => {
     const config = createConfig(schema.config);

@@ -1,4 +1,5 @@
-import { Relations } from "../../../types/schema/definition/Relation";
+import { RelationDefinitions } from "src/types/schema/definition/RelationDefinitions";
+
 import { type Models } from "../models";
 
 export const tenantUser = {
@@ -12,4 +13,4 @@ export const tenantUser = {
         type: "N:1",
         foreignKey: "tenantId",
     },
-} satisfies Relations<Models, "tenantUser">;
+} satisfies RelationDefinitions<Models, "tenantUser">;

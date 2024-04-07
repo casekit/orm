@@ -16,7 +16,7 @@ import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
 import { PopulatedSchema } from "./types/schema";
-import { SchemaDefinition2 } from "./types/schema/definition/SchemaDefinition";
+import { Configuration } from "./types/schema/definition/Configuration";
 import { ModelName } from "./types/schema/helpers/ModelName";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
@@ -108,7 +108,7 @@ export class Orm<
 }
 
 export const orm = <Models extends Record<string, ModelDefinition>>(
-    schema: SchemaDefinition2<Models>,
+    schema: Configuration<Models>,
 ): Orm<Models> => {
     const populatedSchema = populateSchema(schema);
     validateSchema(populatedSchema);
