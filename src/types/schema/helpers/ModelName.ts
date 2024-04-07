@@ -1,4 +1,4 @@
-import { ModelDefinitions } from "../definition/ModelDefinitions";
+import { ModelDefinitions } from "../definitions/ModelDefinitions";
 
 export type ModelName<Models extends ModelDefinitions> = Extract<
     keyof Models,

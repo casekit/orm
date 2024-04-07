@@ -1,11 +1,11 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../..";
-import { Model } from "../../types/schema";
-import { ForeignKey } from "../../types/schema/definition/ForeignKey";
+import { BaseModel } from "../../types/schema/BaseModel";
+import { ForeignKey } from "../../types/schema/constraints/ForeignKey";
 
 export const createForeignKeyConstraintSql = (
-    model: Model,
+    model: BaseModel,
     constraint: ForeignKey,
 ) => {
     const statement = new SQLStatement();

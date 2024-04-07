@@ -1,4 +1,5 @@
-import { BaseConfiguration } from "../types/schema";
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+
 import { validateModel } from "./validateModel";
 
 export const validateSchema = (schema: BaseConfiguration) => {

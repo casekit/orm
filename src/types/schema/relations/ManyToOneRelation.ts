@@ -1,6 +1,6 @@
-import { ColumnName } from "../../helpers/ColumnName";
-import { ModelName } from "../../helpers/ModelName";
-import { ModelDefinitions } from "../ModelDefinitions";
+import { ModelDefinitions } from "../definitions/ModelDefinitions";
+import { ColumnName } from "../helpers/ColumnName";
+import { ModelName } from "../helpers/ModelName";
 
 export type ManyToOneRelation<
     Models extends ModelDefinitions,

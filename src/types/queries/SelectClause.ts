@@ -1,4 +1,4 @@
-import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
+import { ModelDefinitions } from "../schema/definitions/ModelDefinitions";
 import { ColumnName } from "../schema/helpers/ColumnName";
 import { ModelName } from "../schema/helpers/ModelName";
 import { NonEmptyArray } from "../util/NonEmptyArray";

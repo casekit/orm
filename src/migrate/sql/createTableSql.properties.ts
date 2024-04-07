@@ -16,7 +16,7 @@ test.prop([gen.model()])("should generate valid DDL", async (model) => {
         await client.query(createSchemasSql(db));
 
         // create the table
-        await client.query(createTableSql(model));
+        await client.query(createTableSql(db.models.model));
 
         // select from the newly created table so we can check it's there
         const result = await client.query(

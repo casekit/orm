@@ -1,7 +1,7 @@
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
 import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
-import { BaseConfiguration } from "../../types/schema";
 
 export const createResultSchema = (
     schema: BaseConfiguration,

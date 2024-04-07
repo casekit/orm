@@ -1,6 +1,6 @@
 import { Orm } from "..";
-import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
-import { RelationsDefinitions } from "../types/schema/definition/RelationsDefinitions";
+import { ModelDefinitions } from "../types/schema/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../types/schema/definitions/RelationsDefinitions";
 import { implode } from "./commands/implode";
 
 export class Migrator {

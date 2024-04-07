@@ -8,7 +8,7 @@ import { z } from "zod";
 import { orm } from "../..";
 import { sql } from "../../sql";
 import { db } from "../../test/fixtures";
-import { ModelDefinition } from "../../types/schema/definition/ModelDefinition";
+import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
 import { createTableSql } from "./createTableSql";
 
 describe("createTableSql", () => {

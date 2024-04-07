@@ -1,4 +1,4 @@
-import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
+import { ModelDefinitions } from "../schema/definitions/ModelDefinitions";
 import { ModelName } from "../schema/helpers/ModelName";
 import { SelectClause } from "./SelectClause";
 

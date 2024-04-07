@@ -1,7 +1,7 @@
 import { uniq } from "lodash-es";
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
-import { BaseConfiguration } from "../../types/schema";
 import { tableAlias } from "./tableAlias";
 
 export type QueryBuilder = {

@@ -1,7 +1,9 @@
-import { BaseConfiguration, BaseModels } from "../types/schema";
-import { Configuration } from "../types/schema/definition/Configuration";
-import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
-import { RelationsDefinitions } from "../types/schema/definition/RelationsDefinitions";
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+import { BaseModels } from "src/types/schema/BaseModels";
+
+import { Configuration } from "../types/schema/Configuration";
+import { ModelDefinitions } from "../types/schema/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../types/schema/definitions/RelationsDefinitions";
 import { createConfig } from "./createConfig";
 import { populateModel } from "./populateModel";
 

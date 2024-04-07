@@ -1,8 +1,8 @@
 import { ModelName } from "../helpers/ModelName";
+import { ManyToManyRelation } from "../relations/ManyToManyRelation";
+import { ManyToOneRelation } from "../relations/ManyToOneRelation";
+import { OneToManyRelation } from "../relations/OneToManyRelation";
 import { ModelDefinitions } from "./ModelDefinitions";
-import { ManyToManyRelation } from "./relations/ManyToManyRelation";
-import { ManyToOneRelation } from "./relations/ManyToOneRelation";
-import { OneToManyRelation } from "./relations/OneToManyRelation";
 
 export type RelationDefinition<
     Models extends ModelDefinitions,

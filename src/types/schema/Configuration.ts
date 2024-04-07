@@ -1,6 +1,6 @@
-import { Config } from "../../Config";
-import { ModelDefinitions } from "./ModelDefinitions";
-import { RelationsDefinitions } from "./RelationsDefinitions";
+import { Config } from "../Config";
+import { ModelDefinitions } from "./definitions/ModelDefinitions";
+import { RelationsDefinitions } from "./definitions/RelationsDefinitions";
 
 export type Configuration<
     Models extends ModelDefinitions,

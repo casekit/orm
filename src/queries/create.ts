@@ -1,7 +1,8 @@
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { BaseCreateParams } from "../types/queries/BaseCreateParams";
-import { BaseConfiguration } from "../types/schema";
 import { buildCreate } from "./builder/buildCreate";
 import { createToSql } from "./builder/createToSql";
 import { rowToObject } from "./builder/rowToObject";

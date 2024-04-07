@@ -1,6 +1,6 @@
+import { ForeignKey } from "../constraints/ForeignKey";
+import { UniqueConstraint } from "../constraints/UniqueConstraint";
 import { ColumnDefinition } from "./ColumnDefinition";
-import { ForeignKey } from "./ForeignKey";
-import { UniqueConstraint } from "./UniqueConstraint";
 
 /**
  * Configuration object for a database model.

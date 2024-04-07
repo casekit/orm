@@ -14,10 +14,11 @@ import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { BaseConfiguration, BaseModel } from "./types/schema";
-import { Configuration } from "./types/schema/definition/Configuration";
-import { ModelDefinitions } from "./types/schema/definition/ModelDefinitions";
-import { RelationsDefinitions } from "./types/schema/definition/RelationsDefinitions";
+import { BaseConfiguration } from "./types/schema/BaseConfiguration";
+import { BaseModel } from "./types/schema/BaseModel";
+import { Configuration } from "./types/schema/Configuration";
+import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "./types/schema/definitions/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 

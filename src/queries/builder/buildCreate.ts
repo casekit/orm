@@ -1,5 +1,6 @@
+import { BaseConfiguration } from "src/types/schema/BaseConfiguration";
+
 import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
-import { BaseConfiguration } from "../../types/schema";
 import { tableAlias } from "./tableAlias";
 
 export type CreateBuilder = {

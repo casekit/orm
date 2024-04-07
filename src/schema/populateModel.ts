@@ -1,8 +1,9 @@
+import { BaseModel } from "src/types/schema/BaseModel";
+
 import { Config } from "../types/Config";
-import { BaseModel } from "../types/schema";
-import { ForeignKey } from "../types/schema/definition/ForeignKey";
-import { ModelDefinition } from "../types/schema/definition/ModelDefinition";
-import { UniqueConstraint } from "../types/schema/definition/UniqueConstraint";
+import { ForeignKey } from "../types/schema/constraints/ForeignKey";
+import { UniqueConstraint } from "../types/schema/constraints/UniqueConstraint";
+import { ModelDefinition } from "../types/schema/definitions/ModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (
