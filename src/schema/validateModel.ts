@@ -1,14 +1,12 @@
 import { uniq } from "lodash-es";
 
-import { ModelDefinition } from "..";
 import { InvalidModelDefinitionError } from "../errors";
-import { PopulatedModel, PopulatedSchema } from "../types/schema";
-import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
+import { BaseConfiguration, BaseModel } from "../types/schema";
 
-export const validateModel = <Models extends ModelDefinitions>(
-    _schema: PopulatedSchema<Models>,
+export const validateModel = (
+    _schema: BaseConfiguration,
     name: string,
-    model: PopulatedModel<ModelDefinition>,
+    model: BaseModel,
 ) => {
     const columns = Object.values(model.columns);
 

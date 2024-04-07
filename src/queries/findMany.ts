@@ -1,15 +1,14 @@
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { BaseQuery } from "../types/queries/BaseQuery";
-import { PopulatedSchema } from "../types/schema";
-import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
+import { BaseConfiguration } from "../types/schema";
 import { buildQuery } from "./builder/buildQuery";
 import { queryToSql } from "./builder/queryToSql";
 import { rowToObject } from "./builder/rowToObject";
 
-export const findMany = async <Models extends ModelDefinitions>(
+export const findMany = async (
     conn: Connection,
-    schema: PopulatedSchema<Models>,
+    schema: BaseConfiguration,
     m: string,
     query: BaseQuery,
 ) => {

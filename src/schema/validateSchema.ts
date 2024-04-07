@@ -1,10 +1,7 @@
-import { PopulatedSchema } from "../types/schema";
-import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
+import { BaseConfiguration } from "../types/schema";
 import { validateModel } from "./validateModel";
 
-export const validateSchema = <Models extends ModelDefinitions>(
-    schema: PopulatedSchema<Models>,
-) => {
+export const validateSchema = (schema: BaseConfiguration) => {
     for (const [name, model] of Object.entries(schema.models)) {
         validateModel(schema, name, model);
     }

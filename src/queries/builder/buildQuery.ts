@@ -1,8 +1,7 @@
 import { uniq } from "lodash-es";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
-import { PopulatedSchema } from "../../types/schema";
-import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
+import { BaseConfiguration } from "../../types/schema";
 import { tableAlias } from "./tableAlias";
 
 export type QueryBuilder = {
@@ -19,8 +18,8 @@ export type QueryBuilder = {
     }[];
 };
 
-export const buildQuery = <Models extends ModelDefinitions>(
-    schema: PopulatedSchema<Models>,
+export const buildQuery = (
+    schema: BaseConfiguration,
     m: string,
     query: BaseQuery,
     path: string[] = [],

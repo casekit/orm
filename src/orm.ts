@@ -1,7 +1,6 @@
 import pg from "pg";
 import { z } from "zod";
 
-import { ModelDefinition } from ".";
 import { create } from "./queries/create";
 import { findMany } from "./queries/findMany";
 import { createResultSchema } from "./queries/results/createResultSchema";
@@ -15,7 +14,7 @@ import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { PopulatedModel, PopulatedSchema } from "./types/schema";
+import { BaseConfiguration, BaseModel } from "./types/schema";
 import { Configuration } from "./types/schema/definition/Configuration";
 import { ModelDefinitions } from "./types/schema/definition/ModelDefinitions";
 import { RelationsDefinitions } from "./types/schema/definition/RelationsDefinitions";
@@ -30,10 +29,10 @@ export class Orm<
     public schema: Configuration<Models, Relations>;
     public config: Config;
     public get models(): {
-        [M in ModelName<Models>]: PopulatedModel<ModelDefinition>;
+        [M in ModelName<Models>]: BaseModel;
     } {
         return this.schema.models as {
-            [M in ModelName<Models>]: PopulatedModel<ModelDefinition>;
+            [M in ModelName<Models>]: BaseModel;
         };
     }
 
@@ -44,7 +43,7 @@ export class Orm<
         return this.poolClient ?? this.pool;
     }
 
-    constructor(schema: PopulatedSchema<Models>, poolClient?: pg.PoolClient) {
+    constructor(schema: BaseConfiguration, poolClient?: pg.PoolClient) {
         this.schema = schema as Configuration<Models, Relations>;
         this.config = schema.config;
         this.pool = new pg.Pool(schema.config.connection ?? {});
@@ -59,7 +58,7 @@ export class Orm<
             const conn = await this.pool.connect();
             try {
                 return await new Orm<Models, Relations>(
-                    this.schema as PopulatedSchema<Models>,
+                    this.schema as BaseConfiguration,
                     conn,
                 ).transact(cb, opts);
             } finally {
@@ -70,7 +69,7 @@ export class Orm<
                 this.poolClient.query("BEGIN");
                 return await cb(
                     new Orm<Models, Relations>(
-                        this.schema as PopulatedSchema<Models>,
+                        this.schema as BaseConfiguration,
                         this.poolClient,
                     ),
                 );
@@ -93,12 +92,12 @@ export class Orm<
     ): Promise<QueryResult<Models, M, Q>[]> {
         const results = await findMany(
             this.connection,
-            this.schema as PopulatedSchema<Models>,
+            this.schema as BaseConfiguration,
             m,
             query,
         );
         const parser = z.array(
-            queryResultSchema(this.schema as PopulatedSchema<Models>, m, query),
+            queryResultSchema(this.schema as BaseConfiguration, m, query),
         );
         return parser.parse(results) as QueryResult<Models, M, Q>[];
     }
@@ -112,12 +111,12 @@ export class Orm<
     ): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
-            this.schema as PopulatedSchema<Models>,
+            this.schema as BaseConfiguration,
             m,
             params as BaseCreateParams,
         );
         const parser = createResultSchema(
-            this.schema as PopulatedSchema<Models>,
+            this.schema as BaseConfiguration,
             m,
             params as BaseCreateParams,
         );

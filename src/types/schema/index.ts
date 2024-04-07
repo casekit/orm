@@ -1,48 +1,40 @@
 import { z } from "zod";
 
-import { ModelDefinition, SQLStatement } from "../..";
+import { SQLStatement } from "../..";
 import { Config } from "../Config";
-import { ColumnDefinition } from "./definition/ColumnDefinition";
 import { ForeignKey } from "./definition/ForeignKey";
 import { ModelDefinitions } from "./definition/ModelDefinitions";
 import { RelationsDefinitions } from "./definition/RelationsDefinitions";
 import { UniqueConstraint } from "./definition/UniqueConstraint";
 import { DataType } from "./postgres/DataType";
 
-export type PopulatedColumn<
-    Column extends ColumnDefinition<unknown>,
-    ColumnType = unknown,
-> = {
+export type BaseColumn = {
     name: string;
     type: Column["type"];
-    schema: z.ZodType<ColumnType>;
+    schema: z.ZodType<unknown>;
     nullable: boolean;
-    default?: ColumnType | SQLStatement | null;
+    default?: unknown;
 };
 
-export type PopulatedModel<Model extends ModelDefinition> = {
+export type BaseModel = {
     table: string;
     schema: string;
     primaryKey: string[];
     uniqueConstraints: UniqueConstraint[];
     foreignKeys: ForeignKey[];
-    columns: {
-        [C in keyof Model["columns"]]: PopulatedColumn<Model["columns"][C]>;
-    };
+    columns: Record<string, BaseColumn>;
 };
 
-export type PopulatedModels<Models extends ModelDefinitions> = {
-    [M in keyof Models]: PopulatedModel<Models[M]>;
-};
+export type BaseModels = Record<string, BaseModel>;
 
-export type PopulatedSchema<
-    Models extends ModelDefinitions = Record<string, ModelDefinition>,
-> = {
-    models: PopulatedModels<Models>;
-    relations: RelationsDefinitions<ModelDefinitions>;
+export type BaseConfiguration = {
+    models: BaseModels;
+    relations: BaseRelations;
     extensions: string[];
     config: Config;
 };
+
+export type BaseRelations = RelationsDefinitions<ModelDefinitions>;
 
 /**
  * These types are derived from the ModelDefinition and ColumnDefinition types,
