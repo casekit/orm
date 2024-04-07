@@ -22,11 +22,16 @@ const guessOneToManyRelationName = (fk: ForeignKey) => {
     if (fk.columnsFrom.length > 1) {
         return camelCase(fk.columnsFrom.join("_") + "_" + fk.tableFrom);
     } else {
-        return camelCase(
-            upperFirst(camelCase(fk.columnsFrom[0]).replace(/Id$/, "")) +
-                " " +
-                pluralize(fk.tableFrom),
-        );
+        const foreignName = camelCase(fk.columnsFrom[0]).replace(/Id$/, "");
+        if (foreignName === camelCase(fk.tableTo)) {
+            return pluralize(fk.tableFrom);
+        } else {
+            return camelCase(
+                upperFirst(camelCase(fk.columnsFrom[0]).replace(/Id$/, "")) +
+                    " " +
+                    pluralize(fk.tableFrom),
+            );
+        }
     }
 };
 
