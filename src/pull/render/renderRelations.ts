@@ -1,7 +1,9 @@
-import { camelCase } from "lodash-es";
+import { camelCase, upperFirst } from "lodash-es";
+import pluralize from "pluralize";
 
 import { ForeignKey } from "../types/ForeignKey";
 import { format } from "../util/format";
+import { unquote } from "../util/unquote";
 
 type Definition = {
     table: string;
@@ -18,9 +20,13 @@ const guessManyToOneRelationName = (fk: ForeignKey) => {
 
 const guessOneToManyRelationName = (fk: ForeignKey) => {
     if (fk.columnsFrom.length > 1) {
-        return fk.tableFrom + "_" + fk.columnsFrom.join("_");
+        return camelCase(fk.columnsFrom.join("_") + "_" + fk.tableFrom);
     } else {
-        return camelCase(fk.tableFrom + "s");
+        return camelCase(
+            upperFirst(camelCase(fk.columnsFrom[0]).replace(/Id$/, "")) +
+                " " +
+                pluralize(fk.tableFrom),
+        );
     }
 };
 
@@ -29,28 +35,28 @@ export const renderRelations = async (def: Definition) => {
         (fk) =>
             `${guessManyToOneRelationName(fk)}:` +
             JSON.stringify({
-                table: camelCase(fk.tableTo),
+                model: camelCase(fk.tableTo),
                 type: "N:1",
                 foreignKey:
                     fk.columnsFrom.length === 1
-                        ? fk.columnsFrom[0]
-                        : fk.columnsFrom,
+                        ? camelCase(fk.columnsFrom[0])
+                        : fk.columnsFrom.map(camelCase),
             }),
     );
 
     const oneToMany = Object.entries(def.foreignKeys).flatMap(([table, fks]) =>
         fks
-            .filter((fk) => fk.tableTo === def.table)
+            .filter((fk) => unquote(fk.tableTo) === unquote(def.table))
             .map(
                 (fk) =>
                     `${guessOneToManyRelationName(fk)}:` +
                     JSON.stringify({
-                        table: camelCase(table),
+                        model: camelCase(table),
                         type: "1:N",
                         foreignKey:
                             fk.columnsFrom.length === 1
-                                ? fk.columnsFrom[0]
-                                : fk.columnsFrom,
+                                ? camelCase(fk.columnsFrom[0])
+                                : fk.columnsFrom.map(camelCase),
                     }),
             ),
     );
@@ -60,7 +66,6 @@ export const renderRelations = async (def: Definition) => {
         import { type Models } from "../models";
 
         export const ${camelCase(def.table)} = {
-            ${manyToOne.map((rel) => rel).join(",\n")},
-            ${oneToMany.map((rel) => rel).join(",\n")}
-        } satisfies RelationsDefinition;`);
+            ${[...manyToOne, ...oneToMany].map((rel) => rel).join(",\n")}
+        } satisfies RelationsDefinition<Models, "${camelCase(def.table)}">;`);
 };

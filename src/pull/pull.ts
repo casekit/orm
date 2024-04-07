@@ -11,6 +11,7 @@ import { renderModel } from "./render/renderModel";
 import { renderModelsIndex } from "./render/renderModelsIndex";
 import { renderRelations } from "./render/renderRelations";
 import { renderRelationsIndex } from "./render/renderRelationsIndex";
+import { format } from "./util/format";
 
 export const pull = async (
     client: pg.Client,
@@ -61,6 +62,23 @@ export const pull = async (
     fs.writeFileSync(
         path.resolve(opts.outDir, "relations.ts"),
         await renderRelationsIndex(Object.keys(tables)),
+        { encoding: "utf-8" },
+    );
+
+    fs.writeFileSync(
+        path.resolve(opts.outDir, "index.ts"),
+        await format(`
+            import { orm } from "@casekit/orm";
+            import { type Models, models } from "./models";
+            import { type Relations, relations } from "./relations";
+
+            export const db = orm({
+                models,
+                relations,
+            });
+
+            export type { Models, Relations };
+        `),
         { encoding: "utf-8" },
     );
 };
