@@ -10,15 +10,15 @@ export type CreateBuilder = {
 };
 
 export const buildCreate = (
-    schema: BaseConfiguration,
+    config: BaseConfiguration,
     m: string,
     params: BaseCreateParams,
     tableIndex = 0,
 ): CreateBuilder => {
     const builder: CreateBuilder = {
         table: {
-            name: schema.models[m].table,
-            schema: schema.models[m].schema,
+            name: config.models[m].table,
+            schema: config.models[m].schema,
         },
         params: [],
         returning: [],
@@ -27,7 +27,7 @@ export const buildCreate = (
     const table = tableAlias(tableIndex);
     let colIndex = 0;
 
-    const model = schema.models[m];
+    const model = config.models[m];
 
     for (const [k, v] of Object.entries(params.data)) {
         builder.params.push({

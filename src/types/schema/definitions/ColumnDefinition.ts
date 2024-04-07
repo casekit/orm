@@ -25,7 +25,7 @@ export type ColumnDefinition<ColumnType = unknown> = {
      * allows to you configure more sophisticated parsing, validation,
      * and transformations.
      */
-    schema?: z.ZodType<ColumnType>;
+    zodSchema?: z.ZodType<ColumnType>;
 
     /**
      * Are null values allowed in this column?

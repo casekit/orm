@@ -76,7 +76,7 @@ describe("create", () => {
 
     test("when there are no required params, typechecking still works", () => {
         const foo = {
-            columns: { id: { type: "serial", schema: z.coerce.number() } },
+            columns: { id: { type: "serial", zodSchema: z.coerce.number() } },
         } satisfies ModelDefinition;
         const db = orm({ models: { foo } });
         assertType(db.create("foo", { data: { id: 3 } }));

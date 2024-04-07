@@ -12,14 +12,14 @@ describe("createSchemaSql", () => {
         const a = {
             schema: "foo",
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 
@@ -33,14 +33,14 @@ describe("createSchemaSql", () => {
     test("it pulls schema from the config if not specified on the model", () => {
         const a = {
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 
@@ -54,14 +54,14 @@ describe("createSchemaSql", () => {
     test("if no schema is specified at all, it tries to create the public schema", () => {
         const a = {
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
-                id: { type: "uuid", schema: z.string() },
+                id: { type: "uuid", zodSchema: z.string() },
             },
         } satisfies ModelDefinition;
 

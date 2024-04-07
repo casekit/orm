@@ -25,7 +25,7 @@ export class Orm<
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
 > {
-    public schema: BaseConfiguration;
+    public config: BaseConfiguration;
 
     /**
      * As a nicety, we expose the models directly on the Orm instance with literal keys
@@ -34,7 +34,7 @@ export class Orm<
     public get models(): {
         [M in ModelName<Models>]: BaseModel;
     } {
-        return this.schema.models as {
+        return this.config.models as {
             [M in ModelName<Models>]: BaseModel;
         };
     }
@@ -46,9 +46,9 @@ export class Orm<
         return this.poolClient ?? this.pool;
     }
 
-    constructor(schema: BaseConfiguration, poolClient?: pg.PoolClient) {
-        this.schema = schema;
-        this.pool = new pg.Pool(schema.connection ?? {});
+    constructor(config: BaseConfiguration, poolClient?: pg.PoolClient) {
+        this.config = config;
+        this.pool = new pg.Pool(config.connection ?? {});
         this.poolClient = poolClient;
     }
 
@@ -60,7 +60,7 @@ export class Orm<
             const conn = await this.pool.connect();
             try {
                 return await new Orm<Models, Relations>(
-                    this.schema,
+                    this.config,
                     conn,
                 ).transact(cb, opts);
             } finally {
@@ -70,7 +70,7 @@ export class Orm<
             try {
                 this.poolClient.query("BEGIN");
                 return await cb(
-                    new Orm<Models, Relations>(this.schema, this.poolClient),
+                    new Orm<Models, Relations>(this.config, this.poolClient),
                 );
             } finally {
                 this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
@@ -89,8 +89,8 @@ export class Orm<
         m: M,
         query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
     ): Promise<QueryResult<Models, M, Q>[]> {
-        const results = await findMany(this.connection, this.schema, m, query);
-        const parser = z.array(queryResultSchema(this.schema, m, query));
+        const results = await findMany(this.connection, this.config, m, query);
+        const parser = z.array(queryResultSchema(this.config, m, query));
         return parser.parse(results) as QueryResult<Models, M, Q>[];
     }
 
@@ -103,12 +103,12 @@ export class Orm<
     ): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
-            this.schema,
+            this.config,
             m,
             params as BaseCreateParams,
         );
         const parser = createResultSchema(
-            this.schema,
+            this.config,
             m,
             params as BaseCreateParams,
         );

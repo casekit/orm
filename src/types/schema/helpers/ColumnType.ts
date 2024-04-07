@@ -10,8 +10,8 @@ type NonNullableColumnType<
     M extends ModelName<Models>,
     C extends ColumnName<Models, M>,
 > =
-    Models[M]["columns"][C]["schema"] extends z.ZodType<unknown>
-        ? z.infer<Models[M]["columns"][C]["schema"]>
+    Models[M]["columns"][C]["zodSchema"] extends z.ZodType<unknown>
+        ? z.infer<Models[M]["columns"][C]["zodSchema"]>
         : SuggestedColumnType<Models[M]["columns"][C]["type"]>;
 
 export type ColumnType<
