@@ -3,9 +3,10 @@ import { uniq } from "lodash-es";
 import { ModelDefinition } from "..";
 import { InvalidModelDefinitionError } from "../errors";
 import { PopulatedModel, PopulatedSchema } from "../types/schema";
+import { ModelDefinitions } from "../types/schema/definition/ModelDefinitions";
 
-export const validateModel = (
-    _schema: PopulatedSchema<Record<string, ModelDefinition>>,
+export const validateModel = <Models extends ModelDefinitions>(
+    _schema: PopulatedSchema<Models>,
     name: string,
     model: PopulatedModel<ModelDefinition>,
 ) => {

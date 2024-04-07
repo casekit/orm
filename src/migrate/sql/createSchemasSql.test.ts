@@ -25,7 +25,7 @@ describe("createSchemaSql", () => {
             },
         } satisfies ModelDefinition;
 
-        const db = orm({ config, models: { a, b } });
+        const db = orm({ config, models: { a, b }, relations: {} });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS foo;
             CREATE SCHEMA IF NOT EXISTS bar;
@@ -48,7 +48,7 @@ describe("createSchemaSql", () => {
             },
         } satisfies ModelDefinition;
 
-        const db = orm({ config, models: { a, b } });
+        const db = orm({ config, models: { a, b }, relations: {} });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS foo;
             CREATE SCHEMA IF NOT EXISTS bar;
@@ -71,7 +71,11 @@ describe("createSchemaSql", () => {
             },
         } satisfies ModelDefinition;
 
-        const db = orm({ config, models: { a, b } });
+        const db = orm({
+            config,
+            models: { a, b },
+            relations: {},
+        });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS public;
             CREATE SCHEMA IF NOT EXISTS bar;

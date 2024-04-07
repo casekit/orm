@@ -10,7 +10,7 @@ import { createTableSql } from "./createTableSql";
 
 test.prop([gen.model()])("should generate valid DDL", async (model) => {
     return await withRollback(async (client) => {
-        const db = orm({ models: { model } });
+        const db = orm({ models: { model }, relations: { model: {} } });
 
         // create the schema
         await client.query(createSchemasSql(db));

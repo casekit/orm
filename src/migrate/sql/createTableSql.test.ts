@@ -47,7 +47,7 @@ describe("createTableSql", () => {
                 },
             },
         } satisfies ModelDefinition;
-        orm({ models: { post } }).transact(
+        orm({ models: { post }, relations: { post: {} } }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.post));
 

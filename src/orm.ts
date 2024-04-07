@@ -15,20 +15,27 @@ import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
 import { QueryResult } from "./types/queries/QueryResult";
-import { PopulatedSchema } from "./types/schema";
+import { PopulatedModel, PopulatedSchema } from "./types/schema";
 import { Configuration } from "./types/schema/definition/Configuration";
+import { ModelDefinitions } from "./types/schema/definition/ModelDefinitions";
+import { RelationsDefinitions } from "./types/schema/definition/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
-    Models extends Record<string, ModelDefinition> = Record<
-        string,
-        ModelDefinition
-    >,
+    Models extends ModelDefinitions = ModelDefinitions,
+    Relations extends
+        RelationsDefinitions<Models> = RelationsDefinitions<Models>,
 > {
-    public schema: PopulatedSchema<Models>;
+    public schema: Configuration<Models, Relations>;
     public config: Config;
-    public models: PopulatedSchema<Models>["models"];
+    public get models(): {
+        [M in ModelName<Models>]: PopulatedModel<ModelDefinition>;
+    } {
+        return this.schema.models as {
+            [M in ModelName<Models>]: PopulatedModel<ModelDefinition>;
+        };
+    }
 
     private pool: pg.Pool;
     private poolClient?: pg.PoolClient;
@@ -38,31 +45,35 @@ export class Orm<
     }
 
     constructor(schema: PopulatedSchema<Models>, poolClient?: pg.PoolClient) {
-        this.schema = schema;
+        this.schema = schema as Configuration<Models, Relations>;
         this.config = schema.config;
-        this.models = schema.models;
         this.pool = new pg.Pool(schema.config.connection ?? {});
         this.poolClient = poolClient;
     }
 
     public async transact<T>(
-        cb: (db: Orm<Models>) => Promise<T>,
+        cb: (db: Orm<Models, Relations>) => Promise<T>,
         opts = { rollback: false },
     ): Promise<T> {
         if (!this.poolClient) {
             const conn = await this.pool.connect();
             try {
-                return await new Orm<Models>(this.schema, conn).transact(
-                    cb,
-                    opts,
-                );
+                return await new Orm<Models, Relations>(
+                    this.schema as PopulatedSchema<Models>,
+                    conn,
+                ).transact(cb, opts);
             } finally {
                 conn.release();
             }
         } else {
             try {
                 this.poolClient.query("BEGIN");
-                return await cb(new Orm<Models>(this.schema, this.poolClient));
+                return await cb(
+                    new Orm<Models, Relations>(
+                        this.schema as PopulatedSchema<Models>,
+                        this.poolClient,
+                    ),
+                );
             } finally {
                 this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
             }
@@ -80,8 +91,15 @@ export class Orm<
         m: M,
         query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
     ): Promise<QueryResult<Models, M, Q>[]> {
-        const results = await findMany(this.connection, this.schema, m, query);
-        const parser = z.array(queryResultSchema(this.schema, m, query));
+        const results = await findMany(
+            this.connection,
+            this.schema as PopulatedSchema<Models>,
+            m,
+            query,
+        );
+        const parser = z.array(
+            queryResultSchema(this.schema as PopulatedSchema<Models>, m, query),
+        );
         return parser.parse(results) as QueryResult<Models, M, Q>[];
     }
 
@@ -94,12 +112,12 @@ export class Orm<
     ): Promise<CreateResult<Models, M, P>> {
         const result = await create(
             this.connection,
-            this.schema,
+            this.schema as PopulatedSchema<Models>,
             m,
             params as BaseCreateParams,
         );
         const parser = createResultSchema(
-            this.schema,
+            this.schema as PopulatedSchema<Models>,
             m,
             params as BaseCreateParams,
         );
@@ -107,10 +125,13 @@ export class Orm<
     }
 }
 
-export const orm = <Models extends Record<string, ModelDefinition>>(
-    schema: Configuration<Models>,
-): Orm<Models> => {
+export const orm = <
+    Models extends ModelDefinitions,
+    Relations extends RelationsDefinitions<Models>,
+>(
+    schema: Configuration<Models, Relations>,
+): Orm<Models, Relations> => {
     const populatedSchema = populateSchema(schema);
     validateSchema(populatedSchema);
-    return new Orm<Models>(populatedSchema);
+    return new Orm<Models, Relations>(populatedSchema);
 };

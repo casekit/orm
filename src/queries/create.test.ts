@@ -5,11 +5,11 @@ import { z } from "zod";
 import { ModelDefinition, orm } from "..";
 import { createTableSql } from "../migrate/sql/createTableSql";
 import { sql } from "../sql";
-import { config, models } from "../test/fixtures";
+import { config, models, relations } from "../test/fixtures";
 
 describe("create", () => {
     test("it inserts records into the database", async () => {
-        await orm({ config, models }).transact(
+        await orm({ config, models, relations }).transact(
             async (db) => {
                 const userId = uuid.v4();
                 const tenantId = uuid.v4();
@@ -62,7 +62,7 @@ describe("create", () => {
                 small: { type: "smallserial", schema: z.coerce.number() },
             },
         } satisfies ModelDefinition;
-        await orm({ config, models: { foo } }).transact(
+        await orm({ config, models: { foo }, relations: { foo: {} } }).transact(
             async (db) => {
                 db.connection.query(createTableSql(db.models.foo));
 
@@ -94,7 +94,7 @@ describe("create", () => {
                 name: { type: "text", schema: z.string() },
             },
         } satisfies ModelDefinition;
-        await orm({ config, models: { foo } }).transact(
+        await orm({ config, models: { foo }, relations: { foo: {} } }).transact(
             async (db) => {
                 db.connection.query(createTableSql(db.models.foo));
 

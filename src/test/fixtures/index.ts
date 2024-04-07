@@ -1,6 +1,8 @@
 import { orm } from "../..";
 import { config } from "./config";
-import { models } from "./models";
+import { Models, models } from "./models";
+import { Relations, relations } from "./relations";
 
-export const db = orm({ config, models, extensions: ["uuid-ossp"] });
-export { config, models };
+export const db = orm({ config, models, relations, extensions: ["uuid-ossp"] });
+export { config, models, relations };
+export type { Models, Relations };

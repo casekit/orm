@@ -4,6 +4,8 @@ import { ModelDefinition, SQLStatement } from "../..";
 import { Config } from "../Config";
 import { ColumnDefinition } from "./definition/ColumnDefinition";
 import { ForeignKey } from "./definition/ForeignKey";
+import { ModelDefinitions } from "./definition/ModelDefinitions";
+import { RelationsDefinitions } from "./definition/RelationsDefinitions";
 import { UniqueConstraint } from "./definition/UniqueConstraint";
 import { DataType } from "./postgres/DataType";
 
@@ -29,13 +31,15 @@ export type PopulatedModel<Model extends ModelDefinition> = {
     };
 };
 
+export type PopulatedModels<Models extends ModelDefinitions> = {
+    [M in keyof Models]: PopulatedModel<Models[M]>;
+};
+
 export type PopulatedSchema<
-    Models extends Record<string, ModelDefinition> = Record<
-        string,
-        ModelDefinition
-    >,
+    Models extends ModelDefinitions = Record<string, ModelDefinition>,
 > = {
-    models: { [M in keyof Models]: PopulatedModel<Models[M]> };
+    models: PopulatedModels<Models>;
+    relations: RelationsDefinitions<ModelDefinitions>;
     extensions: string[];
     config: Config;
 };

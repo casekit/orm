@@ -1,8 +1,13 @@
 import { Config } from "../../Config";
-import { ModelDefinition } from "./ModelDefinition";
+import { ModelDefinitions } from "./ModelDefinitions";
+import { RelationsDefinitions } from "./RelationsDefinitions";
 
-export type Configuration<Models extends Record<string, ModelDefinition>> = {
+export type Configuration<
+    Models extends ModelDefinitions,
+    Relations extends RelationsDefinitions<Models>,
+> = {
     models: Models;
+    relations?: Relations;
     extensions?: string[];
     config?: Config;
 };

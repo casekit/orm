@@ -2,9 +2,10 @@ import { ZodSchema, z } from "zod";
 
 import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
 import { PopulatedSchema } from "../../types/schema";
+import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
 
-export const createResultSchema = (
-    schema: PopulatedSchema,
+export const createResultSchema = <Models extends ModelDefinitions>(
+    schema: PopulatedSchema<Models>,
     m: string,
     params: BaseCreateParams,
 ) => {
