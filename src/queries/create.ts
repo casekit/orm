@@ -1,14 +1,15 @@
+import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { BaseCreateParams } from "../types/queries/BaseCreateParams";
-import { PopulatedSchema } from "../types/schema";
 import { buildCreate } from "./builder/buildCreate";
 import { createToSql } from "./builder/createToSql";
 import { rowToObject } from "./builder/rowToObject";
 
 export const create = async (
     conn: Connection,
-    schema: PopulatedSchema,
+    schema: BaseConfiguration,
     m: string,
     params: BaseCreateParams,
 ) => {

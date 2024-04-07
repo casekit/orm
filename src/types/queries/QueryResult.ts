@@ -1,4 +1,4 @@
-import { ModelDefinitions } from "../schema/definition/ModelDefinitions";
+import { ModelDefinitions } from "../schema/definitions/ModelDefinitions";
 import { ColumnType } from "../schema/helpers/ColumnType";
 import { ModelName } from "../schema/helpers/ModelName";
 import { BaseQuery } from "./BaseQuery";

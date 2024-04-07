@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { sql } from "../../../sql";
-import { ModelDefinition } from "../../../types/schema/definition/ModelDefinition";
+import { ModelDefinition } from "../../../types/schema/definitions/ModelDefinition";
 
 export const user = {
     columns: {

@@ -1,7 +1,7 @@
-import { ModelDefinition } from "./types/schema/definition/ModelDefinition";
+import { BaseModel } from "./types/base/BaseModel";
 
 type OrmErrorMeta = {
-    model?: [string, ModelDefinition];
+    model?: [string, BaseModel];
     data?: Record<string, unknown>;
 };
 

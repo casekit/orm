@@ -1,10 +1,10 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../../sql";
-import { Model } from "../../types/schema";
+import { BaseModel } from "../../types/base/BaseModel";
 import { interleave } from "../../util/interleave";
 
-export const createTableSql = (model: Model): SQLStatement => {
+export const createTableSql = (model: BaseModel): SQLStatement => {
     const columns = Object.values(model.columns);
     const primaryKey = model.primaryKey;
 

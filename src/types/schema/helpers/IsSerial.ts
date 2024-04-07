@@ -1,4 +1,4 @@
-import { ModelDefinitions } from "../definition/ModelDefinitions";
+import { ModelDefinitions } from "../definitions/ModelDefinitions";
 import { ColumnName } from "./ColumnName";
 import { Columns } from "./Columns";
 import { ModelName } from "./ModelName";

@@ -1,5 +1,5 @@
-import { Orm } from "../../orm";
 import { SQLStatement } from "../../sql";
+import { BaseOrm } from "../../types/base/BaseOrm";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createForeignKeyConstraintSql } from "../sql/createForeignKeyConstraintSql";
 import { createSchemasSql } from "../sql/createSchemasSql";
@@ -8,7 +8,7 @@ import { createUniqueConstraintSql } from "../sql/createUniqueConstraintSql";
 import { dropSchemasSql } from "../sql/dropSchemasSql";
 
 export const implode = async (
-    db: Orm,
+    db: BaseOrm,
     { dryRun, output }: { dryRun: boolean; output: boolean },
 ) => {
     const statement = new SQLStatement();

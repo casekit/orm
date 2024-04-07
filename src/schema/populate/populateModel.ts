@@ -1,27 +1,24 @@
-import { Config } from "../types/Config";
-import { PopulatedModel } from "../types/schema";
-import { ForeignKey } from "../types/schema/definition/ForeignKey";
-import { ModelDefinition } from "../types/schema/definition/ModelDefinition";
-import { UniqueConstraint } from "../types/schema/definition/UniqueConstraint";
+import { mapValues } from "lodash-es";
+import { BaseModel } from "src/types/base/BaseModel";
+
+import { BaseConfiguration } from "../../types/base/BaseConfiguration";
+import { ForeignKey } from "../../types/schema/constraints/ForeignKey";
+import { UniqueConstraint } from "../../types/schema/constraints/UniqueConstraint";
+import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (
-    config: Config,
+    config: Pick<BaseConfiguration, "naming" | "schema">,
     name: string,
     model: ModelDefinition,
-): PopulatedModel<ModelDefinition> => {
-    const columns = Object.fromEntries(
-        Object.entries(model.columns).map(([name, column]) => [
-            name,
-            {
-                name: column.name ?? config.naming.column(name),
-                type: column.type,
-                schema: column.schema ?? suggestedColumnSchema(column.type),
-                nullable: column.nullable ?? false,
-                default: column.default ?? null,
-            },
-        ]),
-    );
+): BaseModel => {
+    const columns = mapValues(model.columns, (column, name) => ({
+        name: column.name ?? config.naming.column(name),
+        type: column.type,
+        schema: column.schema ?? suggestedColumnSchema(column.type),
+        nullable: column.nullable ?? false,
+        default: column.default ?? null,
+    }));
 
     const primaryKey =
         model.primaryKey ??

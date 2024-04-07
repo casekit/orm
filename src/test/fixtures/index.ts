@@ -1,6 +1,15 @@
-import { orm } from "../..";
-import { config } from "./config";
-import { models } from "./models";
+import { snakeCase } from "lodash-es";
 
-export const db = orm({ config, models, extensions: ["uuid-ossp"] });
-export { config, models };
+import { orm } from "../..";
+import { Models, models } from "./models";
+import { Relations, relations } from "./relations";
+
+export const db = orm({
+    models,
+    relations,
+    extensions: ["uuid-ossp"],
+    naming: { column: snakeCase },
+    schema: "casekit",
+});
+export { models, relations };
+export type { Models, Relations };

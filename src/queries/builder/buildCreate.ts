@@ -1,6 +1,6 @@
+import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+
 import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
-import { PopulatedSchema } from "../../types/schema";
-import { ModelDefinitions } from "../../types/schema/definition/ModelDefinitions";
 import { tableAlias } from "./tableAlias";
 
 export type CreateBuilder = {
@@ -9,8 +9,8 @@ export type CreateBuilder = {
     returning: { name: string; path: string; alias: string }[];
 };
 
-export const buildCreate = <Models extends ModelDefinitions>(
-    schema: PopulatedSchema<Models>,
+export const buildCreate = (
+    schema: BaseConfiguration,
     m: string,
     params: BaseCreateParams,
     tableIndex = 0,
