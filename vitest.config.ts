@@ -9,6 +9,6 @@ export default defineConfig({
         // ... Specify options here.
         include: ["**/*.(spec|test|properties).ts?(x)"],
         globalSetup: "src/test/globalSetup.ts",
-        coverage: { provider: "v8" },
+        coverage: { provider: "istanbul" },
     },
 });
