@@ -14,8 +14,13 @@ export const findMany = async (
     query: BaseQuery,
 ) => {
     const builder = buildQuery(config, m, query);
-    const [sql, variables] = queryToSql(builder);
-    logger.info({ message: "Executing query", sql, variables });
-    const result = await conn.query(sql, variables);
+    const statement = queryToSql(builder);
+    logger.info({
+        message: "Executing query",
+        sql: statement.text,
+        values: statement.values,
+    });
+    console.log(statement.text);
+    const result = await conn.query(statement);
     return result.rows.map(rowToObject(builder.columns));
 };

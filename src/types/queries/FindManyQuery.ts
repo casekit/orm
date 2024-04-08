@@ -11,4 +11,6 @@ export type FindManyQuery<
 > = {
     select: SelectClause<Models, M>;
     include?: IncludeClause<Models, Relations, M>;
+    limit?: number;
+    offset?: number;
 };

@@ -1,6 +1,6 @@
 import { assertType, describe, expectTypeOf, test } from "vitest";
 
-import { db } from "../fixtures";
+import { db } from "../db";
 
 describe("findMany", () => {
     test("only models that exist can be queried", () => {
@@ -88,6 +88,7 @@ describe("findMany", () => {
             >
         >();
     });
+
     test("only fields that exist can be selected from included models", async () => {
         assertType(
             await db.findMany("post", {
