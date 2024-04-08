@@ -12,7 +12,7 @@
         "prettier": "prettier -c src",
         "prettier:write": "prettier -w src",
         "release": "pnpm build && pnpm version --prerelease --preid=snapshot && pnpm publish --access private",
-        "test": "vitest --typecheck",
+        "test": "vitest --typecheck --coverage",
         "typecheck": "tsc --noEmit"
     },
     "keywords": [],
