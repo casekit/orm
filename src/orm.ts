@@ -15,7 +15,7 @@ import { BaseCreateParams } from "./types/queries/BaseCreateParams";
 import { CreateParams } from "./types/queries/CreateParams";
 import { CreateResult } from "./types/queries/CreateResult";
 import { FindManyQuery } from "./types/queries/FindManyQuery";
-import { QueryResult } from "./types/queries/QueryResult";
+import { FindManyQueryResult } from "./types/queries/QueryResult";
 import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./types/schema/definitions/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
@@ -84,14 +84,19 @@ export class Orm<
 
     public async findMany<
         M extends ModelName<Models>,
-        Q extends FindManyQuery<Models, M>,
+        Q extends FindManyQuery<Models, Relations, M>,
     >(
         m: M,
-        query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
-    ): Promise<QueryResult<Models, M, Q>[]> {
+        query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
+    ): Promise<FindManyQueryResult<Models, Relations, M, Q>> {
         const results = await findMany(this.connection, this.config, m, query);
         const parser = z.array(queryResultSchema(this.config, m, query));
-        return parser.parse(results) as QueryResult<Models, M, Q>[];
+        return parser.parse(results) as FindManyQueryResult<
+            Models,
+            Relations,
+            M,
+            Q
+        >;
     }
 
     public async create<

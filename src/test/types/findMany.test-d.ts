@@ -56,4 +56,36 @@ describe("findMany", () => {
             }),
         ).not.toMatchTypeOf<{ id: number; title: string; content: string }[]>();
     });
+
+    test("a model's relations can be selected", async () => {
+        expectTypeOf(
+            await db.findMany("post", {
+                select: ["id", "title", "content"],
+                include: {
+                    author: {
+                        select: ["id", "username", "joinedAt"],
+                        include: {
+                            tenants: {
+                                select: ["id", "name"],
+                            },
+                        },
+                    },
+                },
+            }),
+        ).toMatchTypeOf<
+            Readonly<
+                {
+                    id: string;
+                    title: string;
+                    content: string;
+                    author: {
+                        id: string;
+                        username: string;
+                        joinedAt: Date | null;
+                        tenants: { id: string; name: string }[];
+                    };
+                }[]
+            >
+        >();
+    });
 });
