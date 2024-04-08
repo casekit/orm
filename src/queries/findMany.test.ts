@@ -12,7 +12,7 @@ describe("findMany", () => {
                     select: ["id", "title"],
                 });
 
-                expect(results[0]).toEqual({
+                expect(results.find((r) => r.id === posts[0].id)).toEqual({
                     id: posts[0].id,
                     title: posts[0].title,
                 });
@@ -30,7 +30,7 @@ describe("findMany", () => {
                     include: { author: { select: ["id", "username"] } },
                 });
 
-                expect(results[0]).toEqual({
+                expect(results.find((r) => r.id === posts[0].id)).toEqual({
                     id: posts[0].id,
                     title: posts[0].title,
                     author: {
@@ -47,25 +47,53 @@ describe("findMany", () => {
         await db.transact(
             async (db) => {
                 const { posts, user } = await factory.seed(db);
-                const result = await db.findMany("user", {
+                const results = await db.findMany("user", {
                     select: ["id", "username"],
                     include: { posts: { select: ["id", "title", "content"] } },
+                });
+
+                expect(results.find((r) => r.id === user.id)).toEqual({
+                    id: user.id,
+                    username: user.username,
+                    posts: [
+                        {
+                            id: posts[0].id,
+                            title: posts[0].title,
+                            content: posts[0].content,
+                        },
+                        {
+                            id: posts[1].id,
+                            title: posts[1].title,
+                            content: posts[1].content,
+                        },
+                    ],
+                });
+            },
+            { rollback: true },
+        );
+    });
+
+    test("it can fetch N:N relations", async () => {
+        await db.transact(
+            async (db) => {
+                const { tenants, user } = await factory.seed(db);
+                const result = await db.findMany("user", {
+                    select: ["id", "username"],
+                    include: { tenants: { select: ["id", "name"] } },
                 });
 
                 expect(result).toEqual([
                     {
                         id: user.id,
                         username: user.username,
-                        posts: [
+                        tenants: [
                             {
-                                id: posts[0].id,
-                                title: posts[0].title,
-                                content: posts[0].content,
+                                id: tenants[0].id,
+                                name: tenants[0].name,
                             },
                             {
-                                id: posts[1].id,
-                                title: posts[1].title,
-                                content: posts[1].content,
+                                id: tenants[1].id,
+                                name: tenants[1].name,
                             },
                         ],
                     },
