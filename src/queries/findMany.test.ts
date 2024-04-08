@@ -43,7 +43,7 @@ describe("findMany", () => {
         );
     });
 
-    test.only("it can fetch 1:N relations", async () => {
+    test("it can fetch 1:N relations", async () => {
         await db.transact(
             async (db) => {
                 const { posts, user } = await factory.seed(db);
