@@ -57,7 +57,7 @@ describe("findMany", () => {
         ).not.toMatchTypeOf<{ id: number; title: string; content: string }[]>();
     });
 
-    test("a model's relations can be selected", async () => {
+    test("a model's relations can be included", async () => {
         expectTypeOf(
             await db.findMany("post", {
                 select: ["id", "title", "content"],
@@ -87,5 +87,23 @@ describe("findMany", () => {
                 }[]
             >
         >();
+    });
+    test("only fields that exist can be selected from included models", async () => {
+        assertType(
+            await db.findMany("post", {
+                select: ["id", "title", "content"],
+                include: {
+                    author: {
+                        // @ts-expect-error wrong is not a field on the user model
+                        select: ["id", "username", "joinedAt", "wrong"],
+                        include: {
+                            tenants: {
+                                select: ["id", "name"],
+                            },
+                        },
+                    },
+                },
+            }),
+        );
     });
 });
