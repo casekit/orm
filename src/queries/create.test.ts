@@ -5,7 +5,7 @@ import { z } from "zod";
 import { ModelDefinition, orm } from "..";
 import { createTableSql } from "../migrate/sql/createTableSql";
 import { sql } from "../sql";
-import { db } from "../test/fixtures";
+import { db } from "../test/db";
 
 describe("create", () => {
     test("it inserts records into the database", async () => {

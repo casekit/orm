@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { create } from "./queries/create";
 import { findMany } from "./queries/findMany";
+import { findOne } from "./queries/findOne";
 import { createResultSchema } from "./queries/results/createResultSchema";
 import { queryResultSchema } from "./queries/results/queryResultSchema";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
@@ -84,14 +85,26 @@ export class Orm<
 
     public async findMany<
         M extends ModelName<Models>,
-        Q extends FindManyQuery<Models, M>,
+        Q extends FindManyQuery<Models, Relations, M>,
     >(
         m: M,
-        query: DisallowExtraKeys<FindManyQuery<Models, M>, Q>,
-    ): Promise<QueryResult<Models, M, Q>[]> {
+        query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
+    ): Promise<QueryResult<Models, Relations, M, Q>[]> {
         const results = await findMany(this.connection, this.config, m, query);
         const parser = z.array(queryResultSchema(this.config, m, query));
-        return parser.parse(results) as QueryResult<Models, M, Q>[];
+        return parser.parse(results) as QueryResult<Models, Relations, M, Q>[];
+    }
+
+    public async findOne<
+        M extends ModelName<Models>,
+        Q extends FindManyQuery<Models, Relations, M>,
+    >(
+        m: M,
+        query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
+    ): Promise<QueryResult<Models, Relations, M, Q>> {
+        const result = await findOne(this.connection, this.config, m, query);
+        const parser = queryResultSchema(this.config, m, query);
+        return parser.parse(result) as QueryResult<Models, Relations, M, Q>;
     }
 
     public async create<

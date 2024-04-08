@@ -1,6 +1,6 @@
 import { assertType, describe, expectTypeOf, test } from "vitest";
 
-import { db } from "../fixtures";
+import { db } from "../db";
 
 describe("findMany", () => {
     test("only models that exist can be queried", () => {
@@ -55,5 +55,56 @@ describe("findMany", () => {
                 select: ["id", "title"],
             }),
         ).not.toMatchTypeOf<{ id: number; title: string; content: string }[]>();
+    });
+
+    test("a model's relations can be included", async () => {
+        expectTypeOf(
+            await db.findMany("post", {
+                select: ["id", "title", "content"],
+                include: {
+                    author: {
+                        select: ["id", "username", "joinedAt"],
+                        include: {
+                            tenants: {
+                                select: ["id", "name"],
+                            },
+                        },
+                    },
+                },
+            }),
+        ).toMatchTypeOf<
+            Readonly<
+                {
+                    id: string;
+                    title: string;
+                    content: string;
+                    author: {
+                        id: string;
+                        username: string;
+                        joinedAt: Date | null;
+                        tenants: { id: string; name: string }[];
+                    };
+                }[]
+            >
+        >();
+    });
+
+    test("only fields that exist can be selected from included models", async () => {
+        assertType(
+            await db.findMany("post", {
+                select: ["id", "title", "content"],
+                include: {
+                    author: {
+                        // @ts-expect-error wrong is not a field on the user model
+                        select: ["id", "username", "joinedAt", "wrong"],
+                        include: {
+                            tenants: {
+                                select: ["id", "name"],
+                            },
+                        },
+                    },
+                },
+            }),
+        );
     });
 });

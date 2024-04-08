@@ -7,7 +7,7 @@ import { z } from "zod";
 
 import { orm } from "../..";
 import { sql } from "../../sql";
-import { db } from "../../test/fixtures";
+import { db } from "../../test/db";
 import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
 import { createTableSql } from "./createTableSql";
 
