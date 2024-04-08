@@ -14,7 +14,7 @@ export const tenantUser = {
             references: { table: "tenant", column: "id" },
         },
         userId: { type: "uuid", references: { table: "user", column: "id" } },
-        createdAt: { type: "timestamp with time zone" },
+        createdAt: { type: "timestamp with time zone", default: sql`now()` },
         deletedAt: {
             type: "timestamp with time zone",
             nullable: true,

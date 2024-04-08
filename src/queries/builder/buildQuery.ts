@@ -11,6 +11,7 @@ export type Join = {
 };
 
 export type QueryBuilder = {
+    tableIndex: number;
     columns: {
         table: string;
         name: string;
@@ -39,16 +40,17 @@ export const buildQuery = (
     m: string,
     query: BaseQuery,
     path: string[] = [],
-    tableIndex = 0,
+    _tableIndex = 0,
 ): QueryBuilder => {
     const builder: QueryBuilder = {
+        tableIndex: _tableIndex,
         columns: [],
         tables: [],
     };
 
     const model = config.models[m];
 
-    const alias = tableAlias(tableIndex++);
+    const alias = tableAlias(builder.tableIndex++);
     let colIndex = 0;
 
     builder.tables.push({
@@ -75,18 +77,6 @@ export const buildQuery = (
         });
     }
 
-    if (query.lateralBy) {
-        builder.lateralBy = {
-            groupTable: tableAlias(tableIndex++),
-            itemTable: tableAlias(tableIndex++),
-            columns: query.lateralBy.map(({ column, values }) => ({
-                column: model.columns[column].name,
-                type: model.columns[column].type,
-                values,
-            })),
-        };
-    }
-
     for (const [r, subquery] of Object.entries(query.include ?? {})) {
         const relation = config.relations[m][r];
         const joinedModel = config.models[relation.model];
@@ -96,7 +86,7 @@ export const buildQuery = (
                 relation.model,
                 subquery!,
                 [...path, r],
-                tableIndex++,
+                builder.tableIndex++,
             );
             const [joinedTable, ...otherTables] = joinBuilder.tables;
             builder.tables.push({
@@ -122,6 +112,18 @@ export const buildQuery = (
             builder.tables.push(...otherTables);
             builder.columns.push(...joinBuilder.columns);
         }
+    }
+
+    if (query.lateralBy) {
+        builder.lateralBy = {
+            groupTable: tableAlias(builder.tableIndex++),
+            itemTable: tableAlias(builder.tableIndex++),
+            columns: query.lateralBy.map(({ column, values }) => ({
+                column: model.columns[column].name,
+                type: model.columns[column].type,
+                values,
+            })),
+        };
     }
 
     return builder;

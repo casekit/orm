@@ -8,6 +8,11 @@ export type BaseRelation =
       }
     | {
           model: string;
-          type: "1:N" | "N:1";
+          type: "N:1";
+          foreignKey: string | string[];
+      }
+    | {
+          model: string;
+          type: "1:N";
           foreignKey: string | string[];
       };
