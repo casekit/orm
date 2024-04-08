@@ -1,6 +1,6 @@
 import { assertType, describe, expectTypeOf, test } from "vitest";
 
-import { db } from "../db";
+import { db } from "../test/db";
 
 describe("findMany", () => {
     test("only models that exist can be queried", () => {
