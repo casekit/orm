@@ -12,7 +12,8 @@
         "prettier": "prettier -c src",
         "prettier:write": "prettier -w src",
         "release": "pnpm build && pnpm version --prerelease --preid=snapshot && pnpm publish --access private",
-        "test": "vitest --typecheck --coverage",
+        "test": "vitest --typecheck",
+        "test:coverage": "vitest --typecheck --coverage",
         "typecheck": "tsc --noEmit"
     },
     "keywords": [],

@@ -35,7 +35,7 @@ jobs:
             - uses: ./.github/actions/ci-setup
 
             - name: Run tests
-              run: pnpm test
+              run: pnpm test:coverage
 
     typecheck:
         name: "📐 Typecheck"
