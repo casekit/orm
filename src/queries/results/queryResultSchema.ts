@@ -10,10 +10,15 @@ export const queryResultSchema = (
 ) => {
     const obj: Record<string, ZodSchema<unknown>> = {};
 
-    query.select.forEach((s) => {
-        const col = config.models[m].columns[s];
-        obj[s] = col.nullable ? col.zodSchema.nullable() : col.zodSchema;
+    query.select.forEach((field) => {
+        const col = config.models[m].columns[field];
+        obj[field] = col.nullable ? col.zodSchema.nullable() : col.zodSchema;
     });
+
+    for (const [field, subquery] of Object.entries(query.include || {})) {
+        const model = config.relations[m][field]["model"];
+        obj[field] = queryResultSchema(config, model, subquery!);
+    }
 
     return z.object(obj);
 };

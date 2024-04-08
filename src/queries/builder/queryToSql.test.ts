@@ -19,6 +19,7 @@ describe("queryToSql", () => {
             FROM casekit.post a
         `);
     });
+
     test("it builds a valid query for included N:1 relations", async () => {
         const builder = buildQuery(db.config, "post", {
             select: ["id", "title"],

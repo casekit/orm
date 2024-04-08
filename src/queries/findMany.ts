@@ -20,7 +20,6 @@ export const findMany = async (
         sql: statement.text,
         values: statement.values,
     });
-    console.log(statement.text);
     const result = await conn.query(statement);
     return result.rows.map(rowToObject(builder.columns));
 };
