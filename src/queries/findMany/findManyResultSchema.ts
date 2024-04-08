@@ -3,7 +3,7 @@ import { ZodSchema, z } from "zod";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 
-export const queryResultSchema = (
+export const findManyResultSchema = (
     config: BaseConfiguration,
     m: string,
     query: BaseQuery,
@@ -17,7 +17,7 @@ export const queryResultSchema = (
 
     for (const [field, subquery] of Object.entries(query.include || {})) {
         const relation = config.relations[m][field];
-        const schema = queryResultSchema(config, relation.model, subquery!);
+        const schema = findManyResultSchema(config, relation.model, subquery!);
         obj[field] = relation.type === "N:1" ? schema : z.array(schema);
     }
 

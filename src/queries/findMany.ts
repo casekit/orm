@@ -7,9 +7,9 @@ import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { BaseQuery } from "../types/queries/BaseQuery";
 import { ensureArray } from "../util/ensureArray";
-import { buildQuery } from "./builder/buildQuery";
-import { queryToSql } from "./builder/queryToSql";
-import { rowToObject } from "./builder/rowToObject";
+import { buildFindMany } from "./findMany/buildFindMany";
+import { findManyToSql } from "./findMany/findManyToSql";
+import { rowToObject } from "./util/rowToObject";
 
 export const findMany = async (
     conn: Connection,
@@ -17,8 +17,8 @@ export const findMany = async (
     m: string,
     query: BaseQuery,
 ) => {
-    const builder = buildQuery(config, m, query);
-    const statement = queryToSql(builder);
+    const builder = buildFindMany(config, m, query);
+    const statement = findManyToSql(builder);
     logger.info({
         message: "Executing query",
         sql: statement.text,

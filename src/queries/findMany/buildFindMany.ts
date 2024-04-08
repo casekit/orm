@@ -3,39 +3,10 @@ import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 import { ensureArray } from "../../util/ensureArray";
-import { tableAlias } from "./tableAlias";
+import { tableAlias } from "../util/tableAlias";
+import { QueryBuilder } from "./FindManyBuilder";
 
-export type Join = {
-    from: { table: string; columns: string[] };
-    to: { table: string; columns: string[] };
-};
-
-export type QueryBuilder = {
-    tableIndex: number;
-    columns: {
-        table: string;
-        name: string;
-        alias: string;
-        path: string[];
-    }[];
-    tables: {
-        name: string;
-        schema: string;
-        alias: string;
-        joins?: Join[];
-    }[];
-    lateralBy?: {
-        groupTable: string;
-        itemTable: string;
-        columns: {
-            column: string;
-            type: string;
-            values: unknown[];
-        }[];
-    };
-};
-
-export const buildQuery = (
+export const buildFindMany = (
     config: BaseConfiguration,
     m: string,
     query: BaseQuery,
@@ -81,7 +52,7 @@ export const buildQuery = (
         const relation = config.relations[m][r];
         const joinedModel = config.models[relation.model];
         if (relation.type === "N:1") {
-            const joinBuilder = buildQuery(
+            const joinBuilder = buildFindMany(
                 config,
                 relation.model,
                 subquery!,
@@ -124,6 +95,22 @@ export const buildQuery = (
                 values,
             })),
         };
+    }
+
+    if (query.orderBy) {
+        builder.ordering = query.orderBy.map((o) => ({
+            table: alias,
+            column: Array.isArray(o) ? o[0] : o,
+            direction: Array.isArray(o) ? o[1] : "asc",
+        }));
+    }
+
+    if (query.limit) {
+        builder.limit = query.limit;
+    }
+
+    if (query.offset) {
+        builder.offset = query.offset;
     }
 
     return builder;

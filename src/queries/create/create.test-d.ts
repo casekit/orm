@@ -3,7 +3,7 @@ import { assertType, describe, expectTypeOf, test } from "vitest";
 import { z } from "zod";
 
 import { ModelDefinition, orm } from "../..";
-import { db } from "../test/db";
+import { db } from "../../test/db";
 
 describe("create", () => {
     test("only models that exist can be created", () => {

@@ -3,9 +3,9 @@ import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { BaseCreateParams } from "../types/queries/BaseCreateParams";
-import { buildCreate } from "./builder/buildCreate";
-import { createToSql } from "./builder/createToSql";
-import { rowToObject } from "./builder/rowToObject";
+import { buildCreate } from "./create/buildCreate";
+import { createToSql } from "./create/createToSql";
+import { rowToObject } from "./util/rowToObject";
 
 export const create = async (
     conn: Connection,

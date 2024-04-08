@@ -6,4 +6,5 @@ export type BaseQuery = {
     limit?: number;
     offset?: number;
     lateralBy?: LateralByClause;
+    orderBy?: (string | [string, "asc" | "desc"])[];
 };
