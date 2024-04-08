@@ -2,10 +2,10 @@ import pg from "pg";
 import { z } from "zod";
 
 import { create } from "./queries/create";
+import { createResultSchema } from "./queries/create/createResultSchema";
 import { findMany } from "./queries/findMany";
+import { findManyResultSchema } from "./queries/findMany/findManyResultSchema";
 import { findOne } from "./queries/findOne";
-import { createResultSchema } from "./queries/results/createResultSchema";
-import { queryResultSchema } from "./queries/results/queryResultSchema";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
 import { validateConfiguration } from "./schema/validate/validateConfiguration";
 import { Configuration } from "./types/Configuration";
@@ -91,7 +91,7 @@ export class Orm<
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
     ): Promise<QueryResult<Models, Relations, M, Q>[]> {
         const results = await findMany(this.connection, this.config, m, query);
-        const parser = z.array(queryResultSchema(this.config, m, query));
+        const parser = z.array(findManyResultSchema(this.config, m, query));
         return parser.parse(results) as QueryResult<Models, Relations, M, Q>[];
     }
 
@@ -103,7 +103,7 @@ export class Orm<
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
     ): Promise<QueryResult<Models, Relations, M, Q>> {
         const result = await findOne(this.connection, this.config, m, query);
-        const parser = queryResultSchema(this.config, m, query);
+        const parser = findManyResultSchema(this.config, m, query);
         return parser.parse(result) as QueryResult<Models, Relations, M, Q>;
     }
 

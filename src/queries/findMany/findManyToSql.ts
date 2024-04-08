@@ -3,9 +3,9 @@ import pgfmt from "pg-format";
 import { OrmError } from "../../errors";
 import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
-import { QueryBuilder } from "./buildQuery";
+import { QueryBuilder } from "./FindManyBuilder";
 
-export const queryToSql = (builder: QueryBuilder): SQLStatement => {
+export const findManyToSql = (builder: QueryBuilder): SQLStatement => {
     const frag = new SQLStatement();
     const [table, ...joinedTables] = builder.tables;
 
@@ -29,15 +29,6 @@ export const queryToSql = (builder: QueryBuilder): SQLStatement => {
             }
         });
         frag.push(pgfmt(`) %I\nJOIN LATERAL (\n`, groupTable));
-
-        // frag.push(
-        //     pgfmt(
-        //         `SELECT %I.* FROM (SELECT UNNEST(ARRAY[${ids.map(() => "$n").join(", ")}]::uuid[]) AS %I) %I JOIN LATERAL (`,
-        //         itemTable,
-        //         columnName,
-        //         groupTable,
-        //     ),
-        // );
     }
 
     frag.push(
@@ -100,6 +91,29 @@ export const queryToSql = (builder: QueryBuilder): SQLStatement => {
                 ),
             );
         });
+    }
+
+    if (builder.ordering) {
+        frag.push(pgfmt(`\nORDER BY `));
+        frag.push(
+            builder.ordering
+                .map(({ table, column, direction }) =>
+                    pgfmt(
+                        `%I.%I ${direction === "asc" ? "ASC" : "DESC"}`,
+                        table,
+                        column,
+                    ),
+                )
+                .join(", "),
+        );
+    }
+
+    if (builder.limit !== undefined) {
+        frag.push(sql`\nLIMIT ${builder.limit}`);
+    }
+
+    if (builder.offset !== undefined) {
+        frag.push(sql`\nOFFSET ${builder.offset}`);
     }
 
     if (builder.lateralBy) {

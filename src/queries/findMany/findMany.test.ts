@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
-import { db } from "../test/db";
-import * as factory from "../test/factory";
+import { db } from "../../test/db";
+import * as factory from "../../test/factory";
 
 describe("findMany", () => {
     test("it can select fields from the model", async () => {

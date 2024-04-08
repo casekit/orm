@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { QueryBuilder } from "./buildQuery";
+import { QueryBuilder } from "../findMany/FindManyBuilder";
 import { rowToObject } from "./rowToObject";
 
 const builder: Pick<QueryBuilder, "columns"> = {
