@@ -1,12 +1,44 @@
 import pgfmt from "pg-format";
 
 import { OrmError } from "../../errors";
-import { SQLStatement } from "../../sql";
+import { SQLStatement, sql } from "../../sql";
+import { interleave } from "../../util/interleave";
 import { QueryBuilder } from "./buildQuery";
 
 export const queryToSql = (builder: QueryBuilder): SQLStatement => {
     const frag = new SQLStatement();
     const [table, ...joinedTables] = builder.tables;
+
+    if (builder.lateralBy) {
+        const { columns, groupTable, itemTable } = builder.lateralBy;
+        frag.push(pgfmt(`SELECT %I.* FROM (\nSELECT `, itemTable));
+        columns.forEach((c, index) => {
+            frag.push(pgfmt(`UNNEST(ARRAY[`));
+
+            frag.push(
+                ...interleave(
+                    c.values.map((v) => sql`${v}`),
+                    sql`, `,
+                ),
+            );
+
+            frag.push(pgfmt(`]::%I[]) AS %I`, c.type, c.column));
+
+            if (index !== columns.length - 1) {
+                frag.push(pgfmt(", "));
+            }
+        });
+        frag.push(pgfmt(`) %I\nJOIN LATERAL (\n`, groupTable));
+
+        // frag.push(
+        //     pgfmt(
+        //         `SELECT %I.* FROM (SELECT UNNEST(ARRAY[${ids.map(() => "$n").join(", ")}]::uuid[]) AS %I) %I JOIN LATERAL (`,
+        //         itemTable,
+        //         columnName,
+        //         groupTable,
+        //     ),
+        // );
+    }
 
     frag.push(
         pgfmt(
@@ -52,5 +84,28 @@ export const queryToSql = (builder: QueryBuilder): SQLStatement => {
                 .join(" AND "),
         );
     }
+
+    frag.push(sql`\nWHERE 1 = 1`);
+
+    if (builder.lateralBy) {
+        const { groupTable, columns } = builder.lateralBy;
+        columns.forEach((c) => {
+            frag.push(
+                pgfmt(
+                    `\n    AND %I.%I = %I.%I`,
+                    table.alias,
+                    c.column,
+                    groupTable,
+                    c.column,
+                ),
+            );
+        });
+    }
+
+    if (builder.lateralBy) {
+        const { itemTable } = builder.lateralBy;
+        frag.push(pgfmt(`\n) %I ON TRUE`, itemTable));
+    }
+
     return frag;
 };

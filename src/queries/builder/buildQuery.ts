@@ -23,6 +23,15 @@ export type QueryBuilder = {
         alias: string;
         joins?: Join[];
     }[];
+    lateralBy?: {
+        groupTable: string;
+        itemTable: string;
+        columns: {
+            column: string;
+            type: string;
+            values: unknown[];
+        }[];
+    };
 };
 
 export const buildQuery = (
@@ -48,8 +57,14 @@ export const buildQuery = (
         alias: alias,
     });
 
-    // make sure we always select the model's primary key - we'll strip it out later
-    const select = uniq([...query.select, ...model.primaryKey]);
+    // make sure we always select the model's primary key,
+    // and if necessary the foreign key for a lateral join
+    // - we'll strip them out later
+    const select = uniq([
+        ...query.select,
+        ...model.primaryKey,
+        ...(query.lateralBy ?? []).map(({ column }) => column),
+    ]);
 
     for (const f of select) {
         builder.columns.push({
@@ -58,6 +73,18 @@ export const buildQuery = (
             alias: `${alias}_${colIndex++}`,
             path: [...path, f],
         });
+    }
+
+    if (query.lateralBy) {
+        builder.lateralBy = {
+            groupTable: tableAlias(tableIndex++),
+            itemTable: tableAlias(tableIndex++),
+            columns: query.lateralBy.map(({ column, values }) => ({
+                column: model.columns[column].name,
+                type: model.columns[column].type,
+                values,
+            })),
+        };
     }
 
     for (const [r, subquery] of Object.entries(query.include ?? {})) {
@@ -69,7 +96,7 @@ export const buildQuery = (
                 relation.model,
                 subquery!,
                 [...path, r],
-                tableIndex,
+                tableIndex++,
             );
             const [joinedTable, ...otherTables] = joinBuilder.tables;
             builder.tables.push({

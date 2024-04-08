@@ -16,8 +16,9 @@ export const queryResultSchema = (
     });
 
     for (const [field, subquery] of Object.entries(query.include || {})) {
-        const model = config.relations[m][field]["model"];
-        obj[field] = queryResultSchema(config, model, subquery!);
+        const relation = config.relations[m][field];
+        const schema = queryResultSchema(config, relation.model, subquery!);
+        obj[field] = relation.type === "N:1" ? schema : z.array(schema);
     }
 
     return z.object(obj);

@@ -5,7 +5,8 @@ import { DB } from "../db";
 export const seed = async (db: DB) => {
     const userId = uuid.v4();
     const tenantId = uuid.v4();
-    const postId = uuid.v4();
+    const postId1 = uuid.v4();
+    const postId2 = uuid.v4();
 
     const tenant = await db.create("tenant", {
         data: {
@@ -23,9 +24,9 @@ export const seed = async (db: DB) => {
         returning: ["id", "username", "joinedAt", "deletedAt"],
     });
 
-    const post = await db.create("post", {
+    const post1 = await db.create("post", {
         data: {
-            id: postId,
+            id: postId1,
             authorId: userId,
             tenantId: tenantId,
             title: "hello it me",
@@ -42,5 +43,24 @@ export const seed = async (db: DB) => {
         ],
     });
 
-    return { tenant, user, post };
+    const post2 = await db.create("post", {
+        data: {
+            id: postId2,
+            authorId: userId,
+            tenantId: tenantId,
+            title: "i like cats",
+            content: "i really like cats",
+        },
+        returning: [
+            "id",
+            "title",
+            "content",
+            "publishedAt",
+            "authorId",
+            "tenantId",
+            "tags",
+        ],
+    });
+
+    return { tenant, user, posts: [post1, post2] };
 };
