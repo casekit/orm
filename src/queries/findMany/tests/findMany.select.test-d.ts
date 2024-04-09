@@ -1,6 +1,6 @@
 import { assertType, describe, expectTypeOf, test } from "vitest";
 
-import { db } from "../../test/db";
+import { db } from "../../../test/db";
 
 describe("findMany", () => {
     test("only models that exist can be queried", () => {
@@ -44,9 +44,16 @@ describe("findMany", () => {
     test("the return type is an array of objects including the selected fields", async () => {
         expectTypeOf(
             await db.findMany("post", {
-                select: ["id", "title", "content"],
+                select: ["id", "title", "content", "publishedAt"],
             }),
-        ).toMatchTypeOf<{ id: string; title: string; content: string }[]>();
+        ).toMatchTypeOf<
+            {
+                id: string;
+                title: string;
+                content: string;
+                publishedAt: Date | null;
+            }[]
+        >();
     });
 
     test("non-selected fields are not included in the result type", async () => {

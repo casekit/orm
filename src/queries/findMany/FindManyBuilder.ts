@@ -1,4 +1,4 @@
-export type QueryBuilder = {
+export type FindManyBuilder = {
     tableIndex: number;
     columns: {
         table: string;
@@ -22,7 +22,7 @@ export type QueryBuilder = {
         }[];
     };
 
-    ordering?: {
+    ordering: {
         table: string;
         column: string;
         direction: "asc" | "desc";

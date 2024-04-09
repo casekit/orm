@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
 
-import { QueryBuilder } from "../findMany/FindManyBuilder";
+import { FindManyBuilder } from "../findMany/FindManyBuilder";
 import { rowToObject } from "./rowToObject";
 
-const builder: Pick<QueryBuilder, "columns"> = {
+const builder: Pick<FindManyBuilder, "columns"> = {
     columns: [
         {
             alias: "a_0",

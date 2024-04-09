@@ -21,7 +21,9 @@ export type SuggestedColumnType<DataType> = DataType extends
       ? string
       : DataType extends "boolean"
         ? boolean
-        : unknown;
+        : DataType extends `timestamp${string}`
+          ? Date
+          : unknown;
 
 /**
  * TODO figure out if these are reasonable or if there are better

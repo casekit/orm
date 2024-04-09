@@ -3,9 +3,9 @@ import pgfmt from "pg-format";
 import { OrmError } from "../../errors";
 import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
-import { QueryBuilder } from "./FindManyBuilder";
+import { FindManyBuilder } from "./FindManyBuilder";
 
-export const findManyToSql = (builder: QueryBuilder): SQLStatement => {
+export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
     const frag = new SQLStatement();
     const [table, ...joinedTables] = builder.tables;
 
@@ -93,7 +93,7 @@ export const findManyToSql = (builder: QueryBuilder): SQLStatement => {
         });
     }
 
-    if (builder.ordering) {
+    if (builder.ordering.length > 0) {
         frag.push(pgfmt(`\nORDER BY `));
         frag.push(
             builder.ordering
