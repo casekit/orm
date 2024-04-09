@@ -1,0 +1,20 @@
+on:
+    workflow_dispatch: {}
+    schedule:
+        # random HH:MM to avoid a load spike on GitHub Actions at 00:00
+        - cron: 53 8 * * *
+permissions:
+    contents: write
+jobs:
+    merge_prs:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Merge PRs
+              run: |
+                  for pr in `gh pr list --json number,author,createdAt --search 'created:<$(date +"%Y-%m-%d") author:app/dependabot status:success' --jq '.[].number' | xargs -I % gh pr merge % --squash --auto`; do
+                      gh pr merge --auto --squash "$pr"
+                  done
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
