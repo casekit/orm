@@ -7,6 +7,7 @@ on:
 permissions:
     contents: write
     statuses: read
+    pull-requests: write
 jobs:
     merge_prs:
         name: "Merge PRs > 1 week old"
