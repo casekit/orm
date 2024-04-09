@@ -4,7 +4,10 @@ on:
     schedule:
         # random HH:MM to avoid a load spike on GitHub Actions at 00:00
         - cron: 34 2 * * *
-permissions: write-all
+permissions:
+    contents: write
+    statuses: read
+    checks: read
 jobs:
     merge_prs:
         name: "Merge PRs > 1 week old"
@@ -16,7 +19,7 @@ jobs:
               run: |
                   set -e
                   # Merge all Dependabot PRs that were created more than a week ago and have all checks passing
-                  for pr in `gh pr list --json number,author,createdAt --search "created:<=$(date -d "1 day ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[].number'`; do
+                  for pr in `gh pr list --json number,author,createdAt --search "created:<=$(date -d "7 days ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[].number'`; do
                       gh pr merge --squash "$pr"
                   done
               env:
