@@ -48,7 +48,7 @@
         "object-hash": "^3.0.0",
         "pg": "^8.11.5",
         "pg-format": "^1.0.4",
-        "pino": "^8.19.0",
+        "pino": "^8.20.0",
         "pluralize": "^8.0.0",
         "prettier": "^3.2.5",
         "ts-toolbelt": "^9.6.0",
