@@ -1,17 +1,20 @@
 export type FindManyBuilder = {
     tableIndex: number;
+
     columns: {
         table: string;
         name: string;
         alias: string;
         path: string[];
     }[];
+
     tables: {
         name: string;
         schema: string;
         alias: string;
         joins?: Join[];
     }[];
+
     lateralBy?: {
         groupTable: string;
         itemTable: string;
@@ -22,7 +25,7 @@ export type FindManyBuilder = {
         }[];
     };
 
-    ordering: {
+    orderBy: {
         table: string;
         column: string;
         direction: "asc" | "desc";

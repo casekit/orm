@@ -1,6 +1,7 @@
 import {
     $gt,
     $gte,
+    $ilike,
     $in,
     $like,
     $lt,
@@ -14,4 +15,4 @@ export type StringOperators<T extends string> =
     | { [$lte]: T }
     | { [$in]: T[] }
     | { [$like]: T }
-    | { [$like]: T };
+    | { [$ilike]: T };

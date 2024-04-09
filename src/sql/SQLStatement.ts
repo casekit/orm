@@ -34,7 +34,7 @@ export class SQLStatement {
         return this.fragments.reduce((prev, curr, i) => prev + "$" + i + curr);
     }
 
-    public push(...args: (SQLStatement | string | null)[]): void {
+    public push(...args: (SQLStatement | string | null)[]): SQLStatement {
         for (const arg of args) {
             if (arg === null) {
                 // do nothing - this case is here as a convenience
@@ -60,5 +60,6 @@ export class SQLStatement {
                 }
             }
         }
+        return this;
     }
 }

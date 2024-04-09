@@ -93,10 +93,10 @@ export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
         });
     }
 
-    if (builder.ordering.length > 0) {
+    if (builder.orderBy.length > 0) {
         frag.push(pgfmt(`\nORDER BY `));
         frag.push(
-            builder.ordering
+            builder.orderBy
                 .map(({ table, column, direction }) =>
                     pgfmt(
                         `%I.%I ${direction === "asc" ? "ASC" : "DESC"}`,
