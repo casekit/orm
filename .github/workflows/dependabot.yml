@@ -5,10 +5,12 @@ on:
         # random HH:MM to avoid a load spike on GitHub Actions at 00:00
         - cron: 34 2 * * *
 permissions:
+    actions: write
     contents: write
     statuses: read
     pull-requests: write
-    checks: read
+    checks: write
+    issues: write
 jobs:
     merge_prs:
         name: "Merge PRs > 1 week old"
@@ -24,4 +26,4 @@ jobs:
                       gh pr merge --auto --squash "$pr"
                   done
               env:
-                  GITHUB_TOKEN: ${{ secrets.DEPENDABOT_MERGE_PAT }}
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
