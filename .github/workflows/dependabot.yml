@@ -14,6 +14,7 @@ jobs:
               uses: actions/checkout@v2
             - name: Merge PRs
               run: |
+                  set -e
                   # Merge all Dependabot PRs that were created more than a week ago and have all checks passing
                   for pr in `gh pr list --json number,author,createdAt --search "created:<=$(date -d "1 day ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[].number'`; do
                       gh pr merge --auto --squash "$pr"
