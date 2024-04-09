@@ -6,8 +6,10 @@ on:
         - cron: 34 2 * * *
 permissions:
     contents: write
+    statuses: read
 jobs:
     merge_prs:
+        name: "Merge PRs > 1 week old"
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
