@@ -1,10 +1,10 @@
-import { uniq } from "lodash-es";
+import { max, min, uniq } from "lodash-es";
 import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 
 import { BaseQuery } from "../../types/queries/BaseQuery";
 import { ensureArray } from "../../util/ensureArray";
 import { tableAlias } from "../util/tableAlias";
-import { QueryBuilder } from "./FindManyBuilder";
+import { FindManyBuilder } from "./FindManyBuilder";
 
 export const buildFindMany = (
     config: BaseConfiguration,
@@ -12,11 +12,12 @@ export const buildFindMany = (
     query: BaseQuery,
     path: string[] = [],
     _tableIndex = 0,
-): QueryBuilder => {
-    const builder: QueryBuilder = {
+): FindManyBuilder => {
+    const builder: FindManyBuilder = {
         tableIndex: _tableIndex,
         columns: [],
         tables: [],
+        ordering: [],
     };
 
     const model = config.models[m];
@@ -80,8 +81,17 @@ export const buildFindMany = (
                     },
                 ],
             });
+            // this is admittedly a bit weird,
+            // we wouldn't expect N:1 relations to specify
+            // ordering, skipping, and limiting, and typescript
+            // prevents users from doing this, but
+            // we rely on them being present as part of the N:N
+            // implementation
             builder.tables.push(...otherTables);
             builder.columns.push(...joinBuilder.columns);
+            builder.ordering.push(...joinBuilder.ordering);
+            builder.limit = min([builder.limit, joinBuilder.limit]);
+            builder.offset = max([builder.offset, joinBuilder.offset]);
         }
     }
 
