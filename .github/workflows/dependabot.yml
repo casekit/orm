@@ -20,4 +20,4 @@ jobs:
                       gh pr merge --auto --squash "$pr"
                   done
               env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  GITHUB_TOKEN: ${{ secrets.DEPENDABOT_MERGE_PAT }}
