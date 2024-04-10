@@ -10,6 +10,7 @@ import {
     $gt,
     $gte,
     $ilike,
+    $in,
     $is,
     $like,
     $lt,
@@ -78,6 +79,11 @@ describe("buildWhereClauses", () => {
             { [$not]: { [$or]: [{ name: "foo" }, { name: "bar" }] } },
             "(NOT (((a.name = $1) OR (a.name = $2))))",
             ["foo", "bar"],
+        ],
+        [
+            { tags: { [$in]: ["cats", "dogs", "fish"] } },
+            "(a.tags IN ($1, $2, $3))",
+            ["cats", "dogs", "fish"],
         ],
         [
             {
