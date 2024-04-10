@@ -106,7 +106,7 @@ describe("findManyToSql", () => {
             FROM casekit.post a
             JOIN casekit."user" b
                 ON a.created_by_id = b.id
-                AND ((("user".username = $3) AND (b.created_at <= $4)))
+                AND (((b.username = $3) AND (b.created_at <= $4)))
             WHERE 1 = 1
                 AND (a.title ILIKE $5)
                 AND a.id = c.id

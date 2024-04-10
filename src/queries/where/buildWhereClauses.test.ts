@@ -30,104 +30,96 @@ describe("buildWhereClauses", () => {
     test.each([
         [{ id: 3 }, "(a.id = $1)", [3]],
         [{ id: { [$eq]: 3 } }, "(a.id = $1)", [3]],
-        [{ username: "foo" }, "(a.username = $1)", ["foo"]],
+        [{ a: "foo" }, "(a.a = $1)", ["foo"]],
         [
-            { joinedAt: { [$gt]: new Date(2024, 1, 1) } },
-            "(a.created_at > $1)",
+            { timestamp: { [$gt]: new Date(2024, 1, 1) } },
+            `(a.timestamp > $1)`,
             [new Date(2024, 1, 1)],
         ],
         [
-            { joinedAt: { [$gte]: new Date(2024, 1, 3) } },
-            "(a.created_at >= $1)",
+            { timestamp: { [$gte]: new Date(2024, 1, 3) } },
+            "(a.timestamp >= $1)",
             [new Date(2024, 1, 3)],
         ],
+        [{ bigint: { [$lt]: 47 } }, "(a.bigint < $1)", [47]],
         [
-            { joinedAt: { [$lt]: new Date(2024, 1, 3) } },
-            "(a.created_at < $1)",
-            [new Date(2024, 1, 3)],
-        ],
-        [
-            { joinedAt: { [$lte]: new Date(2024, 1, 3) } },
-            "(a.created_at <= $1)",
+            { timestamp: { [$lte]: new Date(2024, 1, 3) } },
+            "(a.timestamp <= $1)",
             [new Date(2024, 1, 3)],
         ],
 
+        [{ id: 3, text: "foo" }, "(a.id = $1 AND a.text = $2)", [3, "foo"]],
         [
-            { id: 3, username: "foo" },
-            "(a.id = $1 AND a.username = $2)",
-            [3, "foo"],
-        ],
-        [
-            { id: 3, username: { [$like]: "foo%" } },
-            "(a.id = $1 AND a.username LIKE $2)",
+            { id: 3, text: { [$like]: "foo%" } },
+            "(a.id = $1 AND a.text LIKE $2)",
             [3, "foo%"],
         ],
         [
-            { id: 3, username: { [$ilike]: "foo%" } },
-            "(a.id = $1 AND a.username ILIKE $2)",
+            { id: 3, text: { [$ilike]: "foo%" } },
+            "(a.id = $1 AND a.text ILIKE $2)",
             [3, "foo%"],
         ],
         [
-            { id: 3, username: { [$ne]: "Russell" } },
-            "(a.id = $1 AND a.username != $2)",
+            { id: 3, text: { [$ne]: "Russell" } },
+            "(a.id = $1 AND a.text != $2)",
             [3, "Russell"],
         ],
         [
-            { id: 3, username: { [$not]: null } },
-            "(a.id = $1 AND a.username IS NOT NULL)",
+            { id: 3, text: { [$not]: null } },
+            "(a.id = $1 AND a.text IS NOT NULL)",
             [3],
         ],
         [
-            { id: 3, username: { [$is]: true } },
-            "(a.id = $1 AND a.username IS $2)",
+            { id: 3, text: { [$is]: true } },
+            "(a.id = $1 AND a.text IS $2)",
             [3, true],
         ],
         [
-            { [$and]: [{ id: 3 }, { username: "foo" }] },
-            "(((a.id = $1) AND (a.username = $2)))",
+            { [$and]: [{ id: 3 }, { text: "foo" }] },
+            "(((a.id = $1) AND (a.text = $2)))",
             [3, "foo"],
         ],
         [
-            { [$or]: [{ id: 3 }, { username: "foo" }] },
-            "(((a.id = $1) OR (a.username = $2)))",
+            { [$or]: [{ id: 3 }, { text: "foo" }] },
+            "(((a.id = $1) OR (a.text = $2)))",
             [3, "foo"],
         ],
         [
-            { [$not]: { [$or]: [{ username: "foo" }, { username: "bar" }] } },
-            "(NOT (((a.username = $1) OR (a.username = $2))))",
+            { [$not]: { [$or]: [{ text: "foo" }, { text: "bar" }] } },
+            "(NOT (((a.text = $1) OR (a.text = $2))))",
             ["foo", "bar"],
         ],
         [
-            { username: { [$in]: ["cat", "dog", "fish"] } },
-            "(a.username IN ($1, $2, $3))",
+            { text: { [$in]: ["cat", "dog", "fish"] } },
+            "(a.text IN ($1, $2, $3))",
             ["cat", "dog", "fish"],
         ],
         [
             {
                 [$not]: {
                     [$and]: [
-                        { username: "foo" },
+                        { text: "foo" },
                         {
                             [$or]: [
                                 {
                                     [$and]: [
-                                        { username: 1, joinedAt: 2 },
-                                        { joinedAt: 3 },
+                                        { text: 1, renamedColumn: 2 },
+                                        { renamedColumn: 3 },
                                     ],
                                 },
-                                { [$or]: [{ username: 3 }, { joinedAt: 5 }] },
-                                { joinedAt: 333 },
+                                { [$or]: [{ text: 3 }, { renamedColumn: 5 }] },
+                                { renamedColumn: 333 },
                             ],
                         },
                     ],
                 },
             },
-            "(NOT (((a.username = $1) AND (((((a.username = $2 AND a.created_at = $3) AND (a.created_at = $4))) OR (((a.username = $5) OR (a.created_at = $6))) OR (a.created_at = $7))))))",
+            "(NOT (((a.text = $1) AND (((((a.text = $2 AND a.original_name = $3) AND (a.original_name = $4))) OR (((a.text = $5) OR (a.original_name = $6))) OR (a.original_name = $7))))))",
             ["foo", 1, 2, 3, 3, 5, 333],
         ],
         [
-            { [$or]: [{ username: 1, joinedAt: 2 }, { username: 3 }] },
-            "(((a.username = $1 AND a.created_at = $2) OR (a.username = $3)))",
+            { [$or]: [{ text: 1, renamedColumn: 2 }, { text: 3 }] },
+            "(((a.text = $1 AND a.original_name = $2) OR (a.text = $3)))",
             [1, 2, 3],
         ],
     ])(
@@ -139,7 +131,7 @@ describe("buildWhereClauses", () => {
         ) => {
             const clause = buildWhereClauses(
                 db.config,
-                { name: "user", schema: "casekit", model: "user", alias: "a" },
+                { name: "foo", schema: "casekit", model: "foo", alias: "a" },
                 where,
             );
             expect(clause.text).toEqual(sql);

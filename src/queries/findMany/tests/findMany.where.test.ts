@@ -37,21 +37,38 @@ describe("findMany", () => {
                     users: [
                         {
                             username: "Russell",
-                            tenants: [{ name: "Popova Park", posts: 6 }],
+                            tenants: [{ name: "Popova Park", posts: 2 }],
                         },
                     ],
                 });
-                const result = await db.findMany("post", {
-                    select: ["title"],
-                    include: {
-                        author: {
-                            select: ["username"],
-                            where: { username: "Fairooz" },
+                expect(
+                    await db.findMany("post", {
+                        select: ["title"],
+                        include: {
+                            author: {
+                                select: ["username"],
+                                where: { username: "Fairooz" },
+                            },
                         },
-                    },
-                    orderBy: ["title"],
-                });
-                expect(result).toEqual([]);
+                        orderBy: ["title"],
+                    }),
+                ).toEqual([]);
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title"],
+                        include: {
+                            author: {
+                                select: ["username"],
+                                where: { username: "Russell" },
+                            },
+                        },
+                        orderBy: ["title"],
+                    }),
+                ).toEqual([
+                    { title: "Post a", author: { username: "Russell" } },
+                    { title: "Post b", author: { username: "Russell" } },
+                ]);
             },
             { rollback: true },
         );
