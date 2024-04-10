@@ -1,8 +1,8 @@
 import { snakeCase } from "lodash-es";
 
 import { orm } from "../..";
-import { FindManyQuery } from "../../types/queries/FindManyQuery";
 import { ModelName } from "../../types/schema/helpers/ModelName";
+import { FindManyQuery } from "../../types/schema/helpers/queries/FindManyQuery";
 import { Models, models } from "./models";
 import { Relations, relations } from "./relations";
 

@@ -1,18 +1,19 @@
 import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 
-import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
+import { OrmError } from "../../errors";
+import { BaseCreateManyParams } from "../../types/schema/helpers/queries/BaseCreateManyParams";
 import { tableAlias } from "../util/tableAlias";
 
 export type CreateBuilder = {
     table: { name: string; schema: string };
-    params: { name: string; path: string; value: unknown }[];
+    params: { name: string; path: string; values: unknown[] }[];
     returning: { name: string; path: string; alias: string }[];
 };
 
 export const buildCreate = (
     config: BaseConfiguration,
     m: string,
-    params: BaseCreateParams,
+    params: BaseCreateManyParams,
     tableIndex = 0,
 ): CreateBuilder => {
     const builder: CreateBuilder = {
@@ -29,11 +30,16 @@ export const buildCreate = (
 
     const model = config.models[m];
 
-    for (const [k, v] of Object.entries(params.data)) {
+    if (params.data.length === 0)
+        throw new OrmError("No data provided for create operation", {
+            data: { m, params },
+        });
+
+    for (const k of Object.keys(params.data[0])) {
         builder.params.push({
             name: model.columns[k]["name"],
             path: k,
-            value: v,
+            values: params.data.map((v) => v[k]),
         });
     }
 

@@ -1,15 +1,15 @@
 import { SQLStatement, sql } from "../../sql";
 import { BaseConfiguration } from "../../types/base/BaseConfiguration";
-import { WhereClause } from "../../types/queries/WhereClause";
 import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
 import { ModelName } from "../../types/schema/helpers/ModelName";
-import { FindManyBuilder } from "../findMany/FindManyBuilder";
+import { WhereClause } from "../../types/schema/helpers/queries/WhereClause";
+import { FindBuilder } from "../find/FindBuilder";
 import { buildWhereClause } from "./buildWhereClause";
 import { $and, $not, $or } from "./operators";
 
 export const buildWhereClauses = (
     config: BaseConfiguration,
-    table: FindManyBuilder["tables"][0],
+    table: FindBuilder["tables"][0],
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>,
 ): SQLStatement => {
     const clauses: SQLStatement[] = [];

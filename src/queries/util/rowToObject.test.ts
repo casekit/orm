@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
 
-import { FindManyBuilder } from "../findMany/FindManyBuilder";
+import { FindBuilder } from "../find/FindBuilder";
 import { rowToObject } from "./rowToObject";
 
-const builder: Pick<FindManyBuilder, "columns"> = {
+const builder: Pick<FindBuilder, "columns"> = {
     columns: [
         {
             alias: "a_0",

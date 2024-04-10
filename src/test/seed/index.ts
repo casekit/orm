@@ -24,7 +24,7 @@ export const seed = async (
     const tenants = keyBy(
         await Promise.all(
             uniq(params.users.flatMap((u) => u.tenants)).map((tenant) =>
-                db.create("tenant", {
+                db.createOne("tenant", {
                     data: { name: tenant.name },
                     returning: ["id", "name", "createdAt"],
                 }),
@@ -37,7 +37,7 @@ export const seed = async (
         await Promise.all(
             uniq(
                 params.users.map((user) =>
-                    db.create("user", {
+                    db.createOne("user", {
                         data: { username: user.username },
                         returning: ["id", "username"],
                     }),
@@ -50,7 +50,7 @@ export const seed = async (
     const tenantUsers = await Promise.all(
         params.users.flatMap((user) => {
             return user.tenants.map((tenant) => {
-                return db.create("tenantUser", {
+                return db.createOne("tenantUser", {
                     data: {
                         userId: users[user.username].id,
                         tenantId: tenants[tenant.name].id,
@@ -69,7 +69,7 @@ export const seed = async (
                     const letter = String.fromCharCode(
                         "a".charCodeAt(0) + postIndex++,
                     );
-                    return db.create("post", {
+                    return db.createOne("post", {
                         data: {
                             title: `Post ${letter}`,
                             content: `This is the content of post ${letter}`,

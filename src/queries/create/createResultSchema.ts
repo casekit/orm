@@ -1,14 +1,15 @@
 import { BaseConfiguration } from "src/types/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
-import { BaseCreateParams } from "../../types/queries/BaseCreateParams";
+import { BaseCreateManyParams } from "../../types/schema/helpers/queries/BaseCreateManyParams";
+import { BaseCreateOneParams } from "../../types/schema/helpers/queries/BaseCreateOneParams";
 
 export const createResultSchema = (
     config: BaseConfiguration,
     m: string,
-    params: BaseCreateParams,
+    params: BaseCreateManyParams | BaseCreateOneParams,
 ) => {
-    if (!params.returning) return z.boolean();
+    if (!params.returning) return z.number();
 
     const obj: Record<string, ZodSchema<unknown>> = {};
 
