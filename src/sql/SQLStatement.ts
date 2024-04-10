@@ -65,8 +65,6 @@ export class SQLStatement {
     }
 
     public withIdentifiers(...identifiers: string[]) {
-        console.log(this.fragments);
-        console.log(this.values);
         const remainingIdentifiers = [...identifiers];
         for (const index of this.fragments.keys()) {
             const countPlaceholders =

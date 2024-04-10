@@ -108,4 +108,13 @@ describe("SQLStatement", () => {
         );
         expect(statement.values).toEqual([]);
     });
+
+    test("sql.splat allows specifying a separator", () => {
+        const clauses = [sql`foo = ${3}`, sql`bar = ${"baz"}`];
+        const statement = sql`select * from casekit.foo where ${sql.splat(clauses, " and ")}`;
+        expect(statement.text).toEqual(
+            `select * from casekit.foo where foo = $1 and bar = $2`,
+        );
+        expect(statement.values).toEqual([3, "baz"]);
+    });
 });

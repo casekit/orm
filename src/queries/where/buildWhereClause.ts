@@ -1,8 +1,5 @@
-import pgfmt from "pg-format";
-
 import { OrmError } from "../../errors";
 import { SQLStatement, sql } from "../../sql";
-import { interleave } from "../../util/interleave";
 import {
     $eq,
     $gt,
@@ -17,45 +14,46 @@ import {
     $not,
 } from "./operators";
 
-export const buildClause = (
+export const buildWhereClause = (
     table: string,
     column: string,
-    v: Record<symbol, unknown> | string | number | boolean | Date | null,
+    v: unknown,
 ): SQLStatement => {
     if (v === null) {
-        return new SQLStatement(pgfmt("%I.%I", table, column)).push(
-            sql` IS NULL`,
-        );
+        return sql`%I.%I IS NULL`.withIdentifiers(table, column);
     } else if (
         typeof v === "string" ||
         typeof v === "number" ||
         typeof v === "boolean" ||
-        v instanceof Date
+        v instanceof Date ||
+        Object.getOwnPropertySymbols(v).length === 0
     ) {
-        return new SQLStatement(pgfmt("%I.%I", table, column)).push(
-            sql` = ${v}`,
-        );
+        return sql`%I.%I = ${v}`.withIdentifiers(table, column);
     } else {
         const clauses = Object.getOwnPropertySymbols(v).map(
             (op): SQLStatement => {
-                const v2 = v[op];
+                const v2 = (v as Record<symbol, unknown>)[op];
                 switch (op) {
                     case $eq:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` = ${v2}`);
+                        return sql`%I.%I = ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $gt:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` > ${v2}`);
+                        return sql`%I.%I > ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $gte:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` >= ${v2}`);
+                        return sql`%I.%I >= ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $ilike:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` ILIKE ${v2}`);
+                        return sql`%I.%I ILIKE ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $in:
                         if (!Array.isArray(v2)) {
                             throw new OrmError(
@@ -63,38 +61,42 @@ export const buildClause = (
                                 { data: { table, column, v, v2 } },
                             );
                         } else if (v2.length === 0) {
-                            return new SQLStatement(
-                                pgfmt("%I.%I IN (NULL)", table, column),
+                            return sql`%I.%I IN (NULL)`.withIdentifiers(
+                                table,
+                                column,
                             );
                         } else {
                             const values = v2.map((v) => sql`${v}`);
-                            return new SQLStatement().push(
-                                pgfmt("%I.%I", table, column),
-                                sql` IN (`,
-                                ...interleave(values, sql`, `),
-                                sql`)`,
+                            return sql`%I.%I IN (${sql.splat(values)})`.withIdentifiers(
+                                table,
+                                column,
                             );
                         }
                     case $is:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` IS ${v2}`);
+                        return sql`%I.%I IS ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $like:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` LIKE ${v2}`);
+                        return sql`%I.%I LIKE ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $lt:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` < ${v2}`);
+                        return sql`%I.%I < ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $lte:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` <= ${v2}`);
+                        return sql`%I.%I <= ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $ne:
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` != ${v2}`);
+                        return sql`%I.%I != ${v2}`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     case $not:
                         if (v2 !== null) {
                             throw new OrmError(
@@ -102,9 +104,10 @@ export const buildClause = (
                                     v2,
                             );
                         }
-                        return new SQLStatement(
-                            pgfmt("%I.%I", table, column),
-                        ).push(sql` IS NOT NULL`);
+                        return sql`%I.%I IS NOT NULL`.withIdentifiers(
+                            table,
+                            column,
+                        );
                     default:
                         throw new OrmError("Unexpected symbol in query", {
                             data: { table, column, op, v },
@@ -113,6 +116,6 @@ export const buildClause = (
             },
         );
 
-        return new SQLStatement().push(...interleave(clauses, sql` AND `));
+        return sql.splat(clauses, " AND ");
     }
 };
