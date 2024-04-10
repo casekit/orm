@@ -1,9 +1,9 @@
 import { describe, expect, test } from "vitest";
 
+import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
+import { ModelName } from "../../schema/types/helpers/ModelName";
 import { db } from "../../test/db";
-import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
-import { ModelName } from "../../types/schema/helpers/ModelName";
-import { WhereClause } from "../../types/schema/helpers/queries/WhereClause";
+import { WhereClause } from "../types/WhereClause";
 import { buildWhereClauses } from "./buildWhereClauses";
 import {
     $and,

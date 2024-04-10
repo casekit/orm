@@ -1,5 +1,5 @@
+import { BaseOrm } from "../../schema/types/base/BaseOrm";
 import { SQLStatement } from "../../sql";
-import { BaseOrm } from "../../types/base/BaseOrm";
 import { createExtensionsSql } from "../sql/createExtensionsSql";
 import { createForeignKeyConstraintSql } from "../sql/createForeignKeyConstraintSql";
 import { createSchemasSql } from "../sql/createSchemasSql";

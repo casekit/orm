@@ -1,8 +1,8 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { Connection } from "../types/Connection";
-import { BaseCreateOneParams } from "../types/schema/helpers/queries/BaseCreateOneParams";
 import { createMany } from "./createMany";
+import { BaseCreateOneParams } from "./types/BaseCreateOneParams";
 
 export const createOne = async (
     conn: Connection,

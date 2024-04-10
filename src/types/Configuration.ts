@@ -1,7 +1,7 @@
 import pg from "pg";
 
-import { ModelDefinitions } from "./schema/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "./schema/definitions/RelationsDefinitions";
+import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
 
 export type Configuration<
     Models extends ModelDefinitions,

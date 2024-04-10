@@ -1,7 +1,7 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../../errors";
-import { BaseCreateManyParams } from "../../types/schema/helpers/queries/BaseCreateManyParams";
+import { BaseCreateManyParams } from "../types/BaseCreateManyParams";
 import { tableAlias } from "../util/tableAlias";
 
 export type CreateBuilder = {

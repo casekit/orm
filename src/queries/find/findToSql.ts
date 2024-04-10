@@ -1,8 +1,8 @@
 import pgfmt from "pg-format";
 
 import { OrmError } from "../../errors";
+import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
-import { BaseConfiguration } from "../../types/base/BaseConfiguration";
 import { interleave } from "../../util/interleave";
 import { buildWhereClauses } from "../where/buildWhereClauses";
 import { FindBuilder } from "./FindBuilder";

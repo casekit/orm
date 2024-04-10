@@ -1,8 +1,8 @@
 import { max, min, uniq } from "lodash-es";
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
-import { BaseQuery } from "../../types/schema/helpers/queries/BaseQuery";
 import { ensureArray } from "../../util/ensureArray";
+import { BaseQuery } from "../types/BaseQuery";
 import { tableAlias } from "../util/tableAlias";
 import { FindBuilder } from "./FindBuilder";
 

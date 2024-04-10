@@ -1,10 +1,10 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
-import { BaseCreateManyParams } from "../types/schema/helpers/queries/BaseCreateManyParams";
 import { buildCreate } from "./create/buildCreate";
 import { createToSql } from "./create/createToSql";
+import { BaseCreateManyParams } from "./types/BaseCreateManyParams";
 import { rowToObject } from "./util/rowToObject";
 
 export const createMany = async (

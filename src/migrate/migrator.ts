@@ -1,7 +1,7 @@
 import { Orm } from "..";
-import { BaseOrm } from "../types/base/BaseOrm";
-import { ModelDefinitions } from "../types/schema/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../types/schema/definitions/RelationsDefinitions";
+import { BaseOrm } from "../schema/types/base/BaseOrm";
+import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
 import { implode } from "./commands/implode";
 
 export class Migrator {

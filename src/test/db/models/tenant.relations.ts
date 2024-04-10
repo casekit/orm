@@ -1,4 +1,4 @@
-import { RelationsDefinition } from "src/types/schema/definitions/RelationsDefinition";
+import { RelationsDefinition } from "src/schema/types/definitions/RelationsDefinition";
 
 import { type Models } from "../models";
 

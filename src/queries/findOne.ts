@@ -1,9 +1,9 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";
-import { BaseQuery } from "../types/schema/helpers/queries/BaseQuery";
 import { findMany } from "./findMany";
+import { BaseQuery } from "./types/BaseQuery";
 
 export const findOne = async (
     conn: Connection,

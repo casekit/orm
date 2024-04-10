@@ -1,10 +1,10 @@
 import { mapValues } from "lodash-es";
-import { BaseModel } from "src/types/base/BaseModel";
+import { BaseModel } from "src/schema/types/base/BaseModel";
 
-import { BaseConfiguration } from "../../types/base/BaseConfiguration";
-import { ForeignKey } from "../../types/schema/constraints/ForeignKey";
-import { UniqueConstraint } from "../../types/schema/constraints/UniqueConstraint";
-import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
+import { BaseConfiguration } from "../types/base/BaseConfiguration";
+import { ForeignKey } from "../types/constraints/ForeignKey";
+import { UniqueConstraint } from "../types/constraints/UniqueConstraint";
+import { ModelDefinition } from "../types/definitions/ModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (
