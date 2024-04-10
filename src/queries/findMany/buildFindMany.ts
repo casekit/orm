@@ -29,6 +29,7 @@ export const buildFindMany = (
         name: config.models[m]["table"],
         schema: config.models[m]["schema"],
         alias: alias,
+        where: query.where,
     });
 
     // make sure we always select the model's primary key,

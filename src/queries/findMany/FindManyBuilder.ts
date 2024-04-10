@@ -1,3 +1,7 @@
+import { WhereClause } from "../../types/queries/WhereClause";
+import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
+import { ModelName } from "../../types/schema/helpers/ModelName";
+
 export type FindManyBuilder = {
     tableIndex: number;
 
@@ -13,6 +17,8 @@ export type FindManyBuilder = {
         schema: string;
         alias: string;
         joins?: Join[];
+        conditions?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
+        where?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
     }[];
 
     lateralBy?: {

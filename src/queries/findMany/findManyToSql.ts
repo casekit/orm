@@ -3,6 +3,7 @@ import pgfmt from "pg-format";
 import { OrmError } from "../../errors";
 import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
+import { buildWhereClauses } from "../where/buildWhereClauses";
 import { FindManyBuilder } from "./FindManyBuilder";
 
 export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
@@ -46,7 +47,7 @@ export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
             });
         frag.push(
             pgfmt(
-                "\nJOIN %I.%I %I ON ",
+                "\nJOIN %I.%I %I\n    ON ",
                 joinedTable.schema,
                 joinedTable.name,
                 joinedTable.alias,
@@ -74,9 +75,20 @@ export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
                 })
                 .join(" AND "),
         );
+        if (joinedTable.where) {
+            frag.push(
+                sql`\n    AND ${buildWhereClauses(joinedTable.name, joinedTable.where)}`,
+            );
+        }
     }
 
     frag.push(sql`\nWHERE 1 = 1`);
+
+    if (table.where) {
+        frag.push(
+            sql`\n    AND ${buildWhereClauses(table.alias, table.where)}`,
+        );
+    }
 
     if (builder.lateralBy) {
         const { groupTable, columns } = builder.lateralBy;
