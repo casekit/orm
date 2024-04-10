@@ -27,6 +27,7 @@ export const buildFindMany = (
 
     builder.tables.push({
         name: config.models[m]["table"],
+        model: m,
         schema: config.models[m]["schema"],
         alias: alias,
         where: query.where,

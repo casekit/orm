@@ -14,6 +14,7 @@ export type FindManyBuilder = {
 
     tables: {
         name: string;
+        model: string;
         schema: string;
         alias: string;
         joins?: Join[];

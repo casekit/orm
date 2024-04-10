@@ -7,7 +7,12 @@ export const user = {
     columns: {
         id: { type: "uuid", default: sql`uuid_generate_v4()` },
         username: { zodSchema: z.string(), type: "text" },
-        joinedAt: { zodSchema: z.date(), type: "timestamp", nullable: true },
+        joinedAt: {
+            name: "created_at",
+            zodSchema: z.date(),
+            type: "timestamp",
+            nullable: true,
+        },
         deletedAt: { zodSchema: z.date(), type: "timestamp", nullable: true },
     },
     primaryKey: ["id"],

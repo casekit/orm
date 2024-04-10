@@ -18,12 +18,13 @@ export const findMany = async (
     query: BaseQuery,
 ) => {
     const builder = buildFindMany(config, m, query);
-    const statement = findManyToSql(builder);
+    const statement = findManyToSql(config, builder);
     logger.info({
         message: "Executing query",
         sql: statement.text,
         values: statement.values,
     });
+    console.log(statement.text);
 
     const results = await conn
         .query(statement)

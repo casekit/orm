@@ -13,7 +13,7 @@ describe("findManyToSql", () => {
         const builder = buildFindMany(db.config, "post", {
             select: ["id", "title"],
         });
-        const statement = findManyToSql(builder);
+        const statement = findManyToSql(db.config, builder);
         expect(statement.text).toEqual(unindent`
             SELECT
                 a.id AS a_0,
@@ -31,7 +31,7 @@ describe("findManyToSql", () => {
             },
         } as FindMany<"post">);
 
-        const statement = findManyToSql(builder);
+        const statement = findManyToSql(db.config, builder);
         expect(statement.text).toEqual(unindent`
             SELECT
                 a.id AS a_0,
@@ -54,7 +54,7 @@ describe("findManyToSql", () => {
             lateralBy: [{ column: "id", values: [uuid.v4()] }],
         } as FindMany<"post">);
 
-        const statement = findManyToSql(builder);
+        const statement = findManyToSql(db.config, builder);
         expect(statement.text).toEqual(unindent`
             SELECT d.* FROM (
             SELECT UNNEST(ARRAY[$1]::uuid[]) AS id) c
@@ -93,7 +93,7 @@ describe("findManyToSql", () => {
             lateralBy: [{ column: "id", values: [id1, id2] }],
         } as FindMany<"post">);
 
-        const statement = findManyToSql(builder);
+        const statement = findManyToSql(db.config, builder);
         expect(statement.text).toEqual(unindent`
             SELECT d.* FROM (
             SELECT UNNEST(ARRAY[$1, $2]::uuid[]) AS id) c
@@ -106,7 +106,7 @@ describe("findManyToSql", () => {
             FROM casekit.post a
             JOIN casekit."user" b
                 ON a.created_by_id = b.id
-                AND ((("user".username = $3) AND ("user"."joinedAt" <= $4)))
+                AND ((("user".username = $3) AND (b.created_at <= $4)))
             WHERE 1 = 1
                 AND (a.title ILIKE $5)
                 AND a.id = c.id

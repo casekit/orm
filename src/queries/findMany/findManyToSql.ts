@@ -2,11 +2,15 @@ import pgfmt from "pg-format";
 
 import { OrmError } from "../../errors";
 import { SQLStatement, sql } from "../../sql";
+import { BaseConfiguration } from "../../types/base/BaseConfiguration";
 import { interleave } from "../../util/interleave";
 import { buildWhereClauses } from "../where/buildWhereClauses";
 import { FindManyBuilder } from "./FindManyBuilder";
 
-export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
+export const findManyToSql = (
+    config: BaseConfiguration,
+    builder: FindManyBuilder,
+): SQLStatement => {
     const frag = new SQLStatement();
     const [table, ...joinedTables] = builder.tables;
 
@@ -77,7 +81,7 @@ export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
         );
         if (joinedTable.where) {
             frag.push(
-                sql`\n    AND ${buildWhereClauses(joinedTable.name, joinedTable.where)}`,
+                sql`\n    AND ${buildWhereClauses(config, joinedTable, joinedTable.where)}`,
             );
         }
     }
@@ -86,7 +90,7 @@ export const findManyToSql = (builder: FindManyBuilder): SQLStatement => {
 
     if (table.where) {
         frag.push(
-            sql`\n    AND ${buildWhereClauses(table.alias, table.where)}`,
+            sql`\n    AND ${buildWhereClauses(config, table, table.where)}`,
         );
     }
 
