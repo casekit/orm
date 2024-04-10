@@ -3,7 +3,7 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";
 import { findMany } from "./findMany";
-import { BaseQuery } from "./types/BaseQuery";
+import { BaseQuery } from "./types/base/BaseQuery";
 
 export const findOne = async (
     conn: Connection,

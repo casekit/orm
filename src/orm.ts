@@ -7,14 +7,14 @@ import { createOne } from "./queries/createOne";
 import { findResultSchema } from "./queries/find/findResultSchema";
 import { findMany } from "./queries/findMany";
 import { findOne } from "./queries/findOne";
-import { BaseCreateManyParams } from "./queries/types/BaseCreateManyParams";
-import { BaseCreateOneParams } from "./queries/types/BaseCreateOneParams";
-import { CreateManyParams } from "./queries/types/CreateManyParams";
-import { CreateManyResult } from "./queries/types/CreateManyResult";
-import { CreateOneParams } from "./queries/types/CreateOneParams";
-import { CreateOneResult } from "./queries/types/CreateOneResult";
-import { FindManyQuery } from "./queries/types/FindManyQuery";
-import { QueryResult } from "./queries/types/QueryResult";
+import { BaseCreateManyParams } from "./queries/types/base/BaseCreateManyParams";
+import { BaseCreateOneParams } from "./queries/types/base/BaseCreateOneParams";
+import { CreateManyParams } from "./queries/types/create/CreateManyParams";
+import { CreateManyResult } from "./queries/types/create/CreateManyResult";
+import { CreateOneParams } from "./queries/types/create/CreateOneParams";
+import { CreateOneResult } from "./queries/types/create/CreateOneResult";
+import { FindManyQuery } from "./queries/types/find/FindManyQuery";
+import { FindResult } from "./queries/types/find/FindResult";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
 import { BaseConfiguration } from "./schema/types/base/BaseConfiguration";
 import { BaseModel } from "./schema/types/base/BaseModel";
@@ -93,10 +93,10 @@ export class Orm<
     >(
         m: M,
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
-    ): Promise<QueryResult<Models, Relations, M, Q>[]> {
+    ): Promise<FindResult<Models, Relations, M, Q>[]> {
         const results = await findMany(this.connection, this.config, m, query);
         const parser = z.array(findResultSchema(this.config, m, query));
-        return parser.parse(results) as QueryResult<Models, Relations, M, Q>[];
+        return parser.parse(results) as FindResult<Models, Relations, M, Q>[];
     }
 
     public async findOne<
@@ -105,10 +105,10 @@ export class Orm<
     >(
         m: M,
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
-    ): Promise<QueryResult<Models, Relations, M, Q>> {
+    ): Promise<FindResult<Models, Relations, M, Q>> {
         const result = await findOne(this.connection, this.config, m, query);
         const parser = findResultSchema(this.config, m, query);
-        return parser.parse(result) as QueryResult<Models, Relations, M, Q>;
+        return parser.parse(result) as FindResult<Models, Relations, M, Q>;
     }
 
     public async createOne<

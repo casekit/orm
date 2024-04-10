@@ -1,7 +1,7 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
-import { BaseQuery } from "../types/BaseQuery";
+import { BaseQuery } from "../types/base/BaseQuery";
 
 export const findResultSchema = (
     config: BaseConfiguration,

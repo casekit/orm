@@ -1,11 +1,16 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { FindManyQuery } from "../find/FindManyQuery";
+import { IncludeClause } from "../IncludeClause";
+import { SelectClause } from "../SelectClause";
+import { WhereClause } from "../WhereClause";
 
-export type IncludedRelationName<
+export type FindOneQuery<
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
     M extends ModelName<Models>,
-    Q extends FindManyQuery<Models, Relations, M>,
-> = keyof Relations[M] & keyof Q["include"];
+> = {
+    select: SelectClause<Models, M>;
+    where?: WhereClause<Models, M>;
+    include?: IncludeClause<Models, Relations, M>;
+};

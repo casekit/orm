@@ -8,7 +8,7 @@ import { Connection } from "../types/Connection";
 import { ensureArray } from "../util/ensureArray";
 import { buildFind } from "./find/buildFind";
 import { findToSql } from "./find/findToSql";
-import { BaseQuery } from "./types/BaseQuery";
+import { BaseQuery } from "./types/base/BaseQuery";
 import { rowToObject } from "./util/rowToObject";
 
 export const findMany = async (

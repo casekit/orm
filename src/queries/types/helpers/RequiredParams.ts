@@ -1,6 +1,6 @@
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
-import { ColumnType } from "../../schema/types/helpers/ColumnType";
-import { ModelName } from "../../schema/types/helpers/ModelName";
+import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
+import { ColumnType } from "../../../schema/types/helpers/ColumnType";
+import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { RequiredColumn } from "./RequiredColumn";
 
 export type RequiredParams<

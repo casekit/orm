@@ -1,6 +1,6 @@
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
-import { ColumnType } from "../../schema/types/helpers/ColumnType";
-import { ModelName } from "../../schema/types/helpers/ModelName";
+import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
+import { ColumnType } from "../../../schema/types/helpers/ColumnType";
+import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { OptionalColumn } from "./OptionalColumn";
 
 export type OptionalParams<

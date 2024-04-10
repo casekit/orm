@@ -1,8 +1,8 @@
 import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
-import { FindManyQuery } from "./FindManyQuery";
-import { FindOneQuery } from "./FindOneQuery";
+import { FindManyQuery } from "./find/FindManyQuery";
+import { FindOneQuery } from "./find/FindOneQuery";
 
 export type IncludeClause<
     Models extends ModelDefinitions,

@@ -4,7 +4,7 @@ import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { buildCreate } from "./create/buildCreate";
 import { createToSql } from "./create/createToSql";
-import { BaseCreateManyParams } from "./types/BaseCreateManyParams";
+import { BaseCreateManyParams } from "./types/base/BaseCreateManyParams";
 import { rowToObject } from "./util/rowToObject";
 
 export const createMany = async (

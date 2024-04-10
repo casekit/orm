@@ -1,4 +1,4 @@
-import { NonEmptyArray } from "../../types/util/NonEmptyArray";
+import { NonEmptyArray } from "../../../types/util/NonEmptyArray";
 
 export type BaseCreateOneParams = {
     data: Record<string, unknown | null>;
