@@ -1,10 +1,11 @@
 import pg from "pg";
 import { z } from "zod";
 
-import { create } from "./queries/create";
 import { createResultSchema } from "./queries/create/createResultSchema";
+import { createMany } from "./queries/createMany";
+import { createOne } from "./queries/createOne";
+import { findResultSchema } from "./queries/find/findResultSchema";
 import { findMany } from "./queries/findMany";
-import { findManyResultSchema } from "./queries/findMany/findManyResultSchema";
 import { findOne } from "./queries/findOne";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
 import { validateConfiguration } from "./schema/validate/validateConfiguration";
@@ -12,14 +13,17 @@ import { Configuration } from "./types/Configuration";
 import { Connection } from "./types/Connection";
 import { BaseConfiguration } from "./types/base/BaseConfiguration";
 import { BaseModel } from "./types/base/BaseModel";
-import { BaseCreateParams } from "./types/queries/BaseCreateParams";
-import { CreateParams } from "./types/queries/CreateParams";
-import { CreateResult } from "./types/queries/CreateResult";
-import { FindManyQuery } from "./types/queries/FindManyQuery";
-import { QueryResult } from "./types/queries/QueryResult";
 import { ModelDefinitions } from "./types/schema/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./types/schema/definitions/RelationsDefinitions";
 import { ModelName } from "./types/schema/helpers/ModelName";
+import { BaseCreateManyParams } from "./types/schema/helpers/queries/BaseCreateManyParams";
+import { BaseCreateOneParams } from "./types/schema/helpers/queries/BaseCreateOneParams";
+import { CreateManyParams } from "./types/schema/helpers/queries/CreateManyParams";
+import { CreateManyResult } from "./types/schema/helpers/queries/CreateManyResult";
+import { CreateOneParams } from "./types/schema/helpers/queries/CreateOneParams";
+import { CreateOneResult } from "./types/schema/helpers/queries/CreateOneResult";
+import { FindManyQuery } from "./types/schema/helpers/queries/FindManyQuery";
+import { QueryResult } from "./types/schema/helpers/queries/QueryResult";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
@@ -91,7 +95,7 @@ export class Orm<
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
     ): Promise<QueryResult<Models, Relations, M, Q>[]> {
         const results = await findMany(this.connection, this.config, m, query);
-        const parser = z.array(findManyResultSchema(this.config, m, query));
+        const parser = z.array(findResultSchema(this.config, m, query));
         return parser.parse(results) as QueryResult<Models, Relations, M, Q>[];
     }
 
@@ -103,29 +107,48 @@ export class Orm<
         query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
     ): Promise<QueryResult<Models, Relations, M, Q>> {
         const result = await findOne(this.connection, this.config, m, query);
-        const parser = findManyResultSchema(this.config, m, query);
+        const parser = findResultSchema(this.config, m, query);
         return parser.parse(result) as QueryResult<Models, Relations, M, Q>;
     }
 
-    public async create<
+    public async createOne<
         M extends ModelName<Models>,
-        P extends CreateParams<Models, M>,
+        P extends CreateOneParams<Models, M>,
     >(
         m: M,
-        params: DisallowExtraKeys<CreateParams<Models, M>, P>,
-    ): Promise<CreateResult<Models, M, P>> {
-        const result = await create(
+        params: DisallowExtraKeys<CreateOneParams<Models, M>, P>,
+    ): Promise<CreateOneResult<Models, M, P>> {
+        const result = await createOne(
             this.connection,
             this.config,
             m,
-            params as BaseCreateParams,
+            params as BaseCreateOneParams,
         );
         const parser = createResultSchema(
             this.config,
             m,
-            params as BaseCreateParams,
+            params as BaseCreateOneParams,
         );
-        return parser.parse(result) as CreateResult<Models, M, P>;
+        return parser.parse(result) as CreateOneResult<Models, M, P>;
+    }
+
+    public async createMany<
+        M extends ModelName<Models>,
+        P extends CreateManyParams<Models, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<CreateManyParams<Models, M>, P>,
+    ): Promise<CreateManyResult<Models, M, P>> {
+        const result = await createMany(
+            this.connection,
+            this.config,
+            m,
+            params as BaseCreateManyParams,
+        );
+        const parser = z.array(
+            createResultSchema(this.config, m, params as BaseCreateManyParams),
+        );
+        return parser.parse(result) as CreateManyResult<Models, M, P>;
     }
 }
 

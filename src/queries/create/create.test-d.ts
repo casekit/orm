@@ -8,7 +8,7 @@ import { db } from "../../test/db";
 describe("create", () => {
     test("only models that exist can be created", () => {
         assertType(
-            db.create(
+            db.createOne(
                 // @ts-expect-error model does not exist
                 "wrong",
                 {},
@@ -18,7 +18,7 @@ describe("create", () => {
 
     test("a data param must be included in the query", () => {
         assertType(
-            db.create(
+            db.createOne(
                 "post",
                 // @ts-expect-error data param is missing
                 {},
@@ -28,7 +28,7 @@ describe("create", () => {
 
     test("all required fields must be provided", () => {
         assertType(
-            db.create("post", {
+            db.createOne("post", {
                 // @ts-expect-error required fields not provided
                 data: { title: "hello" },
             }),
@@ -37,7 +37,7 @@ describe("create", () => {
 
     test("only existing fields can be included in the returning clause", () => {
         assertType(
-            db.create("post", {
+            db.createOne("post", {
                 data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: [
                     "id",
@@ -48,17 +48,17 @@ describe("create", () => {
         );
     });
 
-    test("without a returning clause, the return type is a boolean indicating success", async () => {
+    test("without a returning clause, the return type is the number of rows created", async () => {
         expectTypeOf(
-            await db.create("post", {
+            await db.createOne("post", {
                 data: { title: "hello", content: "it me", authorId: uuid.v4() },
             }),
-        ).toMatchTypeOf<boolean>();
+        ).toMatchTypeOf<number>();
     });
 
     test("with a returning clause, the return type is an object containing the specified fields", async () => {
         expectTypeOf(
-            await db.create("post", {
+            await db.createOne("post", {
                 data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: ["id", "title"],
             }),
@@ -67,7 +67,7 @@ describe("create", () => {
 
     test("non-selected fields are not included in the result type", async () => {
         expectTypeOf(
-            await db.create("post", {
+            await db.createOne("post", {
                 data: { title: "hello", content: "it me", authorId: uuid.v4() },
                 returning: ["id", "title"],
             }),
@@ -79,12 +79,12 @@ describe("create", () => {
             columns: { id: { type: "serial", zodSchema: z.coerce.number() } },
         } satisfies ModelDefinition;
         const db = orm({ models: { foo } });
-        assertType(db.create("foo", { data: { id: 3 } }));
+        assertType(db.createOne("foo", { data: { id: 3 } }));
     });
 
     test("when all required fields are provided, excess property checking still works", async () => {
         assertType(
-            await db.create("post", {
+            await db.createOne("post", {
                 data: {
                     title: "hello",
                     content: "it me",

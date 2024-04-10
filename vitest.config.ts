@@ -8,6 +8,7 @@ export default defineConfig({
     test: {
         // ... Specify options here.
         include: ["**/*.(spec|test|properties).ts?(x)"],
+	exclude: ["lib", "node_modules"],
         globalSetup: "src/test/globalSetup.ts",
         coverage: { provider: "istanbul" },
     },

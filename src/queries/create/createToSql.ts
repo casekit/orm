@@ -1,7 +1,6 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement, sql } from "../../sql";
-import { interleave } from "../../util/interleave";
 import { CreateBuilder } from "./buildCreate";
 
 export const createToSql = (builder: CreateBuilder): SQLStatement => {
@@ -16,15 +15,13 @@ export const createToSql = (builder: CreateBuilder): SQLStatement => {
     } else {
         frag.push(pgfmt("INSERT INTO %I.%I (\n", table.schema, table.name));
         frag.push(params.map((p) => pgfmt("    %I", p.name)).join(",\n"));
-        frag.push(") VALUES (\n");
-        frag.push(
-            ...interleave(
-                params.map((p) => sql`    ${p.value}`),
-                ",",
-            ),
-        );
-        frag.push(pgfmt(")"));
+        frag.push(") VALUES ");
+        const values = params[0].values.map((_, index) => {
+            return sql`\n(${sql.splat(params.map((p) => p.values[index]))})`;
+        });
+        frag.push(sql.splat(values));
     }
+
     if (returning.length > 0) {
         frag.push("\nRETURNING ");
         frag.push(

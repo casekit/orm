@@ -14,19 +14,19 @@ describe("create", () => {
                 const userId = uuid.v4();
                 const tenantId = uuid.v4();
                 const postId = uuid.v4();
-                await db.create("tenant", {
+                await db.createOne("tenant", {
                     data: {
                         id: tenantId,
                         name: "popovapark",
                     },
                 });
-                await db.create("user", {
+                await db.createOne("user", {
                     data: {
                         id: userId,
                         username: "russell",
                     },
                 });
-                const result = await db.create("post", {
+                const result = await db.createOne("post", {
                     data: {
                         id: postId,
                         authorId: userId,
@@ -36,7 +36,7 @@ describe("create", () => {
                     },
                 });
 
-                expect(result).toEqual(true);
+                expect(result).toEqual(1);
 
                 const rows = await db.findMany("post", {
                     select: ["id", "title"],
@@ -70,7 +70,7 @@ describe("create", () => {
             async (db) => {
                 db.connection.query(createTableSql(db.models.baz));
 
-                await db.create("baz", {
+                await db.createOne("baz", {
                     data: {},
                 });
 
@@ -106,7 +106,7 @@ describe("create", () => {
             async (db) => {
                 db.connection.query(createTableSql(db.models.baz));
 
-                await db.create("baz", {
+                await db.createOne("baz", {
                     data: { name: "hello" },
                 });
 
