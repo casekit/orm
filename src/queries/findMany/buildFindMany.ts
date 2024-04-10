@@ -17,7 +17,7 @@ export const buildFindMany = (
         tableIndex: _tableIndex,
         columns: [],
         tables: [],
-        ordering: [],
+        orderBy: [],
     };
 
     const model = config.models[m];
@@ -27,8 +27,10 @@ export const buildFindMany = (
 
     builder.tables.push({
         name: config.models[m]["table"],
+        model: m,
         schema: config.models[m]["schema"],
         alias: alias,
+        where: query.where,
     });
 
     // make sure we always select the model's primary key,
@@ -89,7 +91,7 @@ export const buildFindMany = (
             // implementation
             builder.tables.push(...otherTables);
             builder.columns.push(...joinBuilder.columns);
-            builder.ordering.push(...joinBuilder.ordering);
+            builder.orderBy.push(...joinBuilder.orderBy);
             builder.limit = min([builder.limit, joinBuilder.limit]);
             builder.offset = max([builder.offset, joinBuilder.offset]);
         }
@@ -108,7 +110,7 @@ export const buildFindMany = (
     }
 
     if (query.orderBy) {
-        builder.ordering = query.orderBy.map((o) => ({
+        builder.orderBy = query.orderBy.map((o) => ({
             table: alias,
             column: Array.isArray(o) ? o[0] : o,
             direction: Array.isArray(o) ? o[1] : "asc",

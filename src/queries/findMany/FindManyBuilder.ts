@@ -1,17 +1,27 @@
+import { WhereClause } from "../../types/queries/WhereClause";
+import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
+import { ModelName } from "../../types/schema/helpers/ModelName";
+
 export type FindManyBuilder = {
     tableIndex: number;
+
     columns: {
         table: string;
         name: string;
         alias: string;
         path: string[];
     }[];
+
     tables: {
         name: string;
+        model: string;
         schema: string;
         alias: string;
         joins?: Join[];
+        conditions?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
+        where?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
     }[];
+
     lateralBy?: {
         groupTable: string;
         itemTable: string;
@@ -22,7 +32,7 @@ export type FindManyBuilder = {
         }[];
     };
 
-    ordering: {
+    orderBy: {
         table: string;
         column: string;
         direction: "asc" | "desc";

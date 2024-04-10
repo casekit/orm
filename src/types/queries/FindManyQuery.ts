@@ -5,6 +5,7 @@ import { ModelName } from "../schema/helpers/ModelName";
 import { NonEmptyArray } from "../util/NonEmptyArray";
 import { IncludeClause } from "./IncludeClause";
 import { SelectClause } from "./SelectClause";
+import { WhereClause } from "./WhereClause";
 
 export type FindManyQuery<
     Models extends ModelDefinitions,
@@ -13,6 +14,7 @@ export type FindManyQuery<
 > = {
     select: SelectClause<Models, M>;
     include?: IncludeClause<Models, Relations, M>;
+    where?: WhereClause<Models, M>;
     limit?: number;
     offset?: number;
     orderBy?: NonEmptyArray<

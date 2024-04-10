@@ -1,0 +1,13 @@
+export const $and = Symbol("and");
+export const $eq = Symbol("eq");
+export const $gt = Symbol("gt");
+export const $gte = Symbol("gte");
+export const $ilike = Symbol("ilike");
+export const $in = Symbol("in");
+export const $is = Symbol("is");
+export const $like = Symbol("like");
+export const $lt = Symbol("lt");
+export const $lte = Symbol("lte");
+export const $ne = Symbol("ne");
+export const $not = Symbol("not");
+export const $or = Symbol("or");

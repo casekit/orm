@@ -55,7 +55,7 @@ describe("create", () => {
     });
 
     test("columns of type serial do not need to be specified", async () => {
-        const foo = {
+        const baz = {
             columns: {
                 id: { type: "serial", zodSchema: z.coerce.number() },
                 big: { type: "bigserial", zodSchema: z.coerce.number() },
@@ -64,17 +64,17 @@ describe("create", () => {
         } satisfies ModelDefinition;
         await orm({
             schema: "casekit",
-            models: { foo },
-            relations: { foo: {} },
+            models: { baz },
+            relations: { baz: {} },
         }).transact(
             async (db) => {
-                db.connection.query(createTableSql(db.models.foo));
+                db.connection.query(createTableSql(db.models.baz));
 
-                await db.create("foo", {
+                await db.create("baz", {
                     data: {},
                 });
 
-                const rows = await db.findMany("foo", {
+                const rows = await db.findMany("baz", {
                     select: ["id", "big", "small"],
                 });
 
@@ -88,7 +88,7 @@ describe("create", () => {
     });
 
     test("columns with default values do not need to be specified", async () => {
-        const foo = {
+        const baz = {
             columns: {
                 id: {
                     type: "uuid",
@@ -100,17 +100,17 @@ describe("create", () => {
         } satisfies ModelDefinition;
         await orm({
             schema: "casekit",
-            models: { foo },
-            relations: { foo: {} },
+            models: { baz },
+            relations: { baz: {} },
         }).transact(
             async (db) => {
-                db.connection.query(createTableSql(db.models.foo));
+                db.connection.query(createTableSql(db.models.baz));
 
-                await db.create("foo", {
+                await db.create("baz", {
                     data: { name: "hello" },
                 });
 
-                const rows = await db.findMany("foo", {
+                const rows = await db.findMany("baz", {
                     select: ["id", "name"],
                 });
 

@@ -18,7 +18,7 @@ export const findMany = async (
     query: BaseQuery,
 ) => {
     const builder = buildFindMany(config, m, query);
-    const statement = findManyToSql(builder);
+    const statement = findManyToSql(config, builder);
     logger.info({
         message: "Executing query",
         sql: statement.text,

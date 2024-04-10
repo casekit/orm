@@ -17,6 +17,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
+import pgfmt from "pg-format";
 
 export class SQLStatement {
     public fragments: string[];
@@ -34,7 +35,7 @@ export class SQLStatement {
         return this.fragments.reduce((prev, curr, i) => prev + "$" + i + curr);
     }
 
-    public push(...args: (SQLStatement | string | null)[]): void {
+    public push(...args: (SQLStatement | string | null)[]): SQLStatement {
         for (const arg of args) {
             if (arg === null) {
                 // do nothing - this case is here as a convenience
@@ -60,5 +61,26 @@ export class SQLStatement {
                 }
             }
         }
+        return this;
+    }
+
+    public withIdentifiers(...identifiers: string[]) {
+        const remainingIdentifiers = [...identifiers];
+        for (const index of this.fragments.keys()) {
+            const countPlaceholders =
+                this.fragments[index].match(/%I/g)?.length ?? 0;
+            if (countPlaceholders > 0) {
+                const interpolated = pgfmt(
+                    this.fragments[index],
+                    ...remainingIdentifiers.splice(0, countPlaceholders),
+                );
+                this.fragments[index] = interpolated;
+                if (remainingIdentifiers.length === 0) {
+                    break;
+                }
+            }
+        }
+
+        return this;
     }
 }
