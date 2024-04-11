@@ -94,6 +94,7 @@ describe("buildWhereClauses", () => {
             "(a.text IN ($1, $2, $3))",
             ["cat", "dog", "fish"],
         ],
+        [{ text: { [$in]: [] } }, "(a.text IN (NULL))", []],
         [
             {
                 [$not]: {
