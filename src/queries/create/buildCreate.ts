@@ -5,6 +5,7 @@ import { BaseCreateManyParams } from "../types/base/BaseCreateManyParams";
 import { tableAlias } from "../util/tableAlias";
 
 export type CreateBuilder = {
+    tableIndex: number;
     table: { name: string; schema: string };
     params: { name: string; path: string; values: unknown[] }[];
     returning: { name: string; path: string; alias: string }[];
@@ -14,9 +15,10 @@ export const buildCreate = (
     config: BaseConfiguration,
     m: string,
     params: BaseCreateManyParams,
-    tableIndex = 0,
+    _tableIndex = 0,
 ): CreateBuilder => {
     const builder: CreateBuilder = {
+        tableIndex: _tableIndex,
         table: {
             name: config.models[m].table,
             schema: config.models[m].schema,
@@ -25,7 +27,7 @@ export const buildCreate = (
         returning: [],
     };
 
-    const table = tableAlias(tableIndex);
+    const table = tableAlias(builder.tableIndex++);
     let colIndex = 0;
 
     const model = config.models[m];

@@ -1,13 +1,15 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
+import { ColumnName } from "../../../schema/types/helpers/ColumnName";
+import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { ReturningClause } from "../ReturningClause";
-import { OptionalParams } from "../helpers/OptionalParams";
-import { RequiredParams } from "../helpers/RequiredParams";
+import { WhereClause } from "../WhereClause";
 
-export type CreateManyParams<
+export type UpdateParams<
     Models extends ModelDefinitions,
     M extends ModelName<Models>,
 > = {
-    data: RequiredParams<Models, M> & OptionalParams<Models, M>[];
+    update: { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> };
+    where: WhereClause<Models, M>;
     returning?: ReturningClause<Models, M>;
 };

@@ -3,9 +3,9 @@ import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { LateralByClause } from "../LateralByClause";
 import { WhereClause } from "../WhereClause";
 
-export type BaseQuery = {
+export type BaseFindParams = {
     select: string[];
-    include?: Partial<Record<string, BaseQuery>>;
+    include?: Partial<Record<string, BaseFindParams>>;
     where?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
     limit?: number;
     offset?: number;

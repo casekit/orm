@@ -2,14 +2,13 @@ import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
 import { SQLStatement, sql } from "../../sql";
-import { FindBuilder } from "../find/FindBuilder";
 import { WhereClause } from "../types/WhereClause";
 import { buildWhereClause } from "./buildWhereClause";
 import { $and, $not, $or } from "./operators";
 
 export const buildWhereClauses = (
     config: BaseConfiguration,
-    table: FindBuilder["tables"][0],
+    table: { name: string; schema: string; alias: string; model: string },
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>,
 ): SQLStatement => {
     const clauses: SQLStatement[] = [];

@@ -2,14 +2,14 @@ import { max, min, uniq } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { ensureArray } from "../../util/ensureArray";
-import { BaseQuery } from "../types/base/BaseQuery";
+import { BaseFindParams } from "../types/base/BaseFindParams";
 import { tableAlias } from "../util/tableAlias";
 import { FindBuilder } from "./FindBuilder";
 
 export const buildFind = (
     config: BaseConfiguration,
     m: string,
-    query: BaseQuery,
+    query: BaseFindParams,
     path: string[] = [],
     _tableIndex = 0,
 ): FindBuilder => {

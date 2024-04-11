@@ -6,16 +6,16 @@ import { Simplify } from "../../../types/util/Simplify";
 import { IncludedRelationModel } from "../include/IncludedRelationModel";
 import { IncludedRelationName } from "../include/IncludedRelationName";
 import { IncludedRelationQuery } from "../include/IncludedRelationQuery";
-import { FindManyQuery } from "./FindManyQuery";
-import { FindOneQuery } from "./FindOneQuery";
+import { FindManyParams } from "./FindManyParams";
+import { FindOneParams } from "./FindOneQuery";
 
-export type FindResult<
+export type FindOneResult<
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
     M extends ModelName<Models>,
     Q extends
-        | FindManyQuery<Models, Relations, M>
-        | FindOneQuery<Models, Relations, M>,
+        | FindManyParams<Models, Relations, M>
+        | FindOneParams<Models, Relations, M>,
 > = Readonly<
     Simplify<
         {
@@ -33,13 +33,13 @@ export type FindResult<
                       M,
                       Q
                   >]: Relations[M][R] extends { type: "N:1" }
-                      ? FindResult<
+                      ? FindOneResult<
                             Models,
                             Relations,
                             IncludedRelationModel<Models, Relations, M, R>,
                             IncludedRelationQuery<Models, Relations, M, R, Q>
                         >
-                      : FindResult<
+                      : FindOneResult<
                             Models,
                             Relations,
                             IncludedRelationModel<Models, Relations, M, R>,

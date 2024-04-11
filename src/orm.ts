@@ -9,12 +9,20 @@ import { findMany } from "./queries/findMany";
 import { findOne } from "./queries/findOne";
 import { BaseCreateManyParams } from "./queries/types/base/BaseCreateManyParams";
 import { BaseCreateOneParams } from "./queries/types/base/BaseCreateOneParams";
+import { BaseUpdateParams } from "./queries/types/base/BaseUpdateParams";
 import { CreateManyParams } from "./queries/types/create/CreateManyParams";
 import { CreateManyResult } from "./queries/types/create/CreateManyResult";
 import { CreateOneParams } from "./queries/types/create/CreateOneParams";
 import { CreateOneResult } from "./queries/types/create/CreateOneResult";
-import { FindManyQuery } from "./queries/types/find/FindManyQuery";
-import { FindResult } from "./queries/types/find/FindResult";
+import { FindManyParams } from "./queries/types/find/FindManyParams";
+import { FindManyResult } from "./queries/types/find/FindManyResult";
+import { FindOneResult } from "./queries/types/find/FindOneResult";
+import { UpdateManyResult } from "./queries/types/update/UpdateManyResult";
+import { UpdateOneResult } from "./queries/types/update/UpdateOneResult";
+import { UpdateParams } from "./queries/types/update/UpdateParams";
+import { updateResultSchema } from "./queries/update/updateResultSchema";
+import { updateMany } from "./queries/updateMany";
+import { updateOne } from "./queries/updateOne";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
 import { BaseConfiguration } from "./schema/types/base/BaseConfiguration";
 import { BaseModel } from "./schema/types/base/BaseModel";
@@ -89,26 +97,26 @@ export class Orm<
 
     public async findMany<
         M extends ModelName<Models>,
-        Q extends FindManyQuery<Models, Relations, M>,
+        Q extends FindManyParams<Models, Relations, M>,
     >(
         m: M,
-        query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
-    ): Promise<FindResult<Models, Relations, M, Q>[]> {
+        query: DisallowExtraKeys<FindManyParams<Models, Relations, M>, Q>,
+    ): Promise<FindManyResult<Models, Relations, M, Q>> {
         const results = await findMany(this.connection, this.config, m, query);
         const parser = z.array(findResultSchema(this.config, m, query));
-        return parser.parse(results) as FindResult<Models, Relations, M, Q>[];
+        return parser.parse(results) as FindManyResult<Models, Relations, M, Q>;
     }
 
     public async findOne<
         M extends ModelName<Models>,
-        Q extends FindManyQuery<Models, Relations, M>,
+        Q extends FindManyParams<Models, Relations, M>,
     >(
         m: M,
-        query: DisallowExtraKeys<FindManyQuery<Models, Relations, M>, Q>,
-    ): Promise<FindResult<Models, Relations, M, Q>> {
+        query: DisallowExtraKeys<FindManyParams<Models, Relations, M>, Q>,
+    ): Promise<FindOneResult<Models, Relations, M, Q>> {
         const result = await findOne(this.connection, this.config, m, query);
         const parser = findResultSchema(this.config, m, query);
-        return parser.parse(result) as FindResult<Models, Relations, M, Q>;
+        return parser.parse(result) as FindOneResult<Models, Relations, M, Q>;
     }
 
     public async createOne<
@@ -145,10 +153,57 @@ export class Orm<
             m,
             params as BaseCreateManyParams,
         );
+        if (typeof result === "number")
+            return result as CreateManyResult<Models, M, P>;
+
         const parser = z.array(
             createResultSchema(this.config, m, params as BaseCreateManyParams),
         );
         return parser.parse(result) as CreateManyResult<Models, M, P>;
+    }
+
+    public async updateOne<
+        M extends ModelName<Models>,
+        P extends UpdateParams<Models, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<UpdateParams<Models, M>, P>,
+    ): Promise<UpdateOneResult<Models, M, P>> {
+        const result = await updateOne(
+            this.connection,
+            this.config,
+            m,
+            params as BaseUpdateParams,
+        );
+        const parser = updateResultSchema(
+            this.config,
+            m,
+            params as BaseUpdateParams,
+        );
+        return parser.parse(result) as UpdateOneResult<Models, M, P>;
+    }
+
+    public async updateMany<
+        M extends ModelName<Models>,
+        P extends UpdateParams<Models, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<UpdateParams<Models, M>, P>,
+    ): Promise<UpdateManyResult<Models, M, P>> {
+        const result = await updateMany(
+            this.connection,
+            this.config,
+            m,
+            params as BaseUpdateParams,
+        );
+
+        if (typeof result === "number")
+            return result as UpdateManyResult<Models, M, P>;
+
+        const parser = z.array(
+            updateResultSchema(this.config, m, params as BaseUpdateParams),
+        );
+        return parser.parse(result) as UpdateManyResult<Models, M, P>;
     }
 }
 

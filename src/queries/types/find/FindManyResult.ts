@@ -1,16 +1,12 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { IncludeClause } from "../IncludeClause";
-import { SelectClause } from "../SelectClause";
-import { WhereClause } from "../WhereClause";
+import { FindManyParams } from "./FindManyParams";
+import { FindOneResult } from "./FindOneResult";
 
-export type FindOneParams<
+export type FindManyResult<
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
     M extends ModelName<Models>,
-> = {
-    select: SelectClause<Models, M>;
-    where?: WhereClause<Models, M>;
-    include?: IncludeClause<Models, Relations, M>;
-};
+    Q extends FindManyParams<Models, Relations, M>,
+> = FindOneResult<Models, Relations, M, Q>[];

@@ -1,12 +1,12 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
-import { BaseQuery } from "../types/base/BaseQuery";
+import { BaseFindParams } from "../types/base/BaseFindParams";
 
 export const findResultSchema = (
     config: BaseConfiguration,
     m: string,
-    query: BaseQuery,
+    query: BaseFindParams,
 ) => {
     const obj: Record<string, ZodSchema<unknown>> = {};
 

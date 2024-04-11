@@ -7,7 +7,7 @@ import { IncludeClause } from "../IncludeClause";
 import { SelectClause } from "../SelectClause";
 import { WhereClause } from "../WhereClause";
 
-export type FindManyQuery<
+export type FindManyParams<
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
     M extends ModelName<Models>,

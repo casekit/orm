@@ -1,8 +1,8 @@
 import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
-import { FindManyQuery } from "./find/FindManyQuery";
-import { FindOneQuery } from "./find/FindOneQuery";
+import { FindManyParams } from "./find/FindManyParams";
+import { FindOneParams } from "./find/FindOneQuery";
 
 export type IncludeClause<
     Models extends ModelDefinitions,
@@ -13,11 +13,11 @@ export type IncludeClause<
         model: ModelName<Models>;
     }
         ? Relations[M][R] extends { type: "N:1" }
-            ? FindOneQuery<Models, Relations, Relations[M][R]["model"]>
+            ? FindOneParams<Models, Relations, Relations[M][R]["model"]>
             : Relations[M][R] extends { type: "1:N" }
-              ? FindManyQuery<Models, Relations, Relations[M][R]["model"]>
+              ? FindManyParams<Models, Relations, Relations[M][R]["model"]>
               : Relations[M][R] extends { type: "N:N" }
-                ? FindManyQuery<Models, Relations, Relations[M][R]["model"]>
+                ? FindManyParams<Models, Relations, Relations[M][R]["model"]>
                 : never
         : never;
 };
