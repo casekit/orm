@@ -1,15 +1,18 @@
 import pg from "pg";
 import { z } from "zod";
 
+import { count } from "./queries/count";
 import { createResultSchema } from "./queries/create/createResultSchema";
 import { createMany } from "./queries/createMany";
 import { createOne } from "./queries/createOne";
 import { findResultSchema } from "./queries/find/findResultSchema";
 import { findMany } from "./queries/findMany";
 import { findOne } from "./queries/findOne";
+import { BaseCountParams } from "./queries/types/base/BaseCountParams";
 import { BaseCreateManyParams } from "./queries/types/base/BaseCreateManyParams";
 import { BaseCreateOneParams } from "./queries/types/base/BaseCreateOneParams";
 import { BaseUpdateParams } from "./queries/types/base/BaseUpdateParams";
+import { CountParams } from "./queries/types/count/CountParams";
 import { CreateManyParams } from "./queries/types/create/CreateManyParams";
 import { CreateManyResult } from "./queries/types/create/CreateManyResult";
 import { CreateOneParams } from "./queries/types/create/CreateOneParams";
@@ -204,6 +207,22 @@ export class Orm<
             updateResultSchema(this.config, m, params as BaseUpdateParams),
         );
         return parser.parse(result) as UpdateManyResult<Models, M, P>;
+    }
+
+    public async count<
+        M extends ModelName<Models>,
+        P extends CountParams<Models, Relations, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<CountParams<Models, Relations, M>, P>,
+    ): Promise<number> {
+        const result = await count(
+            this.connection,
+            this.config,
+            m,
+            params as BaseCountParams,
+        );
+        return z.coerce.number().parse(result);
     }
 }
 

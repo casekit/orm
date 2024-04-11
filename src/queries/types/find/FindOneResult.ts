@@ -7,7 +7,7 @@ import { IncludedRelationModel } from "../include/IncludedRelationModel";
 import { IncludedRelationName } from "../include/IncludedRelationName";
 import { IncludedRelationQuery } from "../include/IncludedRelationQuery";
 import { FindManyParams } from "./FindManyParams";
-import { FindOneParams } from "./FindOneQuery";
+import { FindOneParams } from "./FindOneParams";
 
 export type FindOneResult<
     Models extends ModelDefinitions,
