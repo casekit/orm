@@ -1,21 +1,21 @@
 import { groupBy } from "lodash-es";
 import hash from "object-hash";
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../errors";
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
-import { BaseQuery } from "../types/schema/helpers/queries/BaseQuery";
 import { ensureArray } from "../util/ensureArray";
 import { buildFind } from "./find/buildFind";
 import { findToSql } from "./find/findToSql";
+import { BaseFindParams } from "./types/base/BaseFindParams";
 import { rowToObject } from "./util/rowToObject";
 
 export const findMany = async (
     conn: Connection,
     config: BaseConfiguration,
     m: string,
-    query: BaseQuery,
+    query: BaseFindParams,
 ) => {
     const builder = buildFind(config, m, query);
     const statement = findToSql(config, builder);

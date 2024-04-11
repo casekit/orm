@@ -1,8 +1,8 @@
 import { uniq } from "lodash-es";
 import pgfmt from "pg-format";
 
+import { BaseOrm } from "../../schema/types/base/BaseOrm";
 import { SQLStatement } from "../../sql";
-import { BaseOrm } from "../../types/base/BaseOrm";
 
 export const createSchemasSql = (db: BaseOrm): SQLStatement => {
     const schemas = uniq(Object.values(db.models).map((m) => m.schema));

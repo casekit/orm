@@ -1,8 +1,8 @@
 import pgfmt from "pg-format";
 
 import { SQLStatement } from "../..";
-import { BaseModel } from "../../types/base/BaseModel";
-import { UniqueConstraint } from "../../types/schema/constraints/UniqueConstraint";
+import { BaseModel } from "../../schema/types/base/BaseModel";
+import { UniqueConstraint } from "../../schema/types/constraints/UniqueConstraint";
 
 export const createUniqueConstraintSql = (
     model: BaseModel,

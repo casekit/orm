@@ -1,8 +1,8 @@
 import { fc } from "@fast-check/vitest";
 import { drop, take, uniqBy } from "lodash-es";
 
-import { UniqueConstraint } from "../../types/schema/constraints/UniqueConstraint";
-import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
+import { UniqueConstraint } from "../../schema/types/constraints/UniqueConstraint";
+import { ModelDefinition } from "../../schema/types/definitions/ModelDefinition";
 import { column } from "./column";
 
 export const model = () => {

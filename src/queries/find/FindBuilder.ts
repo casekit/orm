@@ -1,6 +1,6 @@
-import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
-import { ModelName } from "../../types/schema/helpers/ModelName";
-import { WhereClause } from "../../types/schema/helpers/queries/WhereClause";
+import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
+import { ModelName } from "../../schema/types/helpers/ModelName";
+import { WhereClause } from "../types/WhereClause";
 
 export type FindBuilder = {
     tableIndex: number;

@@ -3,11 +3,11 @@ import { mapValues } from "lodash-es";
 import { z } from "zod";
 
 import { Orm } from "../../orm";
-import { BaseModel } from "../../types/base/BaseModel";
-import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../types/schema/definitions/RelationsDefinitions";
-import { ModelName } from "../../types/schema/helpers/ModelName";
-import { ModelType } from "../../types/schema/helpers/ModelType";
+import { BaseModel } from "../../schema/types/base/BaseModel";
+import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
+import { ModelName } from "../../schema/types/helpers/ModelName";
+import { ModelType } from "../../schema/types/helpers/ModelType";
 import { db } from "../db";
 
 export const makeFactory = <

@@ -1,10 +1,10 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
-import { BaseCreateManyParams } from "../types/schema/helpers/queries/BaseCreateManyParams";
 import { buildCreate } from "./create/buildCreate";
 import { createToSql } from "./create/createToSql";
+import { BaseCreateManyParams } from "./types/base/BaseCreateManyParams";
 import { rowToObject } from "./util/rowToObject";
 
 export const createMany = async (
@@ -13,6 +13,10 @@ export const createMany = async (
     m: string,
     params: BaseCreateManyParams,
 ) => {
+    if (params.data.length === 0) {
+        return params.returning ? [] : 0;
+    }
+
     const builder = buildCreate(config, m, params);
     const statement = createToSql(builder);
     logger.info({

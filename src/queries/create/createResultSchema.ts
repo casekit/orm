@@ -1,8 +1,8 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
-import { BaseCreateManyParams } from "../../types/schema/helpers/queries/BaseCreateManyParams";
-import { BaseCreateOneParams } from "../../types/schema/helpers/queries/BaseCreateOneParams";
+import { BaseCreateManyParams } from "../types/base/BaseCreateManyParams";
+import { BaseCreateOneParams } from "../types/base/BaseCreateOneParams";
 
 export const createResultSchema = (
     config: BaseConfiguration,

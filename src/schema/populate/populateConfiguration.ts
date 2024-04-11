@@ -1,9 +1,9 @@
 import { identity, mapValues } from "lodash-es";
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { Configuration } from "../../types/Configuration";
-import { ModelDefinitions } from "../../types/schema/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../types/schema/definitions/RelationsDefinitions";
+import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
 import { populateModel } from "./populateModel";
 
 export const populateConfiguration = <

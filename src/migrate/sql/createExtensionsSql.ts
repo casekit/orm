@@ -1,7 +1,7 @@
 import pgfmt from "pg-format";
 
+import { BaseOrm } from "../../schema/types/base/BaseOrm";
 import { SQLStatement } from "../../sql";
-import { BaseOrm } from "../../types/base/BaseOrm";
 
 export const createExtensionsSql = (db: BaseOrm): SQLStatement | null => {
     if (db.config.extensions?.length === 0) return null;

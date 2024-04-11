@@ -4,7 +4,7 @@ import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
 import { orm } from "../../";
-import { ModelDefinition } from "../../types/schema/definitions/ModelDefinition";
+import { ModelDefinition } from "../../schema/types/definitions/ModelDefinition";
 import { createSchemasSql } from "./createSchemasSql";
 
 describe("createSchemaSql", () => {

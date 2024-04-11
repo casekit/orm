@@ -1,8 +1,8 @@
 import { snakeCase } from "lodash-es";
 
 import { orm } from "../..";
-import { ModelName } from "../../types/schema/helpers/ModelName";
-import { FindManyQuery } from "../../types/schema/helpers/queries/FindManyQuery";
+import { FindManyParams } from "../../queries/types/find/FindManyParams";
+import { ModelName } from "../../schema/types/helpers/ModelName";
 import { Models, models } from "./models";
 import { Relations, relations } from "./relations";
 
@@ -14,7 +14,7 @@ export const db = orm({
     schema: "casekit",
 });
 
-export type FindMany<M extends ModelName<Models>> = FindManyQuery<
+export type FindMany<M extends ModelName<Models>> = FindManyParams<
     Models,
     Relations,
     M

@@ -1,15 +1,15 @@
-import { BaseConfiguration } from "src/types/base/BaseConfiguration";
+import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";
-import { BaseQuery } from "../types/schema/helpers/queries/BaseQuery";
 import { findMany } from "./findMany";
+import { BaseFindParams } from "./types/base/BaseFindParams";
 
 export const findOne = async (
     conn: Connection,
     config: BaseConfiguration,
     m: string,
-    query: BaseQuery,
+    query: BaseFindParams,
 ) => {
     const results = await findMany(conn, config, m, { ...query, limit: 2 });
 
