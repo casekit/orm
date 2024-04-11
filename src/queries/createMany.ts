@@ -13,6 +13,10 @@ export const createMany = async (
     m: string,
     params: BaseCreateManyParams,
 ) => {
+    if (params.data.length === 0) {
+        return params.returning ? [] : 0;
+    }
+
     const builder = buildCreate(config, m, params);
     const statement = createToSql(builder);
     logger.info({

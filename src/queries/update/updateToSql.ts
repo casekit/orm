@@ -12,26 +12,28 @@ export const updateToSql = (
 ): SQLStatement => {
     const { table, where, update, returning } = builder;
 
-    const frag = sql`UPDATE %I.%I\nSET`.withIdentifiers(
+    const frag = sql`UPDATE %I.%I AS %I\nSET`.withIdentifiers(
         table.schema,
         table.name,
+        table.alias,
     );
 
-    const fields = Object.entries(update).map(([field, value]) => {
-        const column = config.models[m]["columns"][field]["name"];
-        return sql`\n    %I = ${value}`.withIdentifiers(column);
+    const fields = update.map((field) => {
+        return sql`\n    %I = ${field.value}`.withIdentifiers(field.name);
     });
 
-    frag.push(sql`(${sql.splat(fields, ",\n")})`);
+    frag.push(sql.splat(fields, ",\n"));
 
-    frag.push("\nWHERE");
+    frag.push("\nWHERE\n    ");
     frag.push(buildWhereClauses(config, table, where));
 
     if (returning.length > 0) {
-        frag.push("\nRETURNING ");
+        frag.push("\nRETURNING\n");
         frag.push(
             returning
-                .map((r) => pgfmt(`    %I as %I`, r.name, r.alias))
+                .map((r) =>
+                    pgfmt(`    %I.%I as %I`, table.alias, r.name, r.alias),
+                )
                 .join(",\n"),
         );
     }

@@ -22,66 +22,54 @@ export const seed = async (
     posts: { id: string; title: string; content: string; authorId: string }[];
 }> => {
     const tenants = keyBy(
-        await Promise.all(
-            uniq(params.users.flatMap((u) => u.tenants)).map((tenant) =>
-                db.createOne("tenant", {
-                    data: { name: tenant.name },
-                    returning: ["id", "name", "createdAt"],
-                }),
+        await db.createMany("tenant", {
+            data: uniq(params.users.flatMap((u) => u.tenants)).map(
+                (tenant) => ({ name: tenant.name }),
             ),
-        ),
+            returning: ["id", "name", "createdAt"],
+        }),
         "name",
     );
 
     const users = keyBy(
-        await Promise.all(
-            uniq(
-                params.users.map((user) =>
-                    db.createOne("user", {
-                        data: { username: user.username },
-                        returning: ["id", "username"],
-                    }),
-                ),
+        await db.createMany("user", {
+            data: uniq(
+                params.users.map((user) => ({ username: user.username })),
             ),
-        ),
+            returning: ["id", "username"],
+        }),
         "username",
     );
 
-    const tenantUsers = await Promise.all(
-        params.users.flatMap((user) => {
-            return user.tenants.map((tenant) => {
-                return db.createOne("tenantUser", {
-                    data: {
-                        userId: users[user.username].id,
-                        tenantId: tenants[tenant.name].id,
-                    },
-                    returning: ["id", "userId", "tenantId"],
-                });
-            });
+    const tenantUsers = await db.createMany("tenantUser", {
+        data: params.users.flatMap((user) => {
+            return user.tenants.map((tenant) => ({
+                userId: users[user.username].id,
+                tenantId: tenants[tenant.name].id,
+            }));
         }),
-    );
+        returning: ["id", "userId", "tenantId"],
+    });
 
     let postIndex = 0;
-    const posts = await Promise.all(
-        params.users.flatMap((user) =>
+    const posts = await db.createMany("post", {
+        data: params.users.flatMap((user) =>
             user.tenants.flatMap((tenant) =>
                 times(tenant.posts, () => {
                     const letter = String.fromCharCode(
                         "a".charCodeAt(0) + postIndex++,
                     );
-                    return db.createOne("post", {
-                        data: {
-                            title: `Post ${letter}`,
-                            content: `This is the content of post ${letter}`,
-                            authorId: users[user.username].id,
-                            tenantId: tenants[tenant.name].id,
-                        },
-                        returning: ["id", "title", "content", "authorId"],
-                    });
+                    return {
+                        title: `Post ${letter}`,
+                        content: `This is the content of post ${letter}`,
+                        authorId: users[user.username].id,
+                        tenantId: tenants[tenant.name].id,
+                    };
                 }),
             ),
         ),
-    );
+        returning: ["id", "title", "content", "authorId"],
+    });
 
     return { users, tenants, tenantUsers, posts };
 };

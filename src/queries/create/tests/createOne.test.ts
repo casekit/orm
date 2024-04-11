@@ -2,12 +2,12 @@ import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { ModelDefinition, orm } from "../..";
-import { createTableSql } from "../../migrate/sql/createTableSql";
-import { sql } from "../../sql";
-import { db } from "../../test/db";
+import { ModelDefinition, orm } from "../../..";
+import { createTableSql } from "../../../migrate/sql/createTableSql";
+import { sql } from "../../../sql";
+import { db } from "../../../test/db";
 
-describe("create", () => {
+describe("createOne", () => {
     test("it inserts records into the database", async () => {
         await db.transact(
             async (db) => {
