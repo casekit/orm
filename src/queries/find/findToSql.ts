@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash-es";
 import pgfmt from "pg-format";
 
 import { OrmError } from "../../errors";
@@ -88,7 +89,7 @@ export const findToSql = (
 
     frag.push(sql`\nWHERE 1 = 1`);
 
-    if (table.where) {
+    if (!isEmpty(table.where)) {
         frag.push(
             sql`\n    AND ${buildWhereClauses(config, table, table.where)}`,
         );

@@ -2,8 +2,10 @@ import { identity, mapValues } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { Configuration } from "../../types/Configuration";
+import { BaseMiddleware } from "../types/base/BaseMiddleware";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
+import { composeWhereMiddleware } from "./composeWhereMiddleware";
 import { populateModel } from "./populateModel";
 
 export const populateConfiguration = <
@@ -32,6 +34,13 @@ export const populateConfiguration = <
 
     const connection = config.connection ?? {};
 
+    const middleware = {
+        find: {
+            where: composeWhereMiddleware(config.middleware?.find?.where ?? []),
+        },
+        // TODO figure out a way to get these types working better
+    } as unknown as BaseMiddleware;
+
     return {
         naming,
         schema,
@@ -39,5 +48,6 @@ export const populateConfiguration = <
         relations,
         extensions,
         connection,
+        middleware,
     };
 };

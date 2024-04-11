@@ -25,6 +25,8 @@ export const findMany = async (
         values: statement.values,
     });
 
+    if (process.env.NODE_ENV === "test") console.log(statement.text);
+
     const results = await conn
         .query(statement)
         .then((result) => result.rows.map(rowToObject(builder.columns)));

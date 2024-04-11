@@ -1,5 +1,6 @@
 import pg from "pg";
 
+import { Middleware } from "../queries/types/middleware/Middleware";
 import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
 
@@ -16,4 +17,5 @@ export type Configuration<
         table?: (s: string) => string;
     };
     connection?: pg.PoolConfig;
+    middleware?: Middleware<Models, Relations>;
 };

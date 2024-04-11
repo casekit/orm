@@ -39,11 +39,9 @@ export const sql = (
 };
 
 sql.splat = <T>(values: T[], separator = `, `) =>
-    values.length === 0
-        ? sql`NULL`
-        : new SQLStatement().push(
-              ...interleave(
-                  values.map((v) => sql`${v}`),
-                  separator,
-              ),
-          );
+    new SQLStatement().push(
+        ...interleave(
+            values.map((v) => sql`${v}`),
+            separator,
+        ),
+    );

@@ -10,6 +10,11 @@ export const tenant = {
         foreignKey: "tenantId",
         otherKey: "userId",
     },
+    tenancies: {
+        model: "tenantUser",
+        type: "1:N",
+        foreignKey: "tenantId",
+    },
     posts: {
         model: "post",
         type: "1:N",

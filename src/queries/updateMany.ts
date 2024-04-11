@@ -20,6 +20,9 @@ export const updateMany = async (
         sql: statement.text,
         values: statement.values,
     });
+
+    if (process.env.NODE_ENV === "test") console.log(statement.text);
+
     const result = await conn.query(statement);
     return params.returning
         ? result.rows.map(rowToObject(builder.returning))
