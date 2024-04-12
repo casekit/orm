@@ -5,7 +5,7 @@ import { Configuration } from "../../types/Configuration";
 import { BaseMiddleware } from "../types/base/BaseMiddleware";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
-import { composeMiddleware } from "./composeWhereMiddleware";
+import { composeMiddleware } from "./composeMiddleware";
 import { populateModel } from "./populateModel";
 
 export const populateConfiguration = <
@@ -34,12 +34,10 @@ export const populateConfiguration = <
 
     const connection = config.connection ?? {};
 
-    const middleware = {
-        find: {
-            where: composeMiddleware(config.middleware?.find?.where ?? []),
-        },
-        // TODO figure out a way to get these types working better
-    } as unknown as BaseMiddleware;
+    const middleware = composeMiddleware(
+        config.middleware ?? [],
+        // TODO make these types work properly
+    ) as unknown as BaseMiddleware;
 
     return {
         naming,

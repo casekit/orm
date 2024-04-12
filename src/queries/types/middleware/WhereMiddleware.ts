@@ -11,4 +11,4 @@ export type WhereMiddleware<
     config: Configuration<Models, Relations>,
     m: M,
     where: WhereClause<Models, M>,
-) => WhereClause<Models, M> | undefined;
+) => WhereClause<Models, M>;

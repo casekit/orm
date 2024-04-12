@@ -79,7 +79,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            middleware: { find: { where: [softdelete] } },
+            middleware: [softdelete],
         });
         await db.transact(
             async (db) => {
@@ -126,7 +126,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            middleware: { find: { where: [softdelete] } },
+            middleware: [softdelete],
         });
         await db.transact(
             async (db) => {
@@ -173,7 +173,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            middleware: { find: { where: [softdelete] } },
+            middleware: [softdelete],
         });
         await db.transact(
             async (db) => {
@@ -223,7 +223,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            middleware: { find: { where: [softdelete] } },
+            middleware: [softdelete],
         });
         await db.transact(
             async (db) => {
@@ -275,7 +275,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            // middleware: { find: { where: [softdelete] } },
+            middleware: [softdelete],
         });
         await db.transact(
             async (db) => {
