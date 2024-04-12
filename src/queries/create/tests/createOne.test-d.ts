@@ -55,7 +55,11 @@ describe("createOne", () => {
     test("without a returning clause, the return type is the number of rows created", async () => {
         expectTypeOf(
             await db.createOne("post", {
-                data: { title: "hello", content: "it me", authorId: uuid.v4() },
+                values: {
+                    title: "hello",
+                    content: "it me",
+                    authorId: uuid.v4(),
+                },
             }),
         ).toMatchTypeOf<number>();
     });
@@ -63,7 +67,11 @@ describe("createOne", () => {
     test("with a returning clause, the return type is an object containing the specified fields", async () => {
         expectTypeOf(
             await db.createOne("post", {
-                data: { title: "hello", content: "it me", authorId: uuid.v4() },
+                values: {
+                    title: "hello",
+                    content: "it me",
+                    authorId: uuid.v4(),
+                },
                 returning: ["id", "title"],
             }),
         ).toMatchTypeOf<{ id: string; title: string }>();
@@ -72,7 +80,11 @@ describe("createOne", () => {
     test("non-selected fields are not included in the result type", async () => {
         expectTypeOf(
             await db.createOne("post", {
-                data: { title: "hello", content: "it me", authorId: uuid.v4() },
+                values: {
+                    title: "hello",
+                    content: "it me",
+                    authorId: uuid.v4(),
+                },
                 returning: ["id", "title"],
             }),
         ).not.toMatchTypeOf<{ id: string; title: string; content: string }>();
@@ -83,7 +95,7 @@ describe("createOne", () => {
             columns: { id: { type: "serial", zodSchema: z.coerce.number() } },
         } satisfies ModelDefinition;
         const db = orm({ models: { foo } });
-        assertType(db.createOne("foo", { data: { id: 3 } }));
+        assertType(db.createOne("foo", { values: { id: 3 } }));
     });
 
     test("when all required fields are provided, excess property checking still works", async () => {

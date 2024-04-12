@@ -11,5 +11,5 @@ export type UpdateValuesMiddleware<
 > = <M extends ModelName<Models>>(
     config: Configuration<Models, Relations>,
     m: M,
-    values: { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> },
+    set: { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> },
 ) => { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> };

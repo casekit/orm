@@ -53,7 +53,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateMany("post", {
-                    update: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { authorId: lynne.id },
                 });
 
@@ -100,7 +100,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateOne("user", {
-                    update: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { id: lynne.id },
                 });
 
@@ -147,7 +147,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateOne("post", {
-                    update: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { title: "Post a" },
                 });
 
@@ -200,7 +200,7 @@ describe("middleware.find.where", () => {
                 ]);
 
                 await db.updateOne("user", {
-                    update: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { username: "Lynne Tillman" },
                 });
 
@@ -249,7 +249,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateMany("post", {
-                    update: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { authorId: lynne.id },
                 });
 
