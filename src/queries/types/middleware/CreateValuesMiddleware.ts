@@ -2,8 +2,7 @@ import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinit
 import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { Configuration } from "../../../types/Configuration";
-import { OptionalParams } from "../helpers/OptionalParams";
-import { RequiredParams } from "../helpers/RequiredParams";
+import { CreateValues } from "../create/CreateOneParams";
 
 export type CreateValuesMiddleware<
     Models extends ModelDefinitions,
@@ -11,5 +10,5 @@ export type CreateValuesMiddleware<
 > = <M extends ModelName<Models>>(
     config: Configuration<Models, Relations>,
     m: M,
-    values: RequiredParams<Models, M> & OptionalParams<Models, M>,
-) => RequiredParams<Models, M> & OptionalParams<Models, M>;
+    values: CreateValues<Models, M>,
+) => CreateValues<Models, M>;

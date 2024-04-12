@@ -4,21 +4,71 @@ import { describe, expect, test } from "vitest";
 import { orm } from "../../../orm";
 import { Models, Relations, models, relations } from "../../../test/db";
 import { seed } from "../../../test/seed";
-import { WhereMiddleware } from "../../types/middleware/WhereMiddleware";
+import { Middleware } from "../../types/middleware/Middleware";
 
-export const softdelete: WhereMiddleware<Models, Relations> = (
-    config,
-    m,
-    where = {},
-) => {
-    if ("deletedAt" in config.models[m].columns) {
-        return {
-            deletedAt: null,
-            ...where,
-        };
-    } else {
-        return where;
-    }
+export const timestamps = ({
+    currentUser,
+}: {
+    currentUser: { id: string };
+}): Middleware<Models, Relations> => ({
+    create: {
+        values: (config, m, values) => {
+            if (
+                "createdAt" in config.models[m].columns &&
+                "createdById" in config.models[m].columns
+            ) {
+                return {
+                    createdAt: new Date(),
+                    createdById: currentUser.id,
+                    ...values,
+                };
+            }
+            return values;
+        },
+    },
+    update: {
+        set: (config, m, set) => {
+            if (
+                "updatedAt" in config.models[m].columns &&
+                "updatedById" in config.models[m].columns
+            ) {
+                return {
+                    updatedAt: new Date(),
+                    updatedById: currentUser.id,
+                    ...set,
+                };
+            } else {
+                return set;
+            }
+        },
+    },
+});
+
+export const softdelete: Middleware<Models, Relations> = {
+    find: {
+        where: (config, m, where = {}) => {
+            if ("deletedAt" in config.models[m].columns) {
+                return {
+                    deletedAt: null,
+                    ...where,
+                };
+            } else {
+                return where;
+            }
+        },
+    },
+    update: {
+        where: (config, m, where) => {
+            if ("deletedAt" in config.models[m].columns) {
+                return {
+                    deletedAt: null,
+                    ...where,
+                };
+            } else {
+                return where;
+            }
+        },
+    },
 };
 
 describe("middleware.find.where", () => {
@@ -225,7 +275,7 @@ describe("middleware.find.where", () => {
             extensions: ["uuid-ossp"],
             naming: { column: snakeCase },
             schema: "casekit",
-            middleware: { find: { where: [softdelete] } },
+            // middleware: { find: { where: [softdelete] } },
         });
         await db.transact(
             async (db) => {

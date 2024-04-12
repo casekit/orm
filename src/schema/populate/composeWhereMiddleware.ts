@@ -1,13 +1,13 @@
-import { WhereMiddleware } from "../../queries/types/middleware/WhereMiddleware";
+import { WhereMiddleware as Middleware } from "../../queries/types/middleware/WhereMiddleware";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
 
-export const composeWhereMiddleware = <
+export const composeMiddleware = <
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
 >(
-    middlewares: WhereMiddleware<Models, Relations>[],
-): WhereMiddleware<Models, Relations> => {
+    middlewares: Middleware<Models, Relations>[],
+): Middleware<Models, Relations> => {
     return (config, m, where) => {
         return middlewares.reduce(
             (acc, middleware) => middleware(config, m, acc),
