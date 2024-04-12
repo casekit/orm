@@ -1,16 +1,12 @@
 import { snakeCase } from "lodash-es";
-import { describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { orm } from "../../../orm";
 import { Models, Relations, models, relations } from "../../../test/db";
 import { seed } from "../../../test/seed";
 import { Middleware } from "../../types/middleware/Middleware";
 
-export const timestamps = ({
-    currentUser,
-}: {
-    currentUser: { id: string };
-}): Middleware<Models, Relations> => ({
+export const timestamps: Middleware<Models, Relations> = {
     create: {
         values: (config, m, values) => {
             if (
@@ -19,7 +15,6 @@ export const timestamps = ({
             ) {
                 return {
                     createdAt: new Date(),
-                    createdById: currentUser.id,
                     ...values,
                 };
             }
@@ -34,7 +29,6 @@ export const timestamps = ({
             ) {
                 return {
                     updatedAt: new Date(),
-                    updatedById: currentUser.id,
                     ...set,
                 };
             } else {
@@ -42,7 +36,7 @@ export const timestamps = ({
             }
         },
     },
-});
+};
 
 export const softdelete: Middleware<Models, Relations> = {
     find: {
@@ -62,7 +56,7 @@ export const softdelete: Middleware<Models, Relations> = {
             if ("deletedAt" in config.models[m].columns) {
                 return {
                     deletedAt: null,
-                    ...where,
+                    ...(where ?? {}),
                 };
             } else {
                 return where;
@@ -268,6 +262,7 @@ describe("middleware.find.where", () => {
             { rollback: true },
         );
     });
+
     test("it works even if there is no where clause in the original query", async () => {
         const db = orm({
             models,
@@ -306,6 +301,72 @@ describe("middleware.find.where", () => {
                 expect(
                     await db.findMany("post", { select: ["title"] }),
                 ).toEqual([]);
+            },
+            { rollback: true },
+        );
+    });
+
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
+    test("multilpe middlewares can be applied", async () => {
+        const db = orm({
+            models,
+            relations,
+            extensions: ["uuid-ossp"],
+            naming: { column: snakeCase },
+            schema: "casekit",
+            middleware: [softdelete, timestamps],
+        });
+        await db.transact(
+            async (db) => {
+                const { users } = await seed(db, {
+                    users: [
+                        {
+                            username: "Lynne Tillman",
+                            tenants: [{ name: "Popova Park", posts: 2 }],
+                        },
+                    ],
+                });
+
+                vi.setSystemTime(new Date("2022-05-23"));
+                const lynne = users["Lynne Tillman"];
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title", "updatedAt"],
+                        where: { authorId: lynne.id },
+                        orderBy: ["title"],
+                    }),
+                ).toEqual([
+                    { title: "Post a", updatedAt: null },
+                    { title: "Post b", updatedAt: null },
+                ]);
+
+                await db.updateMany("post", {
+                    set: { title: "Post AAAAAA" },
+                    where: { authorId: lynne.id, title: "Post a" },
+                });
+                await db.updateMany("post", {
+                    set: { deletedAt: new Date() },
+                    where: { authorId: lynne.id, title: "Post b" },
+                });
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title", "updatedAt"],
+                    }),
+                ).toEqual([
+                    {
+                        title: "Post AAAAAA",
+                        updatedAt: new Date("2022-05-23"),
+                    },
+                ]);
             },
             { rollback: true },
         );

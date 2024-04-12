@@ -13,6 +13,7 @@ export const user = {
             type: "timestamp",
             nullable: true,
         },
+        updatedAt: { type: "timestamp", nullable: true },
         deletedAt: { zodSchema: z.date(), type: "timestamp", nullable: true },
     },
     primaryKey: ["id"],

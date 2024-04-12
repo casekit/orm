@@ -29,14 +29,15 @@ export const buildUpdate = (
             model: m,
             alias: tableAlias(_tableIndex++),
         },
-        where: params.where,
+        where: config.middleware.update.where(config, m, params.where)!,
         set: [],
         returning: [],
     };
     let colIndex = 0;
     const model = config.models[m];
+    const set = config.middleware.update.set(config, m, params.set);
 
-    if (params.set.length === 0) {
+    if (set.length === 0) {
         throw new OrmError("No updates provided for update operation", {
             data: { m, model, params },
         });
@@ -48,7 +49,7 @@ export const buildUpdate = (
         });
     }
 
-    for (const [k, v] of Object.entries(params.set)) {
+    for (const [k, v] of Object.entries(set)) {
         builder.set.push({
             name: model.columns[k]["name"],
             value: v,
