@@ -12,7 +12,7 @@ export const createOne = async (
 ) => {
     const result = await createMany(conn, config, m, {
         ...params,
-        data: [params.data],
+        values: [params.values],
     });
     return Array.isArray(result) ? result[0] : result;
 };

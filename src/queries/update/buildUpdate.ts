@@ -36,7 +36,7 @@ export const buildUpdate = (
     let colIndex = 0;
     const model = config.models[m];
 
-    if (params.update.length === 0) {
+    if (params.values.length === 0) {
         throw new OrmError("No updates provided for update operation", {
             data: { m, model, params },
         });
@@ -48,7 +48,7 @@ export const buildUpdate = (
         });
     }
 
-    for (const [k, v] of Object.entries(params.update)) {
+    for (const [k, v] of Object.entries(params.values)) {
         builder.update.push({
             name: model.columns[k]["name"],
             value: v,

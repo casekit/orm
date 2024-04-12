@@ -32,16 +32,16 @@ export const buildCreate = (
 
     const model = config.models[m];
 
-    if (params.data.length === 0)
+    if (params.values.length === 0)
         throw new OrmError("No data provided for create operation", {
             data: { m, params },
         });
 
-    for (const k of Object.keys(params.data[0])) {
+    for (const k of Object.keys(params.values[0])) {
         builder.params.push({
             name: model.columns[k]["name"],
             path: k,
-            values: params.data.map((v) => v[k]),
+            values: params.values.map((v) => v[k]),
         });
     }
 

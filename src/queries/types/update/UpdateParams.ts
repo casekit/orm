@@ -9,7 +9,7 @@ export type UpdateParams<
     Models extends ModelDefinitions,
     M extends ModelName<Models>,
 > = {
-    update: { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> };
+    values: { [C in ColumnName<Models, M>]?: ColumnType<Models, M, C> };
     where: WhereClause<Models, M>;
     returning?: ReturningClause<Models, M>;
 };

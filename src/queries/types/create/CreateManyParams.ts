@@ -8,6 +8,6 @@ export type CreateManyParams<
     Models extends ModelDefinitions,
     M extends ModelName<Models>,
 > = {
-    data: (RequiredParams<Models, M> & OptionalParams<Models, M>)[];
+    values: (RequiredParams<Models, M> & OptionalParams<Models, M>)[];
     returning?: ReturningClause<Models, M>;
 };

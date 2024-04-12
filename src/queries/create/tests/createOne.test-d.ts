@@ -30,7 +30,7 @@ describe("createOne", () => {
         assertType(
             db.createOne("post", {
                 // @ts-expect-error required fields not provided
-                data: { title: "hello" },
+                values: { title: "hello" },
             }),
         );
     });
@@ -38,7 +38,11 @@ describe("createOne", () => {
     test("only existing fields can be included in the returning clause", () => {
         assertType(
             db.createOne("post", {
-                data: { title: "hello", content: "it me", authorId: uuid.v4() },
+                values: {
+                    title: "hello",
+                    content: "it me",
+                    authorId: uuid.v4(),
+                },
                 returning: [
                     "id",
                     // @ts-expect-error non-existing fields can't be returned
@@ -85,7 +89,7 @@ describe("createOne", () => {
     test("when all required fields are provided, excess property checking still works", async () => {
         assertType(
             await db.createOne("post", {
-                data: {
+                values: {
                     title: "hello",
                     content: "it me",
                     authorId: uuid.v4(),
