@@ -1,4 +1,4 @@
-import { $is, $not } from "../../where/operators";
+import { $is, $not } from "../operators";
 
 export type BooleanOperators =
     | { [$is]: null }

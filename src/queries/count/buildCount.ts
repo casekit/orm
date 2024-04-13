@@ -3,7 +3,7 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { ensureArray } from "../../util/ensureArray";
 import { BaseCountParams } from "../types/base/BaseCountParams";
 import { tableAlias } from "../util/tableAlias";
-import { CountBuilder } from "./CountBuilder";
+import { CountBuilder } from "./types/CountBuilder";
 
 export const buildCount = (
     config: BaseConfiguration,

@@ -5,7 +5,7 @@ import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinit
 import { ColumnName } from "../../../schema/types/helpers/ColumnName";
 import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { $eq, $ne, $not } from "../../where/operators";
+import { $eq, $ne, $not } from "../operators";
 import { BooleanOperators } from "./BooleanOperators";
 import { DateOperators } from "./DateOperators";
 import { NumberOperators } from "./NumberOperators";

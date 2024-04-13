@@ -1,4 +1,4 @@
-import { $gt, $gte, $in, $lt, $lte } from "../../where/operators";
+import { $gt, $gte, $in, $lt, $lte } from "../operators";
 
 export type NumberOperators<T extends number> =
     | { [$gt]: T }

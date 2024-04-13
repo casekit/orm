@@ -6,7 +6,7 @@ import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
 import { hasConditions } from "../util/hasConditions";
 import { buildWhereClauses } from "../where/buildWhereClauses";
-import { FindBuilder } from "./FindBuilder";
+import { FindBuilder } from "./types/FindBuilder";
 
 export const findToSql = (
     config: BaseConfiguration,

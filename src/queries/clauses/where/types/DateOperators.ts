@@ -1,4 +1,4 @@
-import { $gt, $gte, $in, $lt, $lte } from "../../where/operators";
+import { $gt, $gte, $in, $lt, $lte } from "../operators";
 
 export type DateOperators<T extends Date> =
     | { [$gt]: T }

@@ -1,12 +1,4 @@
-import {
-    $gt,
-    $gte,
-    $ilike,
-    $in,
-    $like,
-    $lt,
-    $lte,
-} from "../../where/operators";
+import { $gt, $gte, $ilike, $in, $like, $lt, $lte } from "../operators";
 
 export type StringOperators<T extends string> =
     | { [$gt]: T }
