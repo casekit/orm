@@ -10,7 +10,7 @@ export const updateToSql = (
     m: string,
     builder: UpdateBuilder,
 ): SQLStatement => {
-    const { table, where, update, returning } = builder;
+    const { table, where, set: update, returning } = builder;
 
     const frag = sql`UPDATE %I.%I AS %I\nSET`.withIdentifiers(
         table.schema,

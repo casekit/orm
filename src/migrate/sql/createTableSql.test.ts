@@ -18,6 +18,7 @@ describe("createTableSql", () => {
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
                 username text NOT NULL,
                 created_at timestamp,
+                updated_at timestamp,
                 deleted_at timestamp,
                 PRIMARY KEY (id)
             );

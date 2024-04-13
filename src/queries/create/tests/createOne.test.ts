@@ -15,19 +15,19 @@ describe("createOne", () => {
                 const tenantId = uuid.v4();
                 const postId = uuid.v4();
                 await db.createOne("tenant", {
-                    data: {
+                    values: {
                         id: tenantId,
                         name: "popovapark",
                     },
                 });
                 await db.createOne("user", {
-                    data: {
+                    values: {
                         id: userId,
                         username: "russell",
                     },
                 });
                 const result = await db.createOne("post", {
-                    data: {
+                    values: {
                         id: postId,
                         authorId: userId,
                         tenantId: tenantId,
@@ -71,7 +71,7 @@ describe("createOne", () => {
                 db.connection.query(createTableSql(db.models.baz));
 
                 await db.createOne("baz", {
-                    data: {},
+                    values: {},
                 });
 
                 const rows = await db.findMany("baz", {
@@ -107,7 +107,7 @@ describe("createOne", () => {
                 db.connection.query(createTableSql(db.models.baz));
 
                 await db.createOne("baz", {
-                    data: { name: "hello" },
+                    values: { name: "hello" },
                 });
 
                 const rows = await db.findMany("baz", {

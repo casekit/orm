@@ -1,4 +1,4 @@
-export { type Orm, orm } from "./orm";
+export { Orm, orm } from "./orm";
 export { type Migrator, migrator } from "./migrate";
 export { pull } from "./pull";
 export { sql, SQLStatement } from "./sql";

@@ -230,9 +230,9 @@ export const orm = <
     Models extends ModelDefinitions,
     Relations extends RelationsDefinitions<Models>,
 >(
-    schema: Configuration<Models, Relations>,
+    config: Configuration<Models, Relations>,
 ): Orm<Models, Relations> => {
-    const populatedSchema = populateConfiguration(schema);
+    const populatedSchema = populateConfiguration(config);
     validateConfiguration(populatedSchema);
     return new Orm<Models, Relations>(populatedSchema);
 };

@@ -13,7 +13,7 @@ export const createMany = async (
     m: string,
     params: BaseCreateManyParams,
 ) => {
-    if (params.data.length === 0) {
+    if (params.values.length === 0) {
         return params.returning ? [] : 0;
     }
 
