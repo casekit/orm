@@ -21,7 +21,8 @@ export const deleteMany = async (
         values: statement.values,
     });
 
-    if (process.env.NODE_ENV === "test") console.log(statement.text);
+    if (process.env.NODE_ENV === "test" && !process.env.CI)
+        console.log(statement.text);
 
     const result = await conn.query(statement);
     return params.returning

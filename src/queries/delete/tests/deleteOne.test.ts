@@ -69,7 +69,7 @@ describe("deleteOne", () => {
         );
     });
 
-    test.only("if multiple records are deleted, it throws an error and rolls back to before the delete", async () => {
+    test("if multiple records are deleted, it throws an error and rolls back to before the delete", async () => {
         await db.transact(
             async (db) => {
                 await seed(db, {
