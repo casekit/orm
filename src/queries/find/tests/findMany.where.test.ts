@@ -2,7 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { db } from "../../../test/db";
 import { seed } from "../../../test/seed";
-import { $in } from "../../where/operators";
+import { $in } from "../../clauses/where/operators";
 
 describe("findMany", () => {
     test("it can apply where clauses to queries", async () => {

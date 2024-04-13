@@ -4,7 +4,7 @@ import * as uuid from "uuid";
 
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";
-import { BaseUpdateParams } from "./types/base/BaseUpdateParams";
+import { BaseUpdateParams } from "./update/types/BaseUpdateParams";
 import { updateMany } from "./updateMany";
 
 export const updateOne = async (

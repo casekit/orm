@@ -2,7 +2,7 @@ import pgfmt from "pg-format";
 
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
-import { buildWhereClauses } from "../where/buildWhereClauses";
+import { buildWhereClauses } from "../clauses/where/buildWhereClauses";
 import { UpdateBuilder } from "./buildUpdate";
 
 export const updateToSql = (

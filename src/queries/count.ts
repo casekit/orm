@@ -4,7 +4,7 @@ import { logger } from "../logger";
 import { Connection } from "../types/Connection";
 import { buildCount } from "./count/buildCount";
 import { countToSql } from "./count/countToSql";
-import { BaseCountParams } from "./types/base/BaseCountParams";
+import { BaseCountParams } from "./count/types/BaseCountParams";
 
 export const count = async (
     conn: Connection,

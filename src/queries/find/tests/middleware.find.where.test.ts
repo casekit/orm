@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { orm } from "../../../orm";
 import { Models, Relations, models, relations } from "../../../test/db";
 import { seed } from "../../../test/seed";
-import { Middleware } from "../../types/middleware/Middleware";
+import { Middleware } from "../../middleware/Middleware";
 
 export const timestamps: Middleware<Models, Relations> = {
     create: {

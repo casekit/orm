@@ -3,9 +3,9 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { OrmError } from "../../errors";
 import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
-import { WhereClause } from "../types/WhereClause";
-import { BaseUpdateParams } from "../types/base/BaseUpdateParams";
+import { WhereClause } from "../clauses/WhereClause";
 import { tableAlias } from "../util/tableAlias";
+import { BaseUpdateParams } from "./types/BaseUpdateParams";
 
 export type UpdateBuilder = {
     tableIndex: number;

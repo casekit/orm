@@ -1,7 +1,7 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 import { ZodSchema, z } from "zod";
 
-import { BaseUpdateParams } from "../types/base/BaseUpdateParams";
+import { BaseUpdateParams } from "./types/BaseUpdateParams";
 
 export const updateResultSchema = (
     config: BaseConfiguration,

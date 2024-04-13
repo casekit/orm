@@ -1,7 +1,7 @@
 import { assertType, describe, test } from "vitest";
 
 import { db } from "../../../test/db";
-import { $gte, $ilike, $like, $not, $or } from "../../where/operators";
+import { $gte, $ilike, $like, $not, $or } from "../../clauses/where/operators";
 
 describe("findMany", () => {
     test("where clauses can only refer to fields that exist on the model", async () => {

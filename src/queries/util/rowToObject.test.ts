@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 
-import { FindBuilder } from "../find/FindBuilder";
+import { FindBuilder } from "../find/types/FindBuilder";
 import { rowToObject } from "./rowToObject";
 
 const builder: Pick<FindBuilder, "columns"> = {

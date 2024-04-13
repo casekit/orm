@@ -1,4 +1,4 @@
-import { WhereClause } from "../../../queries/types/WhereClause";
+import { WhereClause } from "../../../queries/clauses/WhereClause";
 import { ModelDefinitions } from "../definitions/ModelDefinitions";
 import { BaseConfiguration } from "./BaseConfiguration";
 

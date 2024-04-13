@@ -1,6 +1,6 @@
 import pg from "pg";
 
-import { Middleware } from "../queries/types/middleware/Middleware";
+import { Middleware } from "../queries/middleware/Middleware";
 import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
 

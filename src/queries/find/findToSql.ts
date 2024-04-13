@@ -4,9 +4,9 @@ import { OrmError } from "../../errors";
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
+import { buildWhereClauses } from "../clauses/where/buildWhereClauses";
 import { hasConditions } from "../util/hasConditions";
-import { buildWhereClauses } from "../where/buildWhereClauses";
-import { FindBuilder } from "./FindBuilder";
+import { FindBuilder } from "./types/FindBuilder";
 
 export const findToSql = (
     config: BaseConfiguration,

@@ -4,7 +4,7 @@ import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
 
 import { FindMany, db } from "../../test/db";
-import { $and, $ilike, $lte } from "../where/operators";
+import { $and, $ilike, $lte } from "../clauses/where/operators";
 import { buildFind } from "./buildFind";
 import { findToSql } from "./findToSql";
 
