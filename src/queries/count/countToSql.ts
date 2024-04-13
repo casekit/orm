@@ -3,7 +3,7 @@ import pgfmt from "pg-format";
 import { OrmError } from "../../errors";
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
-import { isNonEmptyClause } from "../util/isNonEmptyClause";
+import { hasConditions } from "../util/hasConditions";
 import { buildWhereClauses } from "../where/buildWhereClauses";
 import { CountBuilder } from "./CountBuilder";
 
@@ -52,7 +52,7 @@ export const countToSql = (
                 })
                 .join(" AND "),
         );
-        if (isNonEmptyClause(joinedTable.where)) {
+        if (hasConditions(joinedTable.where)) {
             frag.push(
                 sql`\n    AND ${buildWhereClauses(config, joinedTable, joinedTable.where)}`,
             );
@@ -61,7 +61,7 @@ export const countToSql = (
 
     frag.push(sql`\nWHERE 1 = 1`);
 
-    if (isNonEmptyClause(table.where)) {
+    if (hasConditions(table.where)) {
         frag.push(
             sql`\n    AND ${buildWhereClauses(config, table, table.where)}`,
         );

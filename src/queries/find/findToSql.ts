@@ -4,7 +4,7 @@ import { OrmError } from "../../errors";
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
 import { interleave } from "../../util/interleave";
-import { isNonEmptyClause } from "../util/isNonEmptyClause";
+import { hasConditions } from "../util/hasConditions";
 import { buildWhereClauses } from "../where/buildWhereClauses";
 import { FindBuilder } from "./FindBuilder";
 
@@ -80,7 +80,7 @@ export const findToSql = (
                 })
                 .join(" AND "),
         );
-        if (isNonEmptyClause(joinedTable.where)) {
+        if (hasConditions(joinedTable.where)) {
             frag.push(
                 sql`\n    AND ${buildWhereClauses(config, joinedTable, joinedTable.where)}`,
             );
@@ -89,7 +89,7 @@ export const findToSql = (
 
     frag.push(sql`\nWHERE 1 = 1`);
 
-    if (isNonEmptyClause(table.where)) {
+    if (hasConditions(table.where)) {
         frag.push(
             sql`\n    AND ${buildWhereClauses(config, table, table.where)}`,
         );
