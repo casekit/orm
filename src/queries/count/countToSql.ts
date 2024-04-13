@@ -1,4 +1,3 @@
-import { isEmpty } from "lodash-es";
 import pgfmt from "pg-format";
 
 import { OrmError } from "../../errors";
