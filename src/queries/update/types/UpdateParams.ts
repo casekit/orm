@@ -1,7 +1,7 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { ReturningClause } from "../ReturningClause";
-import { WhereClause } from "../WhereClause";
+import { ReturningClause } from "../../clauses/ReturningClause";
+import { WhereClause } from "../../clauses/WhereClause";
 import { UpdateValues } from "./UpdateValues";
 
 export type UpdateParams<

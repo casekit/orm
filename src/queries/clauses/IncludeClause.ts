@@ -1,8 +1,8 @@
 import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
-import { FindManyParams } from "./find/FindManyParams";
-import { FindOneParams } from "./find/FindOneParams";
+import { FindManyParams } from "../find/types/FindManyParams";
+import { FindOneParams } from "../find/types/FindOneParams";
 
 export type IncludeClause<
     Models extends ModelDefinitions,

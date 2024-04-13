@@ -1,7 +1,7 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { SelectClause } from "../SelectClause";
+import { SelectClause } from "../../clauses/SelectClause";
 import { CreateManyParams } from "./CreateManyParams";
 import { CreateOneParams } from "./CreateOneParams";
 

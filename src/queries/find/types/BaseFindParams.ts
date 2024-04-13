@@ -1,7 +1,7 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { LateralByClause } from "../LateralByClause";
-import { WhereClause } from "../WhereClause";
+import { LateralByClause } from "../../clauses/LateralByClause";
+import { WhereClause } from "../../clauses/WhereClause";
 
 export type BaseFindParams = {
     select: string[];

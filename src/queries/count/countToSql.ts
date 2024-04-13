@@ -3,8 +3,8 @@ import pgfmt from "pg-format";
 import { OrmError } from "../../errors";
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
 import { SQLStatement, sql } from "../../sql";
+import { buildWhereClauses } from "../clauses/where/buildWhereClauses";
 import { hasConditions } from "../util/hasConditions";
-import { buildWhereClauses } from "../where/buildWhereClauses";
 import { CountBuilder } from "./types/CountBuilder";
 
 export const countToSql = (

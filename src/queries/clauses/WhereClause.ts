@@ -2,8 +2,8 @@ import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinition
 import { ColumnName } from "../../schema/types/helpers/ColumnName";
 import { ModelName } from "../../schema/types/helpers/ModelName";
 import { NonEmptyArray } from "../../types/util/NonEmptyArray";
-import { $and, $not, $or } from "../where/operators";
-import { WhereClauseValue } from "./where/WhereClauseValue";
+import { $and, $not, $or } from "../clauses/where/operators";
+import { WhereClauseValue } from "./where/types/WhereClauseValue";
 
 export type WhereClause<
     Models extends ModelDefinitions,

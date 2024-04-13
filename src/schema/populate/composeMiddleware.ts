@@ -1,4 +1,4 @@
-import { Middleware } from "../../queries/types/middleware/Middleware";
+import { Middleware } from "../../queries/middleware/Middleware";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
 

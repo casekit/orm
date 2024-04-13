@@ -1,8 +1,8 @@
-import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
-import { ModelName } from "../../schema/types/helpers/ModelName";
-import { SQLStatement, sql } from "../../sql";
-import { WhereClause } from "../types/WhereClause";
+import { BaseConfiguration } from "../../../schema/types/base/BaseConfiguration";
+import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
+import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { SQLStatement, sql } from "../../../sql";
+import { WhereClause } from "../WhereClause";
 import { buildWhereClause } from "./buildWhereClause";
 import { $and, $not, $or } from "./operators";
 

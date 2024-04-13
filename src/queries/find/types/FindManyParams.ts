@@ -3,9 +3,9 @@ import { RelationsDefinitions } from "../../../schema/types/definitions/Relation
 import { ColumnName } from "../../../schema/types/helpers/ColumnName";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { NonEmptyArray } from "../../../types/util/NonEmptyArray";
-import { IncludeClause } from "../IncludeClause";
-import { SelectClause } from "../SelectClause";
-import { WhereClause } from "../WhereClause";
+import { IncludeClause } from "../../clauses/IncludeClause";
+import { SelectClause } from "../../clauses/SelectClause";
+import { WhereClause } from "../../clauses/WhereClause";
 
 export type FindManyParams<
     Models extends ModelDefinitions,

@@ -2,8 +2,8 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { logger } from "../logger";
 import { Connection } from "../types/Connection";
-import { BaseUpdateParams } from "./types/base/BaseUpdateParams";
 import { buildUpdate } from "./update/buildUpdate";
+import { BaseUpdateParams } from "./update/types/BaseUpdateParams";
 import { updateToSql } from "./update/updateToSql";
 import { rowToObject } from "./util/rowToObject";
 

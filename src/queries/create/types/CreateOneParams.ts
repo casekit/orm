@@ -1,9 +1,9 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { Simplify } from "../../../types/util/Simplify";
-import { ReturningClause } from "../ReturningClause";
-import { OptionalParams } from "../helpers/OptionalParams";
-import { RequiredParams } from "../helpers/RequiredParams";
+import { ReturningClause } from "../../clauses/ReturningClause";
+import { OptionalParams } from "../../clauses/helpers/OptionalParams";
+import { RequiredParams } from "../../clauses/helpers/RequiredParams";
 
 export type CreateValues<
     Models extends ModelDefinitions,

@@ -1,7 +1,7 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { WhereClause } from "../WhereClause";
+import { WhereClause } from "../../clauses/WhereClause";
 
 export type IncludeHasOneRelationsClause<
     Models extends ModelDefinitions,

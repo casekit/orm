@@ -3,7 +3,7 @@ import { describe, expect, test } from "vitest";
 import { OrmError } from "../../../errors";
 import { db } from "../../../test/db";
 import { seed } from "../../../test/seed";
-import { $like } from "../../where/operators";
+import { $like } from "../../clauses/where/operators";
 
 describe("updateOne", () => {
     test("it updates a single record in the database", async () => {

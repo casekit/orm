@@ -1,10 +1,10 @@
 import { Union } from "ts-toolbelt";
 import { AtLeast } from "ts-toolbelt/out/Object/AtLeast";
 
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { ColumnName } from "../../../schema/types/helpers/ColumnName";
-import { ColumnType } from "../../../schema/types/helpers/ColumnType";
-import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { ModelDefinitions } from "../../../../schema/types/definitions/ModelDefinitions";
+import { ColumnName } from "../../../../schema/types/helpers/ColumnName";
+import { ColumnType } from "../../../../schema/types/helpers/ColumnType";
+import { ModelName } from "../../../../schema/types/helpers/ModelName";
 import { $eq, $ne, $not } from "../operators";
 import { BooleanOperators } from "./BooleanOperators";
 import { DateOperators } from "./DateOperators";

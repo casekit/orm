@@ -1,6 +1,6 @@
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { ReturningClause } from "../ReturningClause";
+import { ReturningClause } from "../../clauses/ReturningClause";
 import { CreateValues } from "./CreateOneParams";
 
 export type CreateManyParams<

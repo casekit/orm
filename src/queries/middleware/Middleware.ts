@@ -1,5 +1,5 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
+import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
+import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
 import { CreateValuesMiddleware } from "./CreateValuesMiddleware";
 import { UpdateSetMiddleware } from "./UpdateValuesMiddleware";
 import { WhereMiddleware } from "./WhereMiddleware";

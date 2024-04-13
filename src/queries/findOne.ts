@@ -2,8 +2,8 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";
+import { BaseFindParams } from "./find/types/BaseFindParams";
 import { findMany } from "./findMany";
-import { BaseFindParams } from "./types/base/BaseFindParams";
 
 export const findOne = async (
     conn: Connection,

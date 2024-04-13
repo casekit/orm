@@ -1,5 +1,5 @@
-import { OrmError } from "../../errors";
-import { SQLStatement, sql } from "../../sql";
+import { OrmError } from "../../../errors";
+import { SQLStatement, sql } from "../../../sql";
 import {
     $eq,
     $gt,

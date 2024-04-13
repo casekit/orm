@@ -2,8 +2,8 @@ import { max, min, uniq } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { ensureArray } from "../../util/ensureArray";
-import { BaseFindParams } from "../types/base/BaseFindParams";
 import { tableAlias } from "../util/tableAlias";
+import { BaseFindParams } from "./types/BaseFindParams";
 import { FindBuilder } from "./types/FindBuilder";
 
 export const buildFind = (

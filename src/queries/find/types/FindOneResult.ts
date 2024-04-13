@@ -3,9 +3,9 @@ import { RelationsDefinitions } from "../../../schema/types/definitions/Relation
 import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { Simplify } from "../../../types/util/Simplify";
-import { IncludedRelationModel } from "../include/IncludedRelationModel";
-import { IncludedRelationName } from "../include/IncludedRelationName";
-import { IncludedRelationQuery } from "../include/IncludedRelationQuery";
+import { IncludedRelationModel } from "../../clauses/include/IncludedRelationModel";
+import { IncludedRelationName } from "../../clauses/include/IncludedRelationName";
+import { IncludedRelationQuery } from "../../clauses/include/IncludedRelationQuery";
 import { FindManyParams } from "./FindManyParams";
 import { FindOneParams } from "./FindOneParams";
 
