@@ -13,6 +13,13 @@ import { CreateOneParams } from "./queries/create/types/CreateOneParams";
 import { CreateOneResult } from "./queries/create/types/CreateOneResult";
 import { createMany } from "./queries/createMany";
 import { createOne } from "./queries/createOne";
+import { deleteResultSchema } from "./queries/delete/deleteResultSchema";
+import { BaseDeleteParams } from "./queries/delete/types/BaseDeleteParams";
+import { DeleteManyResult } from "./queries/delete/types/DeleteManyResult";
+import { DeleteOneResult } from "./queries/delete/types/DeleteOneResult";
+import { DeleteParams } from "./queries/delete/types/DeleteParams";
+import { deleteMany } from "./queries/deleteMany";
+import { deleteOne } from "./queries/deleteOne";
 import { findResultSchema } from "./queries/find/findResultSchema";
 import { FindManyParams } from "./queries/find/types/FindManyParams";
 import { FindManyResult } from "./queries/find/types/FindManyResult";
@@ -84,12 +91,14 @@ export class Orm<
             }
         } else {
             try {
-                this.poolClient.query("BEGIN");
+                await this.poolClient.query("BEGIN");
                 return await cb(
                     new Orm<Models, Relations>(this.config, this.poolClient),
                 );
             } finally {
-                this.poolClient.query(opts.rollback ? "ROLLBACK" : "COMMIT");
+                await this.poolClient.query(
+                    opts.rollback ? "ROLLBACK" : "COMMIT",
+                );
             }
         }
     }

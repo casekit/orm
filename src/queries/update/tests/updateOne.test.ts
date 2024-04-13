@@ -94,7 +94,7 @@ describe("updateOne", () => {
 
                 expect(
                     db.updateOne("user", {
-                        set: { joinedAt: new Date() },
+                        set: { joinedAt: new Date("2021-01-04") },
                         where: { username: { [$like]: "Stewart %" } },
                         returning: ["id", "username"],
                     }),
@@ -105,12 +105,15 @@ describe("updateOne", () => {
                 );
 
                 const result = await db.findMany("user", {
-                    select: ["id", "username"],
+                    select: ["id", "username", "joinedAt"],
                     where: { username: { [$like]: "Stewart %" } },
                     orderBy: ["username"],
                 });
 
-                expect(result).toEqual([user2, user1]);
+                expect(result.map((u) => u.joinedAt)).not.toEqual([
+                    new Date("2021-01-04"),
+                    new Date("2021-01-04"),
+                ]);
             },
             { rollback: true },
         );

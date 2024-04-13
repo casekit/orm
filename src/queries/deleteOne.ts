@@ -15,7 +15,7 @@ export const deleteOne = async (
 ) => {
     const savepoint = uuid.v4();
     try {
-        conn.query(pgfmt("SAVEPOINT %I", savepoint));
+        await conn.query(pgfmt("SAVEPOINT %I", savepoint));
         const results = await deleteMany(conn, config, m, params);
         const deletedCount =
             typeof results === "number" ? results : results?.length ?? 0;
@@ -31,11 +31,19 @@ export const deleteOne = async (
             );
         }
 
-        conn.query(pgfmt("RELEASE SAVEPOINT %I", savepoint));
+        await conn.query(pgfmt("RELEASE SAVEPOINT %I", savepoint));
 
         return typeof results === "number" ? results : results[0];
     } catch (e) {
-        conn.query(pgfmt("ROLLBACK TO SAVEPOINT %I", savepoint));
+        console.log("Rolling back");
+        console.log(e);
+        try {
+            await conn.query(pgfmt("ROLLBACK TO SAVEPOINT %I", savepoint));
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+        console.log("Rolled back");
         throw e;
     }
 };

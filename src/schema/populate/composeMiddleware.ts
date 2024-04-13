@@ -47,5 +47,15 @@ export const composeMiddleware = <
                     (_config, _m, where) => where,
                 ),
         },
+        delete: {
+            where: middleware
+                .map((m) => m.find?.where)
+                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
+                .reduce(
+                    (acc, fn) => (config, model, where) =>
+                        fn(config, model, acc(config, model, where)),
+                    (_config, _m, where) => where,
+                ),
+        },
     };
 };
