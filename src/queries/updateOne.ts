@@ -1,6 +1,5 @@
 import pgfmt from "pg-format";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
-import * as uuid from "uuid";
 
 import { OrmError } from "../errors";
 import { Connection } from "../types/Connection";

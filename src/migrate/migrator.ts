@@ -12,7 +12,7 @@ export class Migrator {
     }
 
     public async implode(opts = { dryRun: true, output: true }) {
-        implode(this.db, opts);
+        await implode(this.db, opts);
     }
 }
 

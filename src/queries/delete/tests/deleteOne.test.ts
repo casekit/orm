@@ -58,7 +58,7 @@ describe("deleteOne", () => {
                     ],
                 });
 
-                expect(
+                await expect(
                     db.deleteOne("post", {
                         where: { title: "Wrong" },
                         returning: ["id"],
@@ -85,7 +85,7 @@ describe("deleteOne", () => {
                     ],
                 });
 
-                expect(
+                await expect(
                     db.deleteOne("post", {
                         where: { title: { [$like]: "Post%" } },
                         returning: ["id"],

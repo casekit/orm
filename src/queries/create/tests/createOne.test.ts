@@ -68,7 +68,7 @@ describe("createOne", () => {
             relations: { baz: {} },
         }).transact(
             async (db) => {
-                db.connection.query(createTableSql(db.models.baz));
+                await db.connection.query(createTableSql(db.models.baz));
 
                 await db.createOne("baz", {
                     values: {},
@@ -104,7 +104,7 @@ describe("createOne", () => {
             relations: { baz: {} },
         }).transact(
             async (db) => {
-                db.connection.query(createTableSql(db.models.baz));
+                await db.connection.query(createTableSql(db.models.baz));
 
                 await db.createOne("baz", {
                     values: { name: "hello" },
