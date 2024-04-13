@@ -54,6 +54,7 @@ module.exports = {
                         caughtErrorsIgnorePattern: "^_",
                     },
                 ],
+                "@typescript-eslint/no-floating-promises": "error",
             },
         },
 

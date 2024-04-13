@@ -1,6 +1,6 @@
 import { unindent } from "@casekit/unindent";
 
-import { uniqueId } from "lodash-es";
+import { snakeCase, uniqueId } from "lodash-es";
 import pgfmt from "pg-format";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
@@ -48,12 +48,16 @@ describe("createTableSql", () => {
                 },
             },
         } satisfies ModelDefinition;
-        orm({ models: { post }, relations: { post: {} } }).transact(
+        await orm({
+            models: { post },
+            relations: { post: {} },
+            naming: { column: snakeCase },
+        }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.post));
 
                 const result = await db.connection.query(
-                    pgfmt("select * from casekit.%I", table),
+                    pgfmt("select * from public.%I", table),
                 );
 
                 expect(result.fields.map((f) => f.name)).toEqual([

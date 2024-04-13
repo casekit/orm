@@ -54,7 +54,7 @@ describe("updateOne", () => {
 
                 const user = users["Stewart House"];
 
-                expect(
+                await expect(
                     db.updateOne("user", {
                         set: { username: "Stewart Home" },
                         where: { username: "Stewart Wrong" },
@@ -76,7 +76,7 @@ describe("updateOne", () => {
     test("if multiple records are updated, it throws an error and rolls back to before the update", async () => {
         await db.transact(
             async (db) => {
-                const { users } = await seed(db, {
+                await seed(db, {
                     users: [
                         {
                             username: "Stewart House",
@@ -89,12 +89,9 @@ describe("updateOne", () => {
                     ],
                 });
 
-                const user1 = users["Stewart House"];
-                const user2 = users["Stewart Home"];
-
-                expect(
+                await expect(
                     db.updateOne("user", {
-                        set: { joinedAt: new Date() },
+                        set: { joinedAt: new Date("2021-01-04") },
                         where: { username: { [$like]: "Stewart %" } },
                         returning: ["id", "username"],
                     }),
@@ -105,12 +102,15 @@ describe("updateOne", () => {
                 );
 
                 const result = await db.findMany("user", {
-                    select: ["id", "username"],
+                    select: ["id", "username", "joinedAt"],
                     where: { username: { [$like]: "Stewart %" } },
                     orderBy: ["username"],
                 });
 
-                expect(result).toEqual([user2, user1]);
+                expect(result.map((u) => u.joinedAt)).not.toEqual([
+                    new Date("2021-01-04"),
+                    new Date("2021-01-04"),
+                ]);
             },
             { rollback: true },
         );

@@ -18,4 +18,7 @@ export type Middleware<
         set?: UpdateSetMiddleware<Models, Relations>;
         where?: WhereMiddleware<Models, Relations>;
     };
+    delete?: {
+        where?: WhereMiddleware<Models, Relations>;
+    };
 };
