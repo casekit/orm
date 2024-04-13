@@ -209,6 +209,50 @@ export class Orm<
         return parser.parse(result) as UpdateManyResult<Models, M, P>;
     }
 
+    public async deleteOne<
+        M extends ModelName<Models>,
+        P extends DeleteParams<Models, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<DeleteParams<Models, M>, P>,
+    ): Promise<DeleteOneResult<Models, M, P>> {
+        const result = await deleteOne(
+            this.connection,
+            this.config,
+            m,
+            params as BaseDeleteParams,
+        );
+        const parser = deleteResultSchema(
+            this.config,
+            m,
+            params as BaseDeleteParams,
+        );
+        return parser.parse(result) as DeleteOneResult<Models, M, P>;
+    }
+
+    public async deleteMany<
+        M extends ModelName<Models>,
+        P extends DeleteParams<Models, M>,
+    >(
+        m: M,
+        params: DisallowExtraKeys<DeleteParams<Models, M>, P>,
+    ): Promise<DeleteManyResult<Models, M, P>> {
+        const result = await deleteMany(
+            this.connection,
+            this.config,
+            m,
+            params as BaseDeleteParams,
+        );
+
+        if (typeof result === "number")
+            return result as DeleteManyResult<Models, M, P>;
+
+        const parser = z.array(
+            deleteResultSchema(this.config, m, params as BaseDeleteParams),
+        );
+        return parser.parse(result) as DeleteManyResult<Models, M, P>;
+    }
+
     public async count<
         M extends ModelName<Models>,
         P extends CountParams<Models, Relations, M>,

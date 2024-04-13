@@ -25,4 +25,7 @@ export type BaseMiddleware = {
     create: {
         values: BaseValuesMiddleware;
     };
+    delete: {
+        where: BaseWhereMiddleware;
+    };
 };
