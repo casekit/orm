@@ -9,10 +9,7 @@ import { Middleware } from "../../types/middleware/Middleware";
 export const timestamps: Middleware<Models, Relations> = {
     create: {
         values: (config, m, values) => {
-            if (
-                "createdAt" in config.models[m].columns &&
-                "createdById" in config.models[m].columns
-            ) {
+            if ("createdAt" in config.models[m].columns) {
                 return {
                     createdAt: new Date(),
                     ...values,
@@ -23,10 +20,7 @@ export const timestamps: Middleware<Models, Relations> = {
     },
     update: {
         set: (config, m, set) => {
-            if (
-                "updatedAt" in config.models[m].columns &&
-                "updatedById" in config.models[m].columns
-            ) {
+            if ("updatedAt" in config.models[m].columns) {
                 return {
                     updatedAt: new Date(),
                     ...set,
@@ -357,6 +351,8 @@ describe("middleware.find.where", () => {
                     where: { authorId: lynne.id, title: "Post b" },
                 });
 
+                // updatedAt field has been set by the timestamps middleware
+                // and Post b is not returned by the query because of the softdelete middleware
                 expect(
                     await db.findMany("post", {
                         select: ["title", "updatedAt"],
