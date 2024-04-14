@@ -11,7 +11,7 @@ export type UpdateBuilder = {
     tableIndex: number;
     table: { name: string; model: string; alias: string; schema: string };
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
-    set: { name: string; value: unknown }[];
+    values: { name: string; value: unknown }[];
     returning: { name: string; path: string; alias: string }[];
 };
 
@@ -29,21 +29,25 @@ export const buildUpdate = (
             model: m,
             alias: tableAlias(_tableIndex++),
         },
-        where: config.middleware.update.where(params.where, {
-            config,
-            model: m,
-        })!,
-        set: [],
+        where: config.middleware.update?.where
+            ? config.middleware.update.where(params.where, {
+                  config,
+                  model: m,
+              })!
+            : params.where!,
+        values: [],
         returning: [],
     };
     let colIndex = 0;
     const model = config.models[m];
-    const set = config.middleware.update.set(params.set, {
-        config,
-        model: m,
-    });
+    const values = config.middleware.update?.values
+        ? config.middleware.update.values(params.values, {
+              config,
+              model: m,
+          })
+        : params.values;
 
-    if (set.length === 0) {
+    if (values.length === 0) {
         throw new OrmError("No updates provided for update operation", {
             data: { m, model, params },
         });
@@ -55,8 +59,8 @@ export const buildUpdate = (
         });
     }
 
-    for (const [k, v] of Object.entries(set)) {
-        builder.set.push({
+    for (const [k, v] of Object.entries(values)) {
+        builder.values.push({
             name: model.columns[k]["name"],
             value: v,
         });

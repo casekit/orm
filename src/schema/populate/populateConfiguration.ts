@@ -2,7 +2,6 @@ import { identity, mapValues } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { Configuration } from "../../types/Configuration";
-import { BaseMiddleware } from "../types/base/BaseMiddleware";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
 import { composeMiddleware } from "./composeMiddleware";
@@ -34,10 +33,7 @@ export const populateConfiguration = <
 
     const connection = config.connection ?? {};
 
-    const middleware = composeMiddleware(
-        config.middleware ?? [],
-        // TODO make these types work properly
-    ) as unknown as BaseMiddleware;
+    const middleware = composeMiddleware(config.middleware ?? []);
 
     return {
         naming,

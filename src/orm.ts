@@ -225,18 +225,52 @@ export class Orm<
         m: M,
         params: DisallowExtraKeys<DeleteParams<Models, M>, P>,
     ): Promise<DeleteOneResult<Models, M, P>> {
-        const result = await deleteOne(
-            this.connection,
-            this.config,
-            m,
-            params as BaseDeleteParams,
-        );
         const parser = deleteResultSchema(
             this.config,
             m,
             params as BaseDeleteParams,
         );
-        return parser.parse(result) as DeleteOneResult<Models, M, P>;
+
+        if (this.config.middleware.delete?.deleteOne) {
+            const result = await this.config.middleware.delete.deleteOne(
+                params,
+                {
+                    model: m,
+                    config: this.config,
+                    deleteOne: (params) => {
+                        return deleteOne(
+                            this.connection,
+                            this.config,
+                            m,
+                            params,
+                            // TODO figure out a better way to type this
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ) as any;
+                    },
+                    updateOne: (params) => {
+                        return updateOne(
+                            this.connection,
+                            this.config,
+                            m,
+                            params,
+                            // TODO figure out a better way to type this
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ) as any;
+                    },
+                },
+            );
+
+            return parser.parse(result) as DeleteOneResult<Models, M, P>;
+        } else {
+            const result = await deleteOne(
+                this.connection,
+                this.config,
+                m,
+                params as BaseDeleteParams,
+            );
+
+            return parser.parse(result) as DeleteOneResult<Models, M, P>;
+        }
     }
 
     public async deleteMany<
@@ -246,20 +280,54 @@ export class Orm<
         m: M,
         params: DisallowExtraKeys<DeleteParams<Models, M>, P>,
     ): Promise<DeleteManyResult<Models, M, P>> {
-        const result = await deleteMany(
-            this.connection,
-            this.config,
-            m,
-            params as BaseDeleteParams,
-        );
-
-        if (typeof result === "number")
-            return result as DeleteManyResult<Models, M, P>;
-
         const parser = z.array(
             deleteResultSchema(this.config, m, params as BaseDeleteParams),
         );
-        return parser.parse(result) as DeleteManyResult<Models, M, P>;
+
+        if (this.config.middleware.delete?.deleteMany) {
+            const result = await this.config.middleware.delete.deleteMany(
+                params,
+                {
+                    model: m,
+                    config: this.config,
+                    deleteMany: (params) => {
+                        return deleteMany(
+                            this.connection,
+                            this.config,
+                            m,
+                            params,
+                            // TODO figure out a better way to type this
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ) as any;
+                    },
+                    updateMany: (params) => {
+                        return updateMany(
+                            this.connection,
+                            this.config,
+                            m,
+                            params,
+                            // TODO figure out a better way to type this
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ) as any;
+                    },
+                },
+            );
+
+            return (
+                typeof result === "number" ? result : parser.parse(result)
+            ) as DeleteManyResult<Models, M, P>;
+        } else {
+            const result = await deleteMany(
+                this.connection,
+                this.config,
+                m,
+                params as BaseDeleteParams,
+            );
+
+            return (
+                typeof result === "number" ? result : parser.parse(result)
+            ) as DeleteManyResult<Models, M, P>;
+        }
     }
 
     public async count<

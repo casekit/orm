@@ -11,7 +11,6 @@ export type DeleteBuilder = {
     tableIndex: number;
     table: { name: string; model: string; alias: string; schema: string };
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
-    set: { name: string; value: unknown }[];
     returning: { name: string; path: string; alias: string }[];
 };
 
@@ -29,11 +28,12 @@ export const buildDelete = (
             model: m,
             alias: tableAlias(_tableIndex++),
         },
-        where: config.middleware.delete.where(params.where, {
-            config,
-            model: m,
-        })!,
-        set: [],
+        where: config.middleware.delete?.where
+            ? config.middleware.delete.where(params.where, {
+                  config,
+                  model: m,
+              })!
+            : params.where,
         returning: [],
     };
     let colIndex = 0;
