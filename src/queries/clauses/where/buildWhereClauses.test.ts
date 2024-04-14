@@ -80,50 +80,50 @@ describe("buildWhereClauses", () => {
             "(((a.id = $1) AND (a.text = $2)))",
             [3, "foo"],
         ],
-        // [
-        //     { [$or]: [{ id: 3 }, { text: "foo" }] },
-        //     "(((a.id = $1) OR (a.text = $2)))",
-        //     [3, "foo"],
-        // ],
-        // [
-        //     { [$not]: { [$or]: [{ text: "foo" }, { text: "bar" }] } },
-        //     "(NOT (((a.text = $1) OR (a.text = $2))))",
-        //     ["foo", "bar"],
-        // ],
-        // [
-        //     { text: { [$in]: ["cat", "dog", "fish"] } },
-        //     "(a.text IN ($1, $2, $3))",
-        //     ["cat", "dog", "fish"],
-        // ],
-        // [{ text: { [$in]: [] } }, "(a.text IN (NULL))", []],
-        // [
-        //     {
-        //         [$not]: {
-        //             [$and]: [
-        //                 { text: "foo" },
-        //                 {
-        //                     [$or]: [
-        //                         {
-        //                             [$and]: [
-        //                                 { text: 1, renamedColumn: 2 },
-        //                                 { renamedColumn: 3 },
-        //                             ],
-        //                         },
-        //                         { [$or]: [{ text: 3 }, { renamedColumn: 5 }] },
-        //                         { renamedColumn: 333 },
-        //                     ],
-        //                 },
-        //             ],
-        //         },
-        //     },
-        //     "(NOT (((a.text = $1) AND (((((a.text = $2 AND a.original_name = $3) AND (a.original_name = $4))) OR (((a.text = $5) OR (a.original_name = $6))) OR (a.original_name = $7))))))",
-        //     ["foo", 1, 2, 3, 3, 5, 333],
-        // ],
-        // [
-        //     { [$or]: [{ text: 1, renamedColumn: 2 }, { text: 3 }] },
-        //     "(((a.text = $1 AND a.original_name = $2) OR (a.text = $3)))",
-        //     [1, 2, 3],
-        // ],
+        [
+            { [$or]: [{ id: 3 }, { text: "foo" }] },
+            "(((a.id = $1) OR (a.text = $2)))",
+            [3, "foo"],
+        ],
+        [
+            { [$not]: { [$or]: [{ text: "foo" }, { text: "bar" }] } },
+            "(NOT (((a.text = $1) OR (a.text = $2))))",
+            ["foo", "bar"],
+        ],
+        [
+            { text: { [$in]: ["cat", "dog", "fish"] } },
+            "(a.text IN ($1, $2, $3))",
+            ["cat", "dog", "fish"],
+        ],
+        [{ text: { [$in]: [] } }, "(a.text IN (NULL))", []],
+        [
+            {
+                [$not]: {
+                    [$and]: [
+                        { text: "foo" },
+                        {
+                            [$or]: [
+                                {
+                                    [$and]: [
+                                        { text: 1, renamedColumn: 2 },
+                                        { renamedColumn: 3 },
+                                    ],
+                                },
+                                { [$or]: [{ text: 3 }, { renamedColumn: 5 }] },
+                                { renamedColumn: 333 },
+                            ],
+                        },
+                    ],
+                },
+            },
+            "(NOT (((a.text = $1) AND (((((a.text = $2 AND a.original_name = $3) AND (a.original_name = $4))) OR (((a.text = $5) OR (a.original_name = $6))) OR (a.original_name = $7))))))",
+            ["foo", 1, 2, 3, 3, 5, 333],
+        ],
+        [
+            { [$or]: [{ text: 1, renamedColumn: 2 }, { text: 3 }] },
+            "(((a.text = $1 AND a.original_name = $2) OR (a.text = $3)))",
+            [1, 2, 3],
+        ],
     ])(
         "Where clause of %s returns SQL %s with variables %s",
         (
