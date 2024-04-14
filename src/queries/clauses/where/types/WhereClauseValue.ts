@@ -1,6 +1,3 @@
-import { Union } from "ts-toolbelt";
-import { AtLeast } from "ts-toolbelt/out/Object/AtLeast";
-
 import { ModelDefinitions } from "../../../../schema/types/definitions/ModelDefinitions";
 import { ColumnName } from "../../../../schema/types/helpers/ColumnName";
 import { ColumnType } from "../../../../schema/types/helpers/ColumnType";
@@ -18,10 +15,6 @@ import {
     $ne,
     $not,
 } from "../operators";
-import { BooleanOperators } from "./BooleanOperators";
-import { DateOperators } from "./DateOperators";
-import { NumberOperators } from "./NumberOperators";
-import { StringOperators } from "./StringOperators";
 
 export type WhereClauseValue<
     Models extends ModelDefinitions,
