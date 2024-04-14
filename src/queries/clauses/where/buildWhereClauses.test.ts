@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { describe, expect, test } from "vitest";
 
 import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
