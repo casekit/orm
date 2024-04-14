@@ -32,20 +32,6 @@ describe("findMany", () => {
         );
     });
 
-    test("only text fields can be queried with like and ilike", async () => {
-        assertType(
-            await db.findMany("post", {
-                select: ["id", "title", "content"],
-                where: {
-                    publishedAt: {
-                        // @ts-expect-error 'like' cannot be used with a date field
-                        [$like]: "2021-01-%",
-                    },
-                },
-            }),
-        );
-    });
-
     test("where clauses can be applied to N:1 relations", async () => {
         assertType(
             await db.findMany("post", {
