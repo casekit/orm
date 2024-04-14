@@ -1,6 +1,6 @@
+import { last } from "lodash-es";
+
 import { Middleware } from "../../queries/middleware/Middleware";
-import { ValuesMiddleware } from "../../queries/middleware/ValuesMiddleware";
-import { WhereMiddleware } from "../../queries/middleware/WhereMiddleware";
 
 const compose = <V, Meta>(
     ...middleware: (((v: V, meta: Meta) => V) | undefined)[]
@@ -18,32 +18,34 @@ export const composeMiddleware = (middleware: Middleware[]): Middleware => {
     const values = compose(...middleware.map((m) => m.values));
     return {
         find: {
-            where: compose(
-                ...middleware.map((m) => m.find?.where),
-                where,
-            ) as WhereMiddleware,
+            where: compose(...middleware.map((m) => m.find?.where), where),
+        },
+        count: {
+            where: compose(...middleware.map((m) => m.count?.where), where),
         },
         create: {
-            values: compose(
-                ...middleware.map((m) => m.create?.values),
-                values,
-            ) as ValuesMiddleware,
+            values: compose(...middleware.map((m) => m.create?.values), values),
         },
         update: {
-            values: compose(
-                ...middleware.map((m) => m.update?.values),
-                values,
-            ) as ValuesMiddleware,
-            where: compose(
-                ...middleware.map((m) => m.update?.where),
-                where,
-            ) as WhereMiddleware,
+            values: compose(...middleware.map((m) => m.update?.values), values),
+            where: compose(...middleware.map((m) => m.update?.where), where),
         },
         delete: {
-            where: compose(
-                ...middleware.map((m) => m.delete?.where),
-                where,
-            ) as WhereMiddleware,
+            where: compose(...middleware.map((m) => m.delete?.where), where),
+            deleteOne: last(
+                middleware
+                    .map((m) => m.delete?.deleteOne)
+                    .filter(
+                        (fn): fn is NonNullable<typeof fn> => fn !== undefined,
+                    ),
+            ),
+            deleteMany: last(
+                middleware
+                    .map((m) => m.delete?.deleteMany)
+                    .filter(
+                        (fn): fn is NonNullable<typeof fn> => fn !== undefined,
+                    ),
+            ),
         },
     };
 };

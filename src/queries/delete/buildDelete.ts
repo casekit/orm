@@ -28,10 +28,12 @@ export const buildDelete = (
             model: m,
             alias: tableAlias(_tableIndex++),
         },
-        where: config.middleware.delete.where(params.where, {
-            config,
-            model: m,
-        })!,
+        where: config.middleware.delete?.where
+            ? config.middleware.delete.where(params.where, {
+                  config,
+                  model: m,
+              })!
+            : params.where,
         returning: [],
     };
     let colIndex = 0;

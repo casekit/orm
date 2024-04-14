@@ -26,7 +26,9 @@ export const buildCount = (
         model: m,
         schema: config.models[m]["schema"],
         alias: alias,
-        where: config.middleware.find.where(query.where, { config, model: m }),
+        where: config.middleware.count?.where
+            ? config.middleware.count.where(query.where, { config, model: m })
+            : query.where,
     });
 
     for (const [r, subquery] of Object.entries(query.include ?? {})) {

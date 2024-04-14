@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { orm } from "../../../orm";
 import { models, relations } from "../../../test/db";
 import { seed } from "../../../test/seed";
+import { $not } from "../../clauses/where/operators";
 import { Middleware } from "../../middleware/Middleware";
 
 export const timestamps: Middleware = {
@@ -33,33 +34,49 @@ export const timestamps: Middleware = {
 };
 
 export const softdelete: Middleware = {
-    find: {
-        where: (where, { model, config }) => {
-            if ("deletedAt" in config.models[model].columns) {
-                return {
-                    deletedAt: null,
-                    ...where,
-                };
-            } else {
-                return where;
-            }
-        },
+    where: (where, { model, config }) => {
+        if ("deletedAt" in config.models[model].columns) {
+            return {
+                deletedAt: null,
+                ...where,
+            };
+        } else {
+            return where;
+        }
     },
-    update: {
-        where: (where, { model, config }) => {
+    delete: {
+        deleteOne: (params, { model, config, deleteOne, updateOne }) => {
             if ("deletedAt" in config.models[model].columns) {
-                return {
-                    deletedAt: null,
-                    ...(where ?? {}),
-                };
-            } else {
-                return where;
-            }
+                return updateOne({
+                    ...params,
+                    values: {
+                        deletedAt: new Date(),
+                    },
+                });
+            } else return deleteOne(params);
+        },
+        deleteMany: (params, { model, config, deleteMany, updateMany }) => {
+            if ("deletedAt" in config.models[model].columns) {
+                return updateMany({
+                    ...params,
+                    values: {
+                        deletedAt: new Date(),
+                    },
+                });
+            } else return deleteMany(params);
         },
     },
 };
 
 describe("middleware.find.where", () => {
+    beforeEach(() => {
+        vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+        vi.useRealTimers();
+    });
+
     test("it allows modifying the query object before a find operation", async () => {
         const db = orm({
             models,
@@ -300,14 +317,6 @@ describe("middleware.find.where", () => {
         );
     });
 
-    beforeEach(() => {
-        vi.useFakeTimers();
-    });
-
-    afterEach(() => {
-        vi.useRealTimers();
-    });
-
     test("multilpe middlewares can be applied", async () => {
         const db = orm({
             models,
@@ -361,6 +370,85 @@ describe("middleware.find.where", () => {
                     {
                         title: "Post AAAAAA",
                         updatedAt: new Date("2022-05-23"),
+                    },
+                ]);
+            },
+            { rollback: true },
+        );
+    });
+    test("it allows overriding deleteOne and deleteMany functions", async () => {
+        const db = orm({
+            models,
+            relations,
+            extensions: ["uuid-ossp"],
+            naming: { column: snakeCase },
+            schema: "casekit",
+            middleware: [softdelete, timestamps],
+        });
+        await db.transact(
+            async (db) => {
+                const { users } = await seed(db, {
+                    users: [
+                        {
+                            username: "Lynne Tillman",
+                            tenants: [{ name: "Popova Park", posts: 2 }],
+                        },
+                    ],
+                });
+
+                const lynne = users["Lynne Tillman"];
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title", "updatedAt"],
+                        where: { authorId: lynne.id },
+                        orderBy: ["title"],
+                    }),
+                ).toEqual([
+                    { title: "Post a", updatedAt: null },
+                    { title: "Post b", updatedAt: null },
+                ]);
+
+                vi.setSystemTime(new Date("2022-05-23"));
+
+                await db.deleteMany("post", {
+                    where: { authorId: lynne.id, title: "Post a" },
+                });
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title", "updatedAt", "deletedAt"],
+                        where: { deletedAt: { [$not]: null } },
+                    }),
+                ).toEqual([
+                    {
+                        title: "Post a",
+                        updatedAt: new Date("2022-05-23"),
+                        deletedAt: new Date("2022-05-23"),
+                    },
+                ]);
+
+                vi.setSystemTime(new Date("2022-05-24"));
+
+                await db.deleteOne("post", {
+                    where: { authorId: lynne.id, title: "Post b" },
+                });
+
+                expect(
+                    await db.findMany("post", {
+                        select: ["title", "updatedAt", "deletedAt"],
+                        where: { deletedAt: { [$not]: null } },
+                    }),
+                ).toEqual([
+                    {
+                        title: "Post a",
+                        updatedAt: new Date("2022-05-23"),
+                        deletedAt: new Date("2022-05-23"),
+                    },
+                    {
+                        title: "Post b",
+                        updatedAt: new Date("2022-05-24"),
+                        deletedAt: new Date("2022-05-24"),
                     },
                 ]);
             },
