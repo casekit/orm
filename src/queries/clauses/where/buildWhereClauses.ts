@@ -22,21 +22,21 @@ export const buildWhereClauses = (
         );
     });
 
-    if ($and in where) {
+    if (where[$and]) {
         const subclauses = where[$and].map((condition) => {
             return buildWhereClauses(config, table, condition);
         });
         clauses.push(sql`(${sql.splat(subclauses, " AND ")})`);
     }
 
-    if ($or in where) {
+    if (where[$or]) {
         const subclauses = where[$or].map((condition) => {
             return buildWhereClauses(config, table, condition);
         });
         clauses.push(sql`(${sql.splat(subclauses, " OR ")})`);
     }
 
-    if ($not in where) {
+    if (where[$not]) {
         const subclauses = buildWhereClauses(config, table, where[$not]);
         clauses.push(sql`NOT ${subclauses}`);
     }

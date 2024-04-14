@@ -1,15 +1,20 @@
-import { Union } from "ts-toolbelt";
-import { AtLeast } from "ts-toolbelt/out/Object/AtLeast";
-
 import { ModelDefinitions } from "../../../../schema/types/definitions/ModelDefinitions";
 import { ColumnName } from "../../../../schema/types/helpers/ColumnName";
 import { ColumnType } from "../../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../../schema/types/helpers/ModelName";
-import { $eq, $ne, $not } from "../operators";
-import { BooleanOperators } from "./BooleanOperators";
-import { DateOperators } from "./DateOperators";
-import { NumberOperators } from "./NumberOperators";
-import { StringOperators } from "./StringOperators";
+import {
+    $eq,
+    $gt,
+    $gte,
+    $ilike,
+    $in,
+    $is,
+    $like,
+    $lt,
+    $lte,
+    $ne,
+    $not,
+} from "../operators";
 
 export type WhereClauseValue<
     Models extends ModelDefinitions,
@@ -19,14 +24,16 @@ export type WhereClauseValue<
 > =
     | ColumnType<Models, M, C>
     | null
-    | AtLeast<
-          Union.Merge<
-              | { [$eq]: T }
-              | { [$ne]: T }
-              | { [$not]: null }
-              | (T extends boolean ? BooleanOperators : never)
-              | (T extends number ? NumberOperators<T> : never)
-              | (T extends string ? StringOperators<T> : never)
-              | (T extends Date ? DateOperators<T> : never)
-          >
-      >;
+    | {
+          [$eq]?: T;
+          [$ne]?: T;
+          [$not]?: null;
+          [$is]?: null | true | false | { [$not]: true | false };
+          [$gt]?: T;
+          [$gte]?: T;
+          [$lt]?: T;
+          [$lte]?: T;
+          [$in]?: T[];
+          [$like]?: string;
+          [$ilike]?: string;
+      };
