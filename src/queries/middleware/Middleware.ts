@@ -9,7 +9,7 @@ export type Middleware = {
         values?: ValuesMiddleware;
     };
     update?: {
-        set?: ValuesMiddleware;
+        values?: ValuesMiddleware;
         where?: WhereMiddleware;
     };
     delete?: {

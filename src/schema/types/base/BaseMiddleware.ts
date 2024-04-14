@@ -17,7 +17,7 @@ export type BaseMiddleware = {
         where: BaseWhereMiddleware;
     };
     update: {
-        set: BaseValuesMiddleware;
+        values: BaseValuesMiddleware;
         where: BaseWhereMiddleware;
     };
     create: {

@@ -11,7 +11,6 @@ export type DeleteBuilder = {
     tableIndex: number;
     table: { name: string; model: string; alias: string; schema: string };
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
-    set: { name: string; value: unknown }[];
     returning: { name: string; path: string; alias: string }[];
 };
 
@@ -33,7 +32,6 @@ export const buildDelete = (
             config,
             model: m,
         })!,
-        set: [],
         returning: [],
     };
     let colIndex = 0;

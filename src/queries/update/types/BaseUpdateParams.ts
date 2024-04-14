@@ -4,7 +4,7 @@ import { NonEmptyArray } from "../../../types/util/NonEmptyArray";
 import { WhereClause } from "../../clauses/WhereClause";
 
 export type BaseUpdateParams = {
-    set: Record<string, unknown | null>;
+    values: Record<string, unknown | null>;
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
     returning?: NonEmptyArray<string>;
 };

@@ -11,7 +11,7 @@ export type UpdateBuilder = {
     tableIndex: number;
     table: { name: string; model: string; alias: string; schema: string };
     where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
-    set: { name: string; value: unknown }[];
+    values: { name: string; value: unknown }[];
     returning: { name: string; path: string; alias: string }[];
 };
 
@@ -33,12 +33,12 @@ export const buildUpdate = (
             config,
             model: m,
         })!,
-        set: [],
+        values: [],
         returning: [],
     };
     let colIndex = 0;
     const model = config.models[m];
-    const set = config.middleware.update.set(params.set, {
+    const set = config.middleware.update.values(params.values, {
         config,
         model: m,
     });
@@ -56,7 +56,7 @@ export const buildUpdate = (
     }
 
     for (const [k, v] of Object.entries(set)) {
-        builder.set.push({
+        builder.values.push({
             name: model.columns[k]["name"],
             value: v,
         });

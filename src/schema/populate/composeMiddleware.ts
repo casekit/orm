@@ -30,8 +30,8 @@ export const composeMiddleware = (middleware: Middleware[]): Middleware => {
             ) as ValuesMiddleware,
         },
         update: {
-            set: compose(
-                ...middleware.map((m) => m.update?.set),
+            values: compose(
+                ...middleware.map((m) => m.update?.values),
                 values,
             ) as ValuesMiddleware,
             where: compose(
