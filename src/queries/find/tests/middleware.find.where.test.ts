@@ -2,14 +2,14 @@ import { snakeCase } from "lodash-es";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { orm } from "../../../orm";
-import { Models, Relations, models, relations } from "../../../test/db";
+import { models, relations } from "../../../test/db";
 import { seed } from "../../../test/seed";
 import { Middleware } from "../../middleware/Middleware";
 
-export const timestamps: Middleware<Models, Relations> = {
+export const timestamps: Middleware = {
     create: {
-        values: (config, m, values) => {
-            if ("createdAt" in config.models[m].columns) {
+        values: (values, { model, config }) => {
+            if ("createdAt" in config.models[model].columns) {
                 return {
                     createdAt: new Date(),
                     ...values,
@@ -19,23 +19,23 @@ export const timestamps: Middleware<Models, Relations> = {
         },
     },
     update: {
-        set: (config, m, set) => {
-            if ("updatedAt" in config.models[m].columns) {
+        set: (values, { model, config }) => {
+            if ("updatedAt" in config.models[model].columns) {
                 return {
                     updatedAt: new Date(),
-                    ...set,
+                    ...values,
                 };
             } else {
-                return set;
+                return values;
             }
         },
     },
 };
 
-export const softdelete: Middleware<Models, Relations> = {
+export const softdelete: Middleware = {
     find: {
-        where: (config, m, where = {}) => {
-            if ("deletedAt" in config.models[m].columns) {
+        where: (where, { model, config }) => {
+            if ("deletedAt" in config.models[model].columns) {
                 return {
                     deletedAt: null,
                     ...where,
@@ -46,8 +46,8 @@ export const softdelete: Middleware<Models, Relations> = {
         },
     },
     update: {
-        where: (config, m, where) => {
-            if ("deletedAt" in config.models[m].columns) {
+        where: (where, { model, config }) => {
+            if ("deletedAt" in config.models[model].columns) {
                 return {
                     deletedAt: null,
                     ...(where ?? {}),

@@ -30,7 +30,7 @@ export const buildFind = (
         model: m,
         schema: config.models[m]["schema"],
         alias: alias,
-        where: config.middleware.find.where(config, m, query.where),
+        where: config.middleware.find.where(query.where, { config, model: m }),
     });
 
     // make sure we always select the model's primary key,

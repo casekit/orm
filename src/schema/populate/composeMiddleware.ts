@@ -1,61 +1,49 @@
 import { Middleware } from "../../queries/middleware/Middleware";
-import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
+import { ValuesMiddleware } from "../../queries/middleware/ValuesMiddleware";
+import { WhereMiddleware } from "../../queries/middleware/WhereMiddleware";
 
-export const composeMiddleware = <
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
->(
-    middleware: Middleware<Models, Relations>[],
-): Middleware<Models, Relations> => {
+const compose = <V, Meta>(
+    ...middleware: (((v: V, meta: Meta) => V) | undefined)[]
+): ((v: V, meta: Meta) => V) => {
+    return middleware
+        .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
+        .reduce(
+            (acc, fn) => (v, meta) => fn(acc(v, meta), meta),
+            (v, _meta) => v,
+        );
+};
+
+export const composeMiddleware = (middleware: Middleware[]): Middleware => {
+    const where = compose(...middleware.map((m) => m.where));
+    const values = compose(...middleware.map((m) => m.values));
     return {
         find: {
-            where: middleware
-                .map((m) => m.find?.where)
-                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
-                .reduce(
-                    (acc, fn) => (config, model, where) =>
-                        fn(config, model, acc(config, model, where)),
-                    (_config, _m, where) => where,
-                ),
+            where: compose(
+                ...middleware.map((m) => m.find?.where),
+                where,
+            ) as WhereMiddleware,
         },
         create: {
-            values: middleware
-                .map((m) => m.create?.values)
-                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
-                .reduce(
-                    (acc, fn) => (config, model, create) =>
-                        fn(config, model, acc(config, model, create)),
-                    (_config, _m, create) => create,
-                ),
+            values: compose(
+                ...middleware.map((m) => m.create?.values),
+                values,
+            ) as ValuesMiddleware,
         },
         update: {
-            set: middleware
-                .map((m) => m.update?.set)
-                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
-                .reduce(
-                    (acc, fn) => (config, model, create) =>
-                        fn(config, model, acc(config, model, create)),
-                    (_config, _m, create) => create,
-                ),
-            where: middleware
-                .map((m) => m.update?.where)
-                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
-                .reduce(
-                    (acc, fn) => (config, model, where) =>
-                        fn(config, model, acc(config, model, where)),
-                    (_config, _m, where) => where,
-                ),
+            set: compose(
+                ...middleware.map((m) => m.update?.set),
+                values,
+            ) as ValuesMiddleware,
+            where: compose(
+                ...middleware.map((m) => m.update?.where),
+                where,
+            ) as WhereMiddleware,
         },
         delete: {
-            where: middleware
-                .map((m) => m.find?.where)
-                .filter((fn): fn is NonNullable<typeof fn> => fn !== undefined)
-                .reduce(
-                    (acc, fn) => (config, model, where) =>
-                        fn(config, model, acc(config, model, where)),
-                    (_config, _m, where) => where,
-                ),
+            where: compose(
+                ...middleware.map((m) => m.delete?.where),
+                where,
+            ) as WhereMiddleware,
         },
     };
 };
