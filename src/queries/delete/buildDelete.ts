@@ -29,7 +29,10 @@ export const buildDelete = (
             model: m,
             alias: tableAlias(_tableIndex++),
         },
-        where: config.middleware.delete.where(config, m, params.where)!,
+        where: config.middleware.delete.where(params.where, {
+            config,
+            model: m,
+        })!,
         set: [],
         returning: [],
     };

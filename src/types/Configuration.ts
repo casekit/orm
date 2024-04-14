@@ -17,5 +17,5 @@ export type Configuration<
         table?: (s: string) => string;
     };
     connection?: pg.PoolConfig;
-    middleware?: Middleware<Models, Relations>[];
+    middleware?: Middleware[];
 };

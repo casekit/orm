@@ -1,24 +1,20 @@
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../schema/types/definitions/RelationsDefinitions";
-import { CreateValuesMiddleware } from "./CreateValuesMiddleware";
-import { UpdateSetMiddleware } from "./UpdateValuesMiddleware";
+import { ValuesMiddleware } from "./ValuesMiddleware";
 import { WhereMiddleware } from "./WhereMiddleware";
 
-export type Middleware<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
-> = {
+export type Middleware = {
     find?: {
-        where?: WhereMiddleware<Models, Relations>;
+        where?: WhereMiddleware;
     };
     create?: {
-        values?: CreateValuesMiddleware<Models, Relations>;
+        values?: ValuesMiddleware;
     };
     update?: {
-        set?: UpdateSetMiddleware<Models, Relations>;
-        where?: WhereMiddleware<Models, Relations>;
+        set?: ValuesMiddleware;
+        where?: WhereMiddleware;
     };
     delete?: {
-        where?: WhereMiddleware<Models, Relations>;
+        where?: WhereMiddleware;
     };
+    where?: WhereMiddleware;
+    values?: ValuesMiddleware;
 };

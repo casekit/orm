@@ -32,7 +32,7 @@ export const buildCreate = (
 
     const model = config.models[m];
     const values = params.values.map((v) =>
-        config.middleware.create.values(config, m, v),
+        config.middleware.create.values(v, { config, model: m }),
     );
 
     if (values.length === 0)
