@@ -1,6 +1,6 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
-import { Connection } from "../types/Connection";
+import { Connection } from "../Connection";
 import { BaseCreateOneParams } from "./create/types/BaseCreateOneParams";
 import { createMany } from "./createMany";
 

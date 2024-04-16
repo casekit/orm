@@ -1,7 +1,7 @@
 import { unindent } from "@casekit/unindent";
 
 import { snakeCase, uniqueId } from "lodash-es";
-import pgfmt from "pg-format";
+import pg from "pg";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
@@ -52,12 +52,13 @@ describe("createTableSql", () => {
             models: { post },
             relations: { post: {} },
             naming: { column: snakeCase },
+            pool: new pg.Pool(),
         }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.post));
 
                 const result = await db.connection.query(
-                    pgfmt("select * from public.%I", table),
+                    sql`select * from public.%I`.withIdentifiers(table),
                 );
 
                 expect(result.fields.map((f) => f.name)).toEqual([

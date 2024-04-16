@@ -1,3 +1,4 @@
+import pg from "pg";
 import * as uuid from "uuid";
 import { assertType, describe, expectTypeOf, test } from "vitest";
 import { z } from "zod";
@@ -94,7 +95,7 @@ describe("createOne", () => {
         const foo = {
             columns: { id: { type: "serial", zodSchema: z.coerce.number() } },
         } satisfies ModelDefinition;
-        const db = orm({ models: { foo } });
+        const db = orm({ models: { foo }, pool: new pg.Pool() });
         assertType(db.createOne("foo", { values: { id: 3 } }));
     });
 

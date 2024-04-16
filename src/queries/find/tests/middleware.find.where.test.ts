@@ -1,4 +1,5 @@
 import { snakeCase } from "lodash-es";
+import pg from "pg";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { orm } from "../../../orm";
@@ -85,6 +86,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {
@@ -132,6 +134,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {
@@ -179,6 +182,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {
@@ -229,6 +233,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {
@@ -282,6 +287,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {
@@ -325,7 +331,9 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete, timestamps],
+            pool: new pg.Pool(),
         });
+
         await db.transact(
             async (db) => {
                 const { users } = await seed(db, {
@@ -384,6 +392,7 @@ describe("middleware.find.where", () => {
             naming: { column: snakeCase },
             schema: "casekit",
             middleware: [softdelete, timestamps],
+            pool: new pg.Pool(),
         });
         await db.transact(
             async (db) => {

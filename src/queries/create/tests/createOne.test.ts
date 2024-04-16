@@ -1,3 +1,4 @@
+import pg from "pg";
 import * as uuid from "uuid";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
@@ -66,6 +67,7 @@ describe("createOne", () => {
             schema: "casekit",
             models: { baz },
             relations: { baz: {} },
+            pool: new pg.Pool(),
         }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.baz));
@@ -102,6 +104,7 @@ describe("createOne", () => {
             schema: "casekit",
             models: { baz },
             relations: { baz: {} },
+            pool: new pg.Pool(),
         }).transact(
             async (db) => {
                 await db.connection.query(createTableSql(db.models.baz));

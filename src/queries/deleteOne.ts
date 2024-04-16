@@ -1,9 +1,7 @@
-import pgfmt from "pg-format";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
-import * as uuid from "uuid";
 
+import { Connection } from "../Connection";
 import { OrmError } from "../errors";
-import { Connection } from "../types/Connection";
 import { BaseDeleteParams } from "./delete/types/BaseDeleteParams";
 import { deleteMany } from "./deleteMany";
 
@@ -13,9 +11,7 @@ export const deleteOne = async (
     m: string,
     params: BaseDeleteParams,
 ) => {
-    const savepoint = uuid.v4();
-    try {
-        await conn.query(pgfmt("SAVEPOINT %I", savepoint));
+    return await conn.transact(async (conn) => {
         const results = await deleteMany(conn, config, m, params);
         const deletedCount =
             typeof results === "number" ? results : results?.length ?? 0;
@@ -31,19 +27,6 @@ export const deleteOne = async (
             );
         }
 
-        await conn.query(pgfmt("RELEASE SAVEPOINT %I", savepoint));
-
         return typeof results === "number" ? results : results[0];
-    } catch (e) {
-        console.log("Rolling back");
-        console.log(e);
-        try {
-            await conn.query(pgfmt("ROLLBACK TO SAVEPOINT %I", savepoint));
-        } catch (e) {
-            console.log(e);
-            throw e;
-        }
-        console.log("Rolled back");
-        throw e;
-    }
+    });
 };

@@ -1,4 +1,5 @@
 import { snakeCase } from "lodash-es";
+import pg from "pg";
 
 import { orm } from "../..";
 import { FindManyParams } from "../../queries/find/types/FindManyParams";
@@ -12,6 +13,7 @@ export const db = orm({
     extensions: ["uuid-ossp"],
     naming: { column: snakeCase },
     schema: "casekit",
+    pool: new pg.Pool(),
 });
 
 export type FindMany<M extends ModelName<Models>> = FindManyParams<
