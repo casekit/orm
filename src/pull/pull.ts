@@ -71,10 +71,12 @@ export const pull = async (
             import { orm } from "@casekit/orm";
             import { type Models, models } from "./models";
             import { type Relations, relations } from "./relations";
+            import pg from "pg";
 
             export const db = orm({
                 models,
                 relations,
+                connection: new pg.Pool(),
             });
 
             export type { Models, Relations };

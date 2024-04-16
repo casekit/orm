@@ -1,7 +1,7 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
+import { Connection } from "../Connection";
 import { logger } from "../logger";
-import { Connection } from "../types/Connection";
 import { buildCount } from "./count/buildCount";
 import { countToSql } from "./count/countToSql";
 import { BaseCountParams } from "./count/types/BaseCountParams";

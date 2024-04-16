@@ -1,7 +1,7 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
+import { Connection } from "../Connection";
 import { OrmError } from "../errors";
-import { Connection } from "../types/Connection";
 import { BaseFindParams } from "./find/types/BaseFindParams";
 import { findMany } from "./findMany";
 

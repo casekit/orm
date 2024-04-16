@@ -1,5 +1,6 @@
 import { unindent } from "@casekit/unindent";
 
+import pg from "pg";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
@@ -23,7 +24,7 @@ describe("createSchemaSql", () => {
             },
         } satisfies ModelDefinition;
 
-        const db = orm({ models: { a, b } });
+        const db = orm({ models: { a, b }, pool: new pg.Pool() });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS foo;
             CREATE SCHEMA IF NOT EXISTS bar;
@@ -44,7 +45,11 @@ describe("createSchemaSql", () => {
             },
         } satisfies ModelDefinition;
 
-        const db = orm({ schema: "foo", models: { a, b } });
+        const db = orm({
+            schema: "foo",
+            models: { a, b },
+            pool: new pg.Pool(),
+        });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS foo;
             CREATE SCHEMA IF NOT EXISTS bar;
@@ -67,6 +72,7 @@ describe("createSchemaSql", () => {
 
         const db = orm({
             models: { a, b },
+            pool: new pg.Pool(),
         });
         expect(createSchemasSql(db).text).toEqual(unindent`
             CREATE SCHEMA IF NOT EXISTS public;

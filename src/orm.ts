@@ -1,6 +1,7 @@
-import pg from "pg";
+import { QueryResultRow } from "pg";
 import { z } from "zod";
 
+import { Connection } from "./Connection";
 import { count } from "./queries/count";
 import { BaseCountParams } from "./queries/count/types/BaseCountParams";
 import { CountParams } from "./queries/count/types/CountParams";
@@ -40,8 +41,8 @@ import { ModelDefinitions } from "./schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "./schema/types/helpers/ModelName";
 import { validateConfiguration } from "./schema/validate/validateConfiguration";
+import { sql } from "./sql";
 import { Configuration } from "./types/Configuration";
-import { Connection } from "./types/Connection";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
@@ -62,49 +63,26 @@ export class Orm<
         };
     }
 
-    private pool: pg.Pool;
-    private poolClient?: pg.PoolClient;
-
     public get connection(): Connection {
-        return this.poolClient ?? this.pool;
+        return this.config.connection;
     }
 
-    constructor(config: BaseConfiguration, poolClient?: pg.PoolClient) {
+    constructor(config: BaseConfiguration) {
         this.config = config;
-        this.pool = new pg.Pool(config.connection ?? {});
-        this.poolClient = poolClient;
     }
 
     public async transact<T>(
         cb: (db: Orm<Models, Relations>) => Promise<T>,
         opts = { rollback: false },
     ): Promise<T> {
-        if (!this.poolClient) {
-            const conn = await this.pool.connect();
-            try {
-                return await new Orm<Models, Relations>(
-                    this.config,
-                    conn,
-                ).transact(cb, opts);
-            } finally {
-                conn.release();
-            }
-        } else {
-            try {
-                await this.poolClient.query("BEGIN");
-                return await cb(
-                    new Orm<Models, Relations>(this.config, this.poolClient),
-                );
-            } finally {
-                await this.poolClient.query(
-                    opts.rollback ? "ROLLBACK" : "COMMIT",
-                );
-            }
-        }
-    }
-
-    public async end() {
-        return await this.pool.end();
+        return await this.connection.transact(async (conn) => {
+            return await cb(
+                new Orm<Models, Relations>({
+                    ...this.config,
+                    connection: conn,
+                }),
+            );
+        }, opts);
     }
 
     public async findMany<
@@ -344,6 +322,13 @@ export class Orm<
             params as BaseCountParams,
         );
         return z.coerce.number().parse(result);
+    }
+
+    public async query<T extends QueryResultRow>(
+        fragments: TemplateStringsArray,
+    ) {
+        const query = sql(fragments);
+        return await this.connection.query<T>(query);
     }
 }
 

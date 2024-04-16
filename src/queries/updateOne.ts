@@ -1,8 +1,7 @@
-import pgfmt from "pg-format";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
+import { Connection } from "../Connection";
 import { OrmError } from "../errors";
-import { Connection } from "../types/Connection";
 import { BaseUpdateParams } from "./update/types/BaseUpdateParams";
 import { updateMany } from "./updateMany";
 
@@ -12,9 +11,9 @@ export const updateOne = async (
     m: string,
     params: BaseUpdateParams,
 ) => {
-    try {
-        await conn.query(pgfmt("SAVEPOINT update_one"));
+    return await conn.transact(async (conn) => {
         const results = await updateMany(conn, config, m, params);
+
         const updatedCount =
             typeof results === "number" ? results : results?.length ?? 0;
 
@@ -29,11 +28,6 @@ export const updateOne = async (
             );
         }
 
-        await conn.query(pgfmt("RELEASE SAVEPOINT update_one"));
-
         return typeof results === "number" ? results : results[0];
-    } catch (e) {
-        await conn.query(pgfmt("ROLLBACK TO SAVEPOINT update_one"));
-        throw e;
-    }
+    });
 };

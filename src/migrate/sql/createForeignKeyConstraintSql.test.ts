@@ -1,5 +1,6 @@
 import { unindent } from "@casekit/unindent";
 
+import pg from "pg";
 import { describe, expect, test } from "vitest";
 
 import { orm, sql } from "../../";
@@ -35,7 +36,7 @@ describe("createForeignKeyConstraintSql", () => {
             ],
         } satisfies ModelDefinition;
 
-        const db = orm({ models: { foo } });
+        const db = orm({ models: { foo }, pool: new pg.Pool() });
 
         const result = db.models.foo.foreignKeys
             .map((fk) => createForeignKeyConstraintSql(db.models.foo, fk).text)

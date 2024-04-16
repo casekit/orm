@@ -2,9 +2,9 @@ import { groupBy } from "lodash-es";
 import hash from "object-hash";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
+import { Connection } from "../Connection";
 import { OrmError } from "../errors";
 import { logger } from "../logger";
-import { Connection } from "../types/Connection";
 import { ensureArray } from "../util/ensureArray";
 import { buildFind } from "./find/buildFind";
 import { findToSql } from "./find/findToSql";

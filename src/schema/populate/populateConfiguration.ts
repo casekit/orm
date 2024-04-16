@@ -1,6 +1,7 @@
 import { identity, mapValues } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
+import { Connection } from "../../Connection";
 import { Configuration } from "../../types/Configuration";
 import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
@@ -29,9 +30,9 @@ export const populateConfiguration = <
         return config.relations?.[name] ?? {};
     });
 
-    const extensions = config.extensions ?? [];
+    const connection = new Connection(config.pool);
 
-    const connection = config.connection ?? {};
+    const extensions = config.extensions ?? [];
 
     const middleware = composeMiddleware(config.middleware ?? []);
 

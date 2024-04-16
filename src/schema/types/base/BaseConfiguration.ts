@@ -1,5 +1,4 @@
-import pg from "pg";
-
+import { Connection } from "../../../Connection";
 import { Middleware } from "../../../queries/middleware/Middleware";
 import { BaseModels } from "./BaseModels";
 import { BaseRelations } from "./BaseRelations";
@@ -10,6 +9,6 @@ export type BaseConfiguration = {
     extensions: string[];
     naming: { column: (s: string) => string; table: (s: string) => string };
     schema: string;
-    connection: pg.PoolConfig;
+    connection: Connection;
     middleware: Middleware;
 };

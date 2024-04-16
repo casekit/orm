@@ -16,6 +16,6 @@ export type Configuration<
         column?: (s: string) => string;
         table?: (s: string) => string;
     };
-    connection?: pg.PoolConfig;
+    pool: pg.Pool;
     middleware?: Middleware[];
 };
