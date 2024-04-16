@@ -1,3 +1,4 @@
+import { QueryResultRow } from "pg";
 import { z } from "zod";
 
 import { Connection } from "./Connection";
@@ -40,6 +41,7 @@ import { ModelDefinitions } from "./schema/types/definitions/ModelDefinitions";
 import { RelationsDefinitions } from "./schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "./schema/types/helpers/ModelName";
 import { validateConfiguration } from "./schema/validate/validateConfiguration";
+import { sql } from "./sql";
 import { Configuration } from "./types/Configuration";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
@@ -320,6 +322,13 @@ export class Orm<
             params as BaseCountParams,
         );
         return z.coerce.number().parse(result);
+    }
+
+    public async query<T extends QueryResultRow>(
+        fragments: TemplateStringsArray,
+    ) {
+        const query = sql(fragments);
+        return await this.connection.query<T>(query);
     }
 }
 
