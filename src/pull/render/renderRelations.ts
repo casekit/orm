@@ -24,7 +24,7 @@ const guessOneToManyRelationName = (fk: ForeignKey) => {
     } else {
         const foreignName = camelCase(fk.columnsFrom[0]).replace(/Id$/, "");
         if (foreignName === camelCase(fk.tableTo)) {
-            return pluralize(fk.tableFrom);
+            return camelCase(pluralize(fk.tableFrom));
         } else {
             return camelCase(
                 upperFirst(camelCase(fk.columnsFrom[0]).replace(/Id$/, "")) +

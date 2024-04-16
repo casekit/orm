@@ -65,22 +65,14 @@ export const pull = async (
         { encoding: "utf-8" },
     );
 
-    fs.writeFileSync(
-        path.resolve(opts.outDir, "index.ts"),
-        await format(`
-            import { orm } from "@casekit/orm";
-            import { type Models, models } from "./models";
-            import { type Relations, relations } from "./relations";
-            import pg from "pg";
-
-            export const db = orm({
-                models,
-                relations,
-                connection: new pg.Pool(),
-            });
-
-            export type { Models, Relations };
+    if (!fs.existsSync(path.resolve(opts.outDir, "index.ts"))) {
+        fs.writeFileSync(
+            path.resolve(opts.outDir, "index.ts"),
+            await format(`
+            export { models, type Models } from "./models";
+            export { relations, type Relations } from "./relations";
         `),
-        { encoding: "utf-8" },
-    );
+            { encoding: "utf-8" },
+        );
+    }
 };

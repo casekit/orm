@@ -133,6 +133,7 @@ export const renderModel = async (def: Definition) => {
         import { ${imports.join(", ")} } from "@casekit/orm";
 
         export const ${camelCase(def.table)} = {
+            table: "${def.table}",
             ${lines.join(",\n")}
         } satisfies ModelDefinition;`);
 };

@@ -2,6 +2,7 @@ import { QueryResultRow } from "pg";
 import { z } from "zod";
 
 import { Connection } from "./Connection";
+import { OrmError } from "./errors";
 import { count } from "./queries/count";
 import { BaseCountParams } from "./queries/count/types/BaseCountParams";
 import { CountParams } from "./queries/count/types/CountParams";
@@ -326,9 +327,26 @@ export class Orm<
 
     public async query<T extends QueryResultRow>(
         fragments: TemplateStringsArray,
+        ...variables: readonly unknown[]
     ) {
-        const query = sql(fragments);
-        return await this.connection.query<T>(query);
+        const query = sql(fragments, ...variables);
+        const result = await this.connection.query<T>(query);
+        return result.rows;
+    }
+
+    public async queryOne<T extends QueryResultRow>(
+        fragments: TemplateStringsArray,
+        ...variables: readonly unknown[]
+    ) {
+        const query = sql(fragments, ...variables);
+        const result = await this.connection.query<T>(query);
+        if (result.rowCount === 0 || result.rowCount === null)
+            throw new OrmError("No rows returned from query");
+
+        if (result.rowCount > 1)
+            throw new OrmError("More than one row returned from query");
+
+        return result.rows[0];
     }
 }
 

@@ -49,6 +49,7 @@ describe("renderModel", () => {
             import { type ModelDefinition, sql } from "@casekit/orm";
 
             export const myTable = {
+                table: "my_table",
                 columns: {
                     id: {
                         name: "id",
@@ -116,6 +117,7 @@ describe("renderModel", () => {
             import { type ModelDefinition, sql } from "@casekit/orm";
 
             export const myTable = {
+                table: "my_table",
                 columns: {
                     id: {
                         name: "id",

@@ -20,7 +20,7 @@ describe("orm.query", () => {
                     select count(1)::int as total from casekit.post;
                 `;
 
-                expect(result.rows[0]).toEqual({ total: 6 });
+                expect(result[0]).toEqual({ total: 6 });
             },
             { rollback: true },
         );
