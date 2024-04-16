@@ -1,6 +1,6 @@
 {
     "name": "@casekit/orm",
-    "version": "0.0.2-snapshot.6",
+    "version": "0.0.0",
     "description": "A simple ORM",
     "type": "module",
     "main": "src/index.ts",
