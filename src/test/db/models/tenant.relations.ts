@@ -1,4 +1,4 @@
-import { RelationsDefinition } from "../../../schema/types/strict/RelationsDefinition";
+import { RelationsDefinition } from "../../..";
 import { Models } from "../models";
 
 export const tenant = {

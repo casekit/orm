@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/strict/ModelDefinition";
+import { ModelDefinition } from "../../..";
 import { sql } from "../../../sql";
 
 export const tenantUser = {

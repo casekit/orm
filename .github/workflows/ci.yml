@@ -96,6 +96,8 @@ jobs:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
             - name: Push
               run: git push
+            - name: Push tag
+              run: git push --tags
 
     dependabot:
         name: "🤖 Dependabot"

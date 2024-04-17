@@ -3,5 +3,5 @@ import { LooseModelDefinitions } from "./LooseModelDefinitions";
 import { LooseRelationsDefinition } from "./LooseRelationsDefinition";
 
 export type LooseRelationsDefinitions<Models extends LooseModelDefinitions> = {
-    [M in ModelName<Models>]?: LooseRelationsDefinition;
+    [M in ModelName<Models>]?: LooseRelationsDefinition<Models, M>;
 };
