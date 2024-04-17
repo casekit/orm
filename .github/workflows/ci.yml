@@ -81,6 +81,10 @@ jobs:
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         steps:
             - uses: actions/checkout@v4
+            - name: Set up Git config
+              run: |
+                  git config user.name "$(git log -n 1 --pretty=format:%an)"
+                  git config user.email "$(git log -n 1 --pretty=format:%ae)"
             - uses: ./.github/actions/ci-setup
             - name: Build
               run: pnpm build
