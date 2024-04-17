@@ -20,4 +20,4 @@ export const tenantUser = {
             nullable: true,
         },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

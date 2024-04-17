@@ -20,4 +20,4 @@ export const user = {
         foreignKey: "userId",
         otherKey: "tenantId",
     },
-} satisfies RelationsDefinition<Models, "user">;
+} as const satisfies RelationsDefinition<Models, "user">;

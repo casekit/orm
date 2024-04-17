@@ -11,4 +11,4 @@ export const tenant = {
         name: { type: "text" },
         createdAt: { type: "timestamp", default: sql`now()` },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

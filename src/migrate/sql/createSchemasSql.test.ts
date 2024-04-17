@@ -15,14 +15,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({ models: { a, b }, pool: new pg.Pool() });
         expect(createSchemasSql(db).text).toEqual(unindent`
@@ -36,14 +36,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({
             schema: "foo",
@@ -61,14 +61,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({
             models: { a, b },

@@ -135,7 +135,7 @@ export const renderModel = async (def: Definition) => {
         export const ${camelCase(def.table)} = {
             table: "${def.table}",
             ${lines.join(",\n")}
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
         
         export type ${upperFirst(camelCase(def.table))} = ModelType<typeof ${camelCase(def.table)}>;`);
 };

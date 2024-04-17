@@ -21,4 +21,4 @@ export const foo = {
         g: { type: "bigint" },
         h: { type: "bigint" },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

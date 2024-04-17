@@ -13,4 +13,4 @@ export const post = {
         type: "N:1",
         foreignKey: "tenantId",
     },
-} satisfies RelationsDefinition<Models, "post">;
+} as const satisfies RelationsDefinition<Models, "post">;

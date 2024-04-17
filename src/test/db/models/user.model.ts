@@ -20,4 +20,4 @@ export const user = {
     uniqueConstraints: [
         { columns: ["username"], where: sql`deleted_at IS NULL` },
     ],
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

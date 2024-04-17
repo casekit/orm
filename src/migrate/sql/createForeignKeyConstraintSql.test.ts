@@ -34,7 +34,7 @@ describe("createForeignKeyConstraintSql", () => {
                     onUpdate: sql`CASCADE`,
                 },
             ],
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({ models: { foo }, pool: new pg.Pool() });
 

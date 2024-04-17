@@ -25,4 +25,4 @@ export const post = {
         updatedAt: { type: "timestamp", nullable: true },
         deletedAt: { type: "timestamp", nullable: true },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

@@ -47,7 +47,7 @@ describe("createTableSql", () => {
                     nullable: true,
                 },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
         await orm({
             models: { post },
             relations: { post: {} },

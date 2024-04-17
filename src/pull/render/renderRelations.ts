@@ -72,5 +72,5 @@ export const renderRelations = async (def: Definition) => {
 
         export const ${camelCase(def.table)} = {
             ${[...manyToOne, ...oneToMany].map((rel) => rel).join(",\n")}
-        } satisfies RelationsDefinition<Models, "${camelCase(def.table)}">;`);
+        } as const satisfies RelationsDefinition<Models, "${camelCase(def.table)}">;`);
 };

@@ -2,4 +2,4 @@ import { RelationsDefinition } from "src/schema/types/definitions/RelationsDefin
 
 import { type Models } from "../models";
 
-export const foo = {} satisfies RelationsDefinition<Models, "foo">;
+export const foo = {} as const satisfies RelationsDefinition<Models, "foo">;

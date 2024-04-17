@@ -59,7 +59,7 @@ describe("renderModel", () => {
                     },
                     name: { name: "name", type: "text", unique: true, nullable: true },
                 },
-            } satisfies ModelDefinition;
+            } as const satisfies ModelDefinition;
 
             export type MyTable = ModelType<typeof myTable>;
         ` + "\n",
@@ -135,7 +135,7 @@ describe("renderModel", () => {
                     },
                     deletedAt: { name: "deleted_at", type: "timestamp", nullable: true },
                 },
-            } satisfies ModelDefinition;
+            } as const satisfies ModelDefinition;
 
             export type MyTable = ModelType<typeof myTable>;
         ` + "\n",
