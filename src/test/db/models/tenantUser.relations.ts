@@ -1,5 +1,5 @@
-import { RelationsDefinition } from "../../..";
-import { type Models } from "../models";
+import { RelationsDefinition } from "../../../schema/types/strict/RelationsDefinition";
+import { Models } from "../models";
 
 export const tenantUser = {
     user: {

@@ -1,13 +1,12 @@
 import { z } from "zod";
 
 import { SQLStatement } from "../../../sql";
-import { DataType } from "../postgres/DataType";
 
 export type LooseColumnDefinition<ColumnType = unknown> = {
     /**
      * The postgresql datatype of the column.
      */
-    type: DataType;
+    type: string;
 
     /**
      * The name of the column in the database. If not specified,
