@@ -74,6 +74,25 @@ jobs:
             - name: Prettier
               run: pnpm prettier
 
+    publish:
+        name: "🔥 Publish"
+        needs: [test, typecheck, lint, prettier]
+        runs-on: ubuntu-latest
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        steps:
+            - uses: actions/checkout@v4
+            - uses: ./.github/actions/ci-setup
+            - name: Build
+              run: pnpm build
+            - name: Version
+              run: pnpm version --prerelease --preid=alpha
+            - name: Publish
+              run: pnpm publish
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Push
+              run: git push
+
     dependabot:
         name: "🤖 Dependabot"
         needs: [test, typecheck, lint, prettier]
