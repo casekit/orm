@@ -124,4 +124,47 @@ describe("createOne", () => {
             { rollback: true },
         );
     });
+    test("columns that are provided by middleware do not need to be specified", async () => {
+        const baz = {
+            columns: {
+                id: {
+                    type: "uuid",
+                    zodSchema: z.string().uuid(),
+                    provided: true,
+                },
+                name: { type: "text", zodSchema: z.string() },
+            },
+        } as const satisfies ModelDefinition;
+
+        await orm({
+            schema: "casekit",
+            models: { baz },
+            relations: { baz: {} },
+            pool: new pg.Pool(),
+            middleware: [
+                {
+                    create: {
+                        values: (values) => ({ id: uuid.v4(), ...values }),
+                    },
+                },
+            ],
+        }).transact(
+            async (db) => {
+                await db.connection.query(createTableSql(db.models.baz));
+
+                await db.createOne("baz", {
+                    values: { name: "hello" },
+                });
+
+                const rows = await db.findMany("baz", {
+                    select: ["id", "name"],
+                });
+
+                expect(rows).toHaveLength(1);
+                expect(rows[0].id).toBeTypeOf("string");
+                expect(rows[0].name).toEqual("hello");
+            },
+            { rollback: true },
+        );
+    });
 });

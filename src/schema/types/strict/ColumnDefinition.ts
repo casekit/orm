@@ -72,4 +72,10 @@ export type ColumnDefinition<ColumnType = unknown> = {
         onUpdate?: SQLStatement;
         onDelete?: SQLStatement;
     };
+
+    /**
+     * Is this column provided by middleware? If so, it will not be included in
+     * the set of required columns for inserts and updates.
+     */
+    provided?: boolean;
 };

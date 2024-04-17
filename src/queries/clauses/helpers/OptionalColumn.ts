@@ -1,6 +1,7 @@
 import { ColumnName } from "../../../schema/types/helpers/ColumnName";
 import { HasDefault } from "../../../schema/types/helpers/HasDefault";
 import { IsNullable } from "../../../schema/types/helpers/IsNullable";
+import { IsProvided } from "../../../schema/types/helpers/IsProvided";
 import { IsSerial } from "../../../schema/types/helpers/IsSerial";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
@@ -15,5 +16,7 @@ export type OptionalColumn<
           ? C
           : HasDefault<Models, M, C> extends true
             ? C
-            : never;
+            : IsProvided<Models, M, C> extends true
+              ? C
+              : never;
 }[ColumnName<Models, M>];

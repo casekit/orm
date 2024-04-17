@@ -18,6 +18,7 @@ export const populateModel = (
         zodSchema: column.zodSchema ?? suggestedColumnSchema(column.type),
         nullable: column.nullable ?? false,
         default: column.default ?? null,
+        provided: column.provided ?? false,
     }));
 
     const primaryKey =
