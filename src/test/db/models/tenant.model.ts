@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../../schema/types/strict/ModelDefinition";
 import { sql } from "../../../sql";
 
 export const tenant = {
@@ -11,4 +11,4 @@ export const tenant = {
         name: { type: "text" },
         createdAt: { type: "timestamp", default: sql`now()` },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

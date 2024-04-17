@@ -1,14 +1,16 @@
 import { BaseConfiguration } from "../../schema/types/base/BaseConfiguration";
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../schema/types/loose/LooseModelDefinitions";
 import { WhereClause } from "../clauses/WhereClause";
 
 export type WhereMiddleware = (
     where:
-        | WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>
+        | WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>
         | undefined,
     meta: {
         model: string;
         config: BaseConfiguration;
     },
-) => WhereClause<ModelDefinitions, ModelName<ModelDefinitions>> | undefined;
+) =>
+    | WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>
+    | undefined;

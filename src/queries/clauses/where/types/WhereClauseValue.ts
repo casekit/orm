@@ -1,7 +1,7 @@
-import { ModelDefinitions } from "../../../../schema/types/definitions/ModelDefinitions";
 import { ColumnName } from "../../../../schema/types/helpers/ColumnName";
 import { ColumnType } from "../../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../../schema/types/loose/LooseModelDefinitions";
 import {
     $eq,
     $gt,
@@ -17,7 +17,7 @@ import {
 } from "../operators";
 
 export type WhereClauseValue<
-    Models extends ModelDefinitions,
+    Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
     C extends ColumnName<Models, M>,
     T = ColumnType<Models, M, C>,

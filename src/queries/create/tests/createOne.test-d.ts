@@ -94,7 +94,7 @@ describe("createOne", () => {
     test("when there are no required params, typechecking still works", () => {
         const foo = {
             columns: { id: { type: "serial", zodSchema: z.coerce.number() } },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
         const db = orm({ models: { foo }, pool: new pg.Pool() });
         assertType(db.createOne("foo", { values: { id: 3 } }));
     });

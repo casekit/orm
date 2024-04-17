@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { DataType } from "../types/postgres/DataType";
-
 /**
  * This must be kept in sync with suggestedColumnSchema
  * below, so when a zod schema is not provided we can
@@ -29,7 +27,7 @@ export type SuggestedColumnType<DataType> = DataType extends
  * TODO figure out if these are reasonable or if there are better
  * alternatives - and what the values should be for the other datatypes
  */
-export const suggestedColumnSchema = (type: DataType) => {
+export const suggestedColumnSchema = (type: string) => {
     if (type.startsWith("character")) return z.string();
     if (type.startsWith("numeric")) return z.number();
     if (type.startsWith("timestamp")) return z.date();

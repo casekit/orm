@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../..";
 import { sql } from "../../../sql";
 
 export const foo = {
@@ -21,4 +21,4 @@ export const foo = {
         g: { type: "bigint" },
         h: { type: "bigint" },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

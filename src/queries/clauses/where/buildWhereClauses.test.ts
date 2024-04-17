@@ -1,7 +1,7 @@
 import { describe, expect, test } from "vitest";
 
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
 import { db } from "../../../test/db";
 import { WhereClause } from "../types/../WhereClause";
 import { buildWhereClauses } from "./buildWhereClauses";
@@ -126,7 +126,10 @@ describe("buildWhereClauses", () => {
     ])(
         "Where clause of %s returns SQL %s with variables %s",
         (
-            where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>,
+            where: WhereClause<
+                LooseModelDefinitions,
+                ModelName<LooseModelDefinitions>
+            >,
             sql: string,
             values: unknown[],
         ) => {

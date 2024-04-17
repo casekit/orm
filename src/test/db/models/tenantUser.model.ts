@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../../schema/types/strict/ModelDefinition";
 import { sql } from "../../../sql";
 
 export const tenantUser = {
@@ -20,4 +20,4 @@ export const tenantUser = {
             nullable: true,
         },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

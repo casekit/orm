@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../../schema/types/strict/ModelDefinition";
 import { sql } from "../../../sql";
 
 export const post = {
@@ -25,4 +25,4 @@ export const post = {
         updatedAt: { type: "timestamp", nullable: true },
         deletedAt: { type: "timestamp", nullable: true },
     },
-} satisfies ModelDefinition;
+} as const satisfies ModelDefinition;

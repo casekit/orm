@@ -1,9 +1,9 @@
-import { ModelDefinitions } from "../definitions/ModelDefinitions";
+import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
 import { Columns } from "./Columns";
 import { ModelName } from "./ModelName";
 
 export type HasDefault<
-    Models extends ModelDefinitions,
+    Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
     C extends keyof Columns<Models, M>,
 > = null extends Columns<Models, M>[C]["default"]

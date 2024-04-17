@@ -1,7 +1,7 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../../../schema/types/loose/LooseRelationsDefinitions";
 import { Simplify } from "../../../types/util/Simplify";
 import { IncludedRelationModel } from "../../clauses/include/IncludedRelationModel";
 import { IncludedRelationName } from "../../clauses/include/IncludedRelationName";
@@ -10,8 +10,8 @@ import { FindManyParams } from "./FindManyParams";
 import { FindOneParams } from "./FindOneParams";
 
 export type FindOneResult<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
     Q extends
         | FindManyParams<Models, Relations, M>

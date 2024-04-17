@@ -4,8 +4,7 @@ import pg from "pg";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { orm } from "../../";
-import { ModelDefinition } from "../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition, orm } from "../../";
 import { createSchemasSql } from "./createSchemasSql";
 
 describe("createSchemaSql", () => {
@@ -15,14 +14,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({ models: { a, b }, pool: new pg.Pool() });
         expect(createSchemasSql(db).text).toEqual(unindent`
@@ -36,14 +35,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({
             schema: "foo",
@@ -61,14 +60,14 @@ describe("createSchemaSql", () => {
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const b = {
             schema: "bar",
             columns: {
                 id: { type: "uuid", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
 
         const db = orm({
             models: { a, b },

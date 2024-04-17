@@ -38,17 +38,17 @@ import { updateOne } from "./queries/updateOne";
 import { populateConfiguration } from "./schema/populate/populateConfiguration";
 import { BaseConfiguration } from "./schema/types/base/BaseConfiguration";
 import { BaseModel } from "./schema/types/base/BaseModel";
-import { ModelDefinitions } from "./schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "./schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "./schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "./schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "./schema/types/loose/LooseRelationsDefinitions";
 import { validateConfiguration } from "./schema/validate/validateConfiguration";
 import { sql } from "./sql";
 import { Configuration } from "./types/Configuration";
 import { DisallowExtraKeys } from "./types/util/DisallowExtraKeys";
 
 export class Orm<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
 > {
     public config: BaseConfiguration;
 
@@ -351,8 +351,8 @@ export class Orm<
 }
 
 export const orm = <
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
 >(
     config: Configuration<Models, Relations>,
 ): Orm<Models, Relations> => {

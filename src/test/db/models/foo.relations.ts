@@ -1,5 +1,4 @@
-import { RelationsDefinition } from "src/schema/types/definitions/RelationsDefinition";
+import { RelationsDefinition } from "../../../schema/types/strict/RelationsDefinition";
+import { Models } from "../models";
 
-import { type Models } from "../models";
-
-export const foo = {} satisfies RelationsDefinition<Models, "foo">;
+export const foo = {} as const satisfies RelationsDefinition<Models, "foo">;

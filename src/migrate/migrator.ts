@@ -1,7 +1,7 @@
 import { Orm } from "..";
 import { BaseOrm } from "../schema/types/base/BaseOrm";
-import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
+import { LooseModelDefinitions } from "../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../schema/types/loose/LooseRelationsDefinitions";
 import { implode } from "./commands/implode";
 
 export class Migrator {
@@ -17,8 +17,8 @@ export class Migrator {
 }
 
 export const migrator = <
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
 >(
     db: Orm<Models, Relations>,
 ) => new Migrator(db as BaseOrm);

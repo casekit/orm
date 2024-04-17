@@ -4,13 +4,13 @@ import { BaseModel } from "src/schema/types/base/BaseModel";
 import { BaseConfiguration } from "../types/base/BaseConfiguration";
 import { ForeignKey } from "../types/constraints/ForeignKey";
 import { UniqueConstraint } from "../types/constraints/UniqueConstraint";
-import { ModelDefinition } from "../types/definitions/ModelDefinition";
+import { LooseModelDefinition } from "../types/loose/LooseModelDefinition";
 import { suggestedColumnSchema } from "./suggestedColumnSchema";
 
 export const populateModel = (
     config: Pick<BaseConfiguration, "naming" | "schema">,
     name: string,
-    model: ModelDefinition,
+    model: LooseModelDefinition,
 ): BaseModel => {
     const columns = mapValues(model.columns, (column, name) => ({
         name: column.name ?? config.naming.column(name),

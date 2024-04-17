@@ -62,7 +62,7 @@ describe("createOne", () => {
                 big: { type: "bigserial", zodSchema: z.coerce.number() },
                 small: { type: "smallserial", zodSchema: z.coerce.number() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
         await orm({
             schema: "casekit",
             models: { baz },
@@ -99,7 +99,7 @@ describe("createOne", () => {
                 },
                 name: { type: "text", zodSchema: z.string() },
             },
-        } satisfies ModelDefinition;
+        } as const satisfies ModelDefinition;
         await orm({
             schema: "casekit",
             models: { baz },
