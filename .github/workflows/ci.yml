@@ -85,7 +85,7 @@ jobs:
             - name: Build
               run: pnpm build
             - name: Version
-              run: pnpm version --prerelease --preid=alpha
+              run: pnpm version prerelease --preid=alpha
             - name: Publish
               run: pnpm publish
               env:
