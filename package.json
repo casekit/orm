@@ -3,8 +3,8 @@
     "version": "0.0.1-alpha.0",
     "description": "A simple ORM",
     "type": "module",
-    "main": "src/index.ts",
-    "types": "src/index.ts",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "scripts": {
         "build": "rm -rf lib && tsc",
         "check:all": "CI=true pnpm test && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",

@@ -7,4 +7,6 @@ export { type RelationsDefinition } from "./schema/types/definitions/RelationsDe
 export { type Middleware } from "./queries/middleware/Middleware";
 export * from "./queries/clauses/where/operators";
 export { OrmError } from "./errors";
-export type { ModelType } from "./schema/types/helpers/ModelType";
+export type { ModelType } from "./types/ModelType";
+export type { ColumnType } from "./types/ColumnType";
+export type { ColumnName } from "./types/ColumnName";

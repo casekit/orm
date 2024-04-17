@@ -46,7 +46,7 @@ describe("renderModel", () => {
             }),
         ).toEqual(
             unindent`
-            import { type ModelDefinition, sql } from "@casekit/orm";
+            import { type ModelDefinition, type ModelType, sql } from "@casekit/orm";
 
             export const myTable = {
                 table: "my_table",
@@ -60,6 +60,8 @@ describe("renderModel", () => {
                     name: { name: "name", type: "text", unique: true, nullable: true },
                 },
             } satisfies ModelDefinition;
+
+            export type MyTable = ModelType<typeof myTable>;
         ` + "\n",
         );
     });
@@ -114,7 +116,7 @@ describe("renderModel", () => {
             }),
         ).toEqual(
             unindent`
-            import { type ModelDefinition, sql } from "@casekit/orm";
+            import { type ModelDefinition, type ModelType, sql } from "@casekit/orm";
 
             export const myTable = {
                 table: "my_table",
@@ -134,6 +136,8 @@ describe("renderModel", () => {
                     deletedAt: { name: "deleted_at", type: "timestamp", nullable: true },
                 },
             } satisfies ModelDefinition;
+
+            export type MyTable = ModelType<typeof myTable>;
         ` + "\n",
         );
     });

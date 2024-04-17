@@ -1,4 +1,4 @@
-import { camelCase, identity, times } from "lodash-es";
+import { camelCase, identity, times, upperFirst } from "lodash-es";
 
 import { ColumnMeta } from "../types/ColumnMeta";
 import { ForeignKey } from "../types/ForeignKey";
@@ -98,7 +98,7 @@ export const renderForeignKeys = (constraints: ForeignKey[]) => {
 };
 
 export const renderModel = async (def: Definition) => {
-    const imports = ["type ModelDefinition"];
+    const imports = ["type ModelDefinition", "type ModelType"];
     if (def.columns.find((c) => c.default !== null)) {
         imports.push("sql");
     }
@@ -135,5 +135,7 @@ export const renderModel = async (def: Definition) => {
         export const ${camelCase(def.table)} = {
             table: "${def.table}",
             ${lines.join(",\n")}
-        } satisfies ModelDefinition;`);
+        } satisfies ModelDefinition;
+        
+        export type ${upperFirst(camelCase(def.table))} = ModelType<typeof ${camelCase(def.table)}>;`);
 };
