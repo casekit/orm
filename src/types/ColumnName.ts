@@ -1,6 +1,6 @@
-import { ModelDefinition } from "../schema/types/definitions/ModelDefinition";
+import { LooseModelDefinition } from "../schema/types/loose/LooseModelDefinition";
 
-export type ColumnName<Model extends ModelDefinition> = Extract<
+export type ColumnName<Model extends LooseModelDefinition> = Extract<
     keyof Model["columns"],
     string
 >;

@@ -1,6 +1,6 @@
 import { BaseConfiguration } from "../../../schema/types/base/BaseConfiguration";
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
 import { SQLStatement, sql } from "../../../sql";
 import { WhereClause } from "../WhereClause";
 import { buildWhereClause } from "./buildWhereClause";
@@ -9,7 +9,7 @@ import { $and, $not, $or } from "./operators";
 export const buildWhereClauses = (
     config: BaseConfiguration,
     table: { name: string; schema: string; alias: string; model: string },
-    where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>,
+    where: WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>,
 ): SQLStatement => {
     const clauses: SQLStatement[] = [];
     Object.entries(where).forEach(([column, value]) => {

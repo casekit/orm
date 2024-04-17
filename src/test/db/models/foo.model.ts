@@ -1,4 +1,4 @@
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../..";
 import { sql } from "../../../sql";
 
 export const foo = {

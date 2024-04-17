@@ -1,8 +1,8 @@
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../../errors";
-import { ModelDefinitions } from "../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../schema/types/loose/LooseModelDefinitions";
 import { WhereClause } from "../clauses/WhereClause";
 import { tableAlias } from "../util/tableAlias";
 import { BaseDeleteParams } from "./types/BaseDeleteParams";
@@ -10,7 +10,7 @@ import { BaseDeleteParams } from "./types/BaseDeleteParams";
 export type DeleteBuilder = {
     tableIndex: number;
     table: { name: string; model: string; alias: string; schema: string };
-    where: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
+    where: WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>;
     returning: { name: string; path: string; alias: string }[];
 };
 

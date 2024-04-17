@@ -1,12 +1,12 @@
 import pg from "pg";
 
 import { Middleware } from "../queries/middleware/Middleware";
-import { ModelDefinitions } from "../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../schema/types/definitions/RelationsDefinitions";
+import { LooseModelDefinitions } from "../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../schema/types/loose/LooseRelationsDefinitions";
 
 export type Configuration<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
 > = {
     models: Models;
     relations?: Relations;

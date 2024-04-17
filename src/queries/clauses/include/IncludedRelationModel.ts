@@ -1,14 +1,13 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { RelationDefinition } from "../../../schema/types/definitions/RelationDefinition";
-import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationDefinition } from "../../../schema/types/loose/LooseRelationDefinition";
+import { LooseRelationsDefinitions } from "../../../schema/types/loose/LooseRelationsDefinitions";
 
 export type IncludedRelationModel<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
     R extends keyof Relations[M],
-> =
-    Relations[M][R] extends RelationDefinition<Models, M>
-        ? Relations[M][R]["model"]
-        : never;
+> = Relations[M][R] extends LooseRelationDefinition
+    ? Extract<Relations[M][R]["model"], ModelName<Models>>
+    : never;

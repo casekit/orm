@@ -1,9 +1,9 @@
-import { ModelDefinitions } from "../definitions/ModelDefinitions";
 import { ColumnName } from "../helpers/ColumnName";
 import { ModelName } from "../helpers/ModelName";
+import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
 
 export type ManyToOneRelation<
-    Models extends ModelDefinitions,
+    Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > = {
     [M2 in ModelName<Models>]: {

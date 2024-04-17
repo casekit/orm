@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 import { SuggestedColumnType } from "../schema/populate/suggestedColumnSchema";
-import { ModelDefinition } from "../schema/types/definitions/ModelDefinition";
+import { LooseModelDefinition } from "../schema/types/loose/LooseModelDefinition";
 import { ColumnName } from "./ColumnName";
 
 type NonNullableColumnType<
-    Model extends ModelDefinition,
+    Model extends LooseModelDefinition,
     C extends ColumnName<Model>,
 > =
     Model["columns"][C]["zodSchema"] extends z.ZodType<unknown>
@@ -13,7 +13,7 @@ type NonNullableColumnType<
         : SuggestedColumnType<Model["columns"][C]["type"]>;
 
 export type ColumnType<
-    Model extends ModelDefinition,
+    Model extends LooseModelDefinition,
     C extends ColumnName<Model>,
 > = Model["columns"][C]["nullable"] extends true
     ? NonNullableColumnType<Model, C> | null

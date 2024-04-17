@@ -1,8 +1,8 @@
 import { Orm } from "../../../orm";
-import { ModelDefinitions } from "../definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../definitions/RelationsDefinitions";
+import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../loose/LooseRelationsDefinitions";
 
 export type BaseOrm = Orm<
-    ModelDefinitions,
-    RelationsDefinitions<ModelDefinitions>
+    LooseModelDefinitions,
+    LooseRelationsDefinitions<LooseModelDefinitions>
 >;

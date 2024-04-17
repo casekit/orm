@@ -5,8 +5,7 @@ import pg from "pg";
 import { describe, expect, test } from "vitest";
 import { z } from "zod";
 
-import { orm } from "../..";
-import { ModelDefinition } from "../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition, orm } from "../..";
 import { sql } from "../../sql";
 import { db } from "../../test/db";
 import { createTableSql } from "./createTableSql";

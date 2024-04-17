@@ -1,12 +1,12 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../../../schema/types/loose/LooseRelationsDefinitions";
 import { FindManyParams } from "./FindManyParams";
 import { FindOneResult } from "./FindOneResult";
 
 export type FindManyResult<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
     Q extends FindManyParams<Models, Relations, M>,
 > = FindOneResult<Models, Relations, M, Q>[];

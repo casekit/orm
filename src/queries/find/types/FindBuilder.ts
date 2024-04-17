@@ -1,5 +1,5 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
 import { WhereClause } from "../../clauses/WhereClause";
 
 export type FindBuilder = {
@@ -18,8 +18,14 @@ export type FindBuilder = {
         schema: string;
         alias: string;
         joins?: Join[];
-        conditions?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
-        where?: WhereClause<ModelDefinitions, ModelName<ModelDefinitions>>;
+        conditions?: WhereClause<
+            LooseModelDefinitions,
+            ModelName<LooseModelDefinitions>
+        >;
+        where?: WhereClause<
+            LooseModelDefinitions,
+            ModelName<LooseModelDefinitions>
+        >;
     }[];
 
     lateralBy?: {

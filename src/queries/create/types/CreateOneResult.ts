@@ -1,12 +1,12 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
 import { ColumnType } from "../../../schema/types/helpers/ColumnType";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
 import { SelectClause } from "../../clauses/SelectClause";
 import { CreateManyParams } from "./CreateManyParams";
 import { CreateOneParams } from "./CreateOneParams";
 
 export type CreateOneResult<
-    Models extends ModelDefinitions,
+    Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
     P extends CreateOneParams<Models, M> | CreateManyParams<Models, M>,
 > =

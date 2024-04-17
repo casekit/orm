@@ -3,8 +3,7 @@ import { unindent } from "@casekit/unindent";
 import pg from "pg";
 import { describe, expect, test } from "vitest";
 
-import { orm, sql } from "../../";
-import { ModelDefinition } from "../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition, orm, sql } from "../../";
 import { createForeignKeyConstraintSql } from "./createForeignKeyConstraintSql";
 
 describe("createForeignKeyConstraintSql", () => {

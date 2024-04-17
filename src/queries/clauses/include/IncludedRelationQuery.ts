@@ -1,12 +1,12 @@
-import { ModelDefinitions } from "../../../schema/types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../../../schema/types/definitions/RelationsDefinitions";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
+import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../../../schema/types/loose/LooseRelationsDefinitions";
 import { FindManyParams } from "../../find/types/FindManyParams";
 import { IncludedRelationModel } from "./IncludedRelationModel";
 
 export type IncludedRelationQuery<
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
     R extends keyof Q["include"] & keyof Relations[M],
     Q extends FindManyParams<Models, Relations, M>,

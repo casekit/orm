@@ -3,14 +3,14 @@ import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { Connection } from "../../Connection";
 import { Configuration } from "../../types/Configuration";
-import { ModelDefinitions } from "../types/definitions/ModelDefinitions";
-import { RelationsDefinitions } from "../types/definitions/RelationsDefinitions";
+import { LooseModelDefinitions } from "../types/loose/LooseModelDefinitions";
+import { LooseRelationsDefinitions } from "../types/loose/LooseRelationsDefinitions";
 import { composeMiddleware } from "./composeMiddleware";
 import { populateModel } from "./populateModel";
 
 export const populateConfiguration = <
-    Models extends ModelDefinitions,
-    Relations extends RelationsDefinitions<Models>,
+    Models extends LooseModelDefinitions,
+    Relations extends LooseRelationsDefinitions<Models>,
 >(
     config: Configuration<Models, Relations>,
 ): BaseConfiguration => {

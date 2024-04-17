@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ModelDefinition } from "../../../schema/types/definitions/ModelDefinition";
+import { ModelDefinition } from "../../../schema/types/strict/ModelDefinition";
 import { sql } from "../../../sql";
 
 export const user = {
