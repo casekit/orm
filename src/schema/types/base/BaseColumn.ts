@@ -6,4 +6,5 @@ export type BaseColumn = {
     zodSchema: z.ZodType<unknown>;
     nullable: boolean;
     default?: unknown;
+    provided: boolean;
 };
