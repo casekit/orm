@@ -1,4 +1,4 @@
-import { groupBy } from "lodash-es";
+import { dropRight, get, groupBy, set } from "lodash-es";
 import hash from "object-hash";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
@@ -8,6 +8,8 @@ import { logger } from "../logger";
 import { ensureArray } from "../util/ensureArray";
 import { buildFind } from "./find/buildFind";
 import { findToSql } from "./find/findToSql";
+import { getIncludedManyToManyRelations } from "./find/getIncludedManyToManyRelations";
+import { getIncludedOneToManyRelations } from "./find/getIncludedOneToManyRelations";
 import { BaseFindParams } from "./find/types/BaseFindParams";
 import { rowToObject } from "./util/rowToObject";
 
@@ -32,82 +34,92 @@ export const findMany = async (
         .query(statement)
         .then((result) => result.rows.map(rowToObject(builder.columns)));
 
-    for (const [r, subquery] of Object.entries(query.include ?? {})) {
-        const relation = config.relations[m]![r];
-        if (relation.type === "1:N") {
-            const relation = config.relations[m][r];
-
-            const pk = config.models[m].primaryKey;
-            const fk = ensureArray(relation.foreignKey);
-
-            const lateralBy = fk.map((c, index) => ({
-                column: c,
-                values: results.map((result) => result[pk[index]]),
-            }));
-
-            const subqueryResults = await findMany(
-                conn,
-                config,
-                relation.model,
-                { ...subquery!, lateralBy },
-            );
-
+    const fetchIncludedOneToManyRelations = getIncludedOneToManyRelations(
+        config,
+        m,
+        query,
+    ).map(({ model, relation, query, path }) => {
+        console.log("Fetching 1:N relation");
+        const pk = config.models[model].primaryKey;
+        const fk = ensureArray(relation.foreignKey);
+        const lateralBy = fk.map((c, index) => ({
+            column: c,
+            values: results.map((result) =>
+                get(result, [...dropRight(path, 1), pk[index]]),
+            ),
+        }));
+        return findMany(conn, config, relation.model, {
+            ...query,
+            lateralBy,
+        }).then((subqueryResults) => {
             const lookup = groupBy(subqueryResults, (result) => {
                 return hash(fk.map((c) => result[c]));
             });
-
             for (const result of results) {
-                const key = hash(pk.map((c) => result[c]));
-                result[r] = lookup[key] ?? [];
-            }
-        } else if (relation.type === "N:N") {
-            const joinFrom = Object.entries(config.relations[m]).find(
-                ([, rel]) =>
-                    rel.type === "1:N" && rel.model === relation.through,
-            )?.[0];
-
-            const joinTo = Object.entries(
-                config.relations[relation.through],
-            ).find(
-                ([, rel]) => rel.type === "N:1" && rel.model === relation.model,
-            )?.[0];
-
-            if (joinFrom === undefined || joinTo === undefined) {
-                throw new OrmError(
-                    "Both sides of a N:N relation must be defined",
-                    { data: { joinFrom, joinTo, query } },
+                const key = hash(
+                    pk.map((c) => get(result, [...dropRight(path, 1), c])),
                 );
+                console.log([...path]);
+                set(result, [...path], lookup[key] ?? []);
             }
+        });
+    });
 
-            const pk = config.models[m].primaryKey;
-            const fk = ensureArray(relation.foreignKey);
-            const lateralBy = fk.map((c, index) => ({
-                column: c,
-                values: results.map((result) => result[pk[index]]),
-            }));
+    const fetchIncludedManyToManyRelations = getIncludedManyToManyRelations(
+        config,
+        m,
+        query,
+    ).map(({ model, relation, query, path }) => {
+        console.log("Fetching N:N relation");
+        const joinFrom = Object.entries(config.relations[model]).find(
+            ([, rel]) => rel.type === "1:N" && rel.model === relation.through,
+        )?.[0];
 
-            const subqueryResults = await findMany(
-                conn,
-                config,
-                relation.through,
-                {
-                    select: ensureArray(relation.foreignKey),
-                    include: { [joinTo]: subquery! },
-                    lateralBy,
-                },
-            );
-            const lookup = groupBy(subqueryResults, (result) => {
-                return hash(fk.map((c) => result[c]));
+        const joinTo = Object.entries(config.relations[relation.through]).find(
+            ([, rel]) => rel.type === "N:1" && rel.model === relation.model,
+        )?.[0];
+
+        if (joinFrom === undefined || joinTo === undefined) {
+            throw new OrmError("Both sides of a N:N relation must be defined", {
+                data: { joinFrom, joinTo, query },
             });
-
-            for (const result of results) {
-                const key = hash(pk.map((c) => result[c]));
-                result[r] = (lookup[key] ?? []).map(
-                    (relation) => relation[joinTo] ?? [],
-                );
-            }
         }
-    }
+
+        const pk = config.models[model].primaryKey;
+        const fk = ensureArray(relation.foreignKey);
+        const lateralBy = fk.map((c, index) => ({
+            column: c,
+            values: results.map((result) =>
+                get(result, [...dropRight(path, 1), pk[index]]),
+            ),
+        }));
+
+        return findMany(conn, config, relation.through, {
+            select: ensureArray(relation.foreignKey),
+            include: { [joinTo]: query },
+            lateralBy,
+        }).then((subqueryResults) => {
+            const lookup = groupBy(subqueryResults, (result) => {
+                return hash(fk.map((c) => result[c]));
+            });
+            for (const result of results) {
+                const key = hash(
+                    pk.map((c) => get(result, [...dropRight(path, 1), c])),
+                );
+                console.log([...path]);
+                set(
+                    result,
+                    [...path],
+                    (lookup[key] ?? []).map((r) => r[joinTo] ?? []),
+                );
+            }
+        });
+    });
+
+    await Promise.all([
+        ...fetchIncludedOneToManyRelations,
+        ...fetchIncludedManyToManyRelations,
+    ]);
 
     return results;
 };
