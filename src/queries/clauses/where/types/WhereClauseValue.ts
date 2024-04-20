@@ -14,6 +14,7 @@ import {
     $lte,
     $ne,
     $not,
+    $search,
 } from "../operators";
 
 export type WhereClauseValue<
@@ -36,4 +37,5 @@ export type WhereClauseValue<
           [$in]?: T[];
           [$like]?: string;
           [$ilike]?: string;
+          [$search]?: string;
       };

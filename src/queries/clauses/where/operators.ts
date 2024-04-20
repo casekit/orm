@@ -11,3 +11,4 @@ export const $lte = Symbol("lte");
 export const $ne = Symbol("ne");
 export const $not = Symbol("not");
 export const $or = Symbol("or");
+export const $search = Symbol("search");

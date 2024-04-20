@@ -19,6 +19,7 @@ import {
     $ne,
     $not,
     $or,
+    $search,
 } from "./operators";
 
 /**
@@ -42,6 +43,11 @@ describe("buildWhereClauses", () => {
             [new Date(2024, 1, 3)],
         ],
         [{ bigint: { [$lt]: 47 } }, "(a.bigint < $1)", [47]],
+        [
+            { text: { [$search]: "foo bar baz" } },
+            "(to_tsvector(a.text) @@ to_tsquery($1))",
+            ["foo:* & bar:* & baz:*"],
+        ],
         [
             { timestamp: { [$lte]: new Date(2024, 1, 3) } },
             "(a.timestamp <= $1)",

@@ -12,6 +12,7 @@ import {
     $lte,
     $ne,
     $not,
+    $search,
 } from "./operators";
 
 export const buildWhereClause = (
@@ -108,6 +109,26 @@ export const buildWhereClause = (
                             table,
                             column,
                         );
+                    case $search: {
+                        if (typeof v2 !== "string") {
+                            throw new OrmError(
+                                "Unexpected value other than string in $search clause: " +
+                                    v2,
+                            );
+                        }
+                        const tsquery = v2
+                            .trim()
+                            .replace(/[^\w\s]/g, "")
+                            .split(/\s+/)
+                            .filter((q) => q.length > 0)
+                            .map((q) => `${q}:*`)
+                            .join(" & ");
+
+                        return sql`to_tsvector(%I.%I) @@ to_tsquery(${tsquery})`.withIdentifiers(
+                            table,
+                            column,
+                        );
+                    }
                     default:
                         throw new OrmError("Unexpected symbol in query", {
                             data: { table, column, op, v },
