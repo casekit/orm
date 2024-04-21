@@ -328,7 +328,7 @@ export class Orm<
     public async query<T extends QueryResultRow>(
         fragments: TemplateStringsArray,
         ...variables: readonly unknown[]
-    ) {
+    ): Promise<T[]> {
         const query = sql(fragments, ...variables);
         if (!process.env.CI) {
             console.log(query.text);
@@ -341,7 +341,7 @@ export class Orm<
     public async queryOne<T extends QueryResultRow>(
         fragments: TemplateStringsArray,
         ...variables: readonly unknown[]
-    ) {
+    ): Promise<T> {
         const query = sql(fragments, ...variables);
         if (!process.env.CI) console.log(query.text);
         const result = await this.connection.query<T>(query);
