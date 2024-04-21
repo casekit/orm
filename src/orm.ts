@@ -330,7 +330,10 @@ export class Orm<
         ...variables: readonly unknown[]
     ) {
         const query = sql(fragments, ...variables);
-        if (!process.env.CI) console.log(query.text);
+        if (!process.env.CI) {
+            console.log(query.text);
+            console.log(query.values);
+        }
         const result = await this.connection.query<T>(query);
         return result.rows;
     }
