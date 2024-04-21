@@ -27,8 +27,7 @@ export const findMany = async (
         values: statement.values,
     });
 
-    if (process.env.NODE_ENV === "test" && !process.env.CI)
-        console.log(statement.text);
+    if (!process.env.CI) console.log(statement.text);
 
     const results = await conn
         .query(statement)

@@ -328,8 +328,12 @@ export class Orm<
     public async query<T extends QueryResultRow>(
         fragments: TemplateStringsArray,
         ...variables: readonly unknown[]
-    ) {
+    ): Promise<T[]> {
         const query = sql(fragments, ...variables);
+        if (!process.env.CI) {
+            console.log(query.text);
+            console.log(query.values);
+        }
         const result = await this.connection.query<T>(query);
         return result.rows;
     }
@@ -337,8 +341,9 @@ export class Orm<
     public async queryOne<T extends QueryResultRow>(
         fragments: TemplateStringsArray,
         ...variables: readonly unknown[]
-    ) {
+    ): Promise<T> {
         const query = sql(fragments, ...variables);
+        if (!process.env.CI) console.log(query.text);
         const result = await this.connection.query<T>(query);
         if (result.rowCount === 0 || result.rowCount === null)
             throw new OrmError("No rows returned from query");
