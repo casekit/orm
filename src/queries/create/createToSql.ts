@@ -22,6 +22,10 @@ export const createToSql = (builder: CreateBuilder): SQLStatement => {
         frag.push(sql.splat(values));
     }
 
+    if (builder.onConflict?.do === "nothing") {
+        frag.push("\nON CONFLICT DO NOTHING");
+    }
+
     if (returning.length > 0) {
         frag.push("\nRETURNING ");
         frag.push(

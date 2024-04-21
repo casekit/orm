@@ -167,4 +167,31 @@ describe("createOne", () => {
             { rollback: true },
         );
     });
+
+    test("conflicts can be ignored", async () => {
+        await db.transact(
+            async (db) => {
+                await db.createOne("user", { values: { username: "russell" } });
+
+                // creating a duplicate user should throw an error
+                await expect(
+                    db.transact(async (db) => {
+                        return db.createOne("user", {
+                            values: { username: "russell" },
+                        });
+                    }),
+                ).rejects.toThrow(
+                    'duplicate key value violates unique constraint "user_username_idx"',
+                );
+
+                // but if we ignore the conflict, it should work
+                const result = await db.createOne("user", {
+                    values: { username: "russell" },
+                    onConflict: { do: "nothing" },
+                });
+                expect(result).toEqual(0);
+            },
+            { rollback: true },
+        );
+    });
 });
