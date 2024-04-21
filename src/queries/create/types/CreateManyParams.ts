@@ -9,4 +9,7 @@ export type CreateManyParams<
 > = {
     values: CreateValues<Models, M>[];
     returning?: ReturningClause<Models, M>;
+    onConflict?: {
+        do: "nothing";
+    };
 };

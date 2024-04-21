@@ -8,6 +8,7 @@ export type CreateBuilder = {
     tableIndex: number;
     table: { name: string; schema: string };
     params: { name: string; path: string; values: unknown[] }[];
+    onConflict?: { do: "nothing" };
     returning: { name: string; path: string; alias: string }[];
 };
 
@@ -57,6 +58,8 @@ export const buildCreate = (
             alias: `${table}_${colIndex++}`,
         });
     }
+
+    builder.onConflict = params.onConflict;
 
     return builder;
 };

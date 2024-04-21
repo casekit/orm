@@ -16,4 +16,7 @@ export type CreateOneParams<
 > = {
     values: CreateValues<Models, M>;
     returning?: ReturningClause<Models, M>;
+    onConflict?: {
+        do: "nothing";
+    };
 };
