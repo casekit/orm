@@ -10,7 +10,7 @@ export type FindOneParams<
     Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
 > = {
-    select: SelectClause<Models, M>;
+    select: SelectClause<Models[M]>;
     where?: WhereClause<Models, M>;
     include?: IncludeClause<Models, Relations, M>;
 };

@@ -10,5 +10,5 @@ export type UpdateParams<
 > = {
     values: UpdateValues<Models, M>;
     where: WhereClause<Models, M>;
-    returning?: ReturningClause<Models, M>;
+    returning?: ReturningClause<Models[M]>;
 };

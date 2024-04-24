@@ -10,7 +10,7 @@ export type CreateManyResult<
     M extends ModelName<Models>,
     P extends CreateOneParams<Models, M> | CreateManyParams<Models, M>,
 > =
-    P["returning"] extends ReturningClause<Models, M>
+    P["returning"] extends ReturningClause<Models[M]>
         ? Readonly<{
               [C in P["returning"][number]]: ColumnType<Models, M, C>;
           }>[]

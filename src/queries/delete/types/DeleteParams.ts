@@ -8,5 +8,5 @@ export type DeleteParams<
     M extends ModelName<Models>,
 > = {
     where: WhereClause<Models, M>;
-    returning?: ReturningClause<Models, M>;
+    returning?: ReturningClause<Models[M]>;
 };

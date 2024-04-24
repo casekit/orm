@@ -7,8 +7,8 @@ export type RequiredParams<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > =
-    RequiredColumn<Models, M> extends never
+    RequiredColumn<Models[M]> extends never
         ? unknown
         : {
-              [C in RequiredColumn<Models, M>]: ColumnType<Models, M, C>;
+              [C in RequiredColumn<Models[M]>]: ColumnType<Models, M, C>;
           };

@@ -8,7 +8,7 @@ export type WhereClause<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > = {
-    [C in ColumnName<Models, M>]?: WhereClauseValue<Models, M, C>;
+    [C in ColumnName<Models[M]>]?: WhereClauseValue<Models, M, C>;
 } & {
     [$and]?: WhereClause<Models, M>[];
     [$or]?: WhereClause<Models, M>[];

@@ -8,7 +8,7 @@ import { ModelName } from "./ModelName";
 type NonNullableColumnType<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
-    C extends ColumnName<Models, M>,
+    C extends ColumnName<Models[M]>,
 > =
     Models[M]["columns"][C]["zodSchema"] extends z.ZodType<unknown>
         ? z.infer<Models[M]["columns"][C]["zodSchema"]>
@@ -17,7 +17,7 @@ type NonNullableColumnType<
 export type ColumnType<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
-    C extends ColumnName<Models, M>,
+    C extends ColumnName<Models[M]>,
 > = Models[M]["columns"][C]["nullable"] extends true
     ? NonNullableColumnType<Models, M, C> | null
     : NonNullableColumnType<Models, M, C>;
