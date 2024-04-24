@@ -10,10 +10,14 @@ export const createToSql = (builder: CreateBuilder): SQLStatement => {
 
     if (params.length === 0) {
         frag.push(
-            pgfmt("INSERT INTO %I.%I DEFAULT VALUES", table.schema, table.name),
+            pgfmt(
+                "INSERT INTO %I.%I DEFAULT VALUES",
+                table.schema,
+                table.table,
+            ),
         );
     } else {
-        frag.push(pgfmt("INSERT INTO %I.%I (\n", table.schema, table.name));
+        frag.push(pgfmt("INSERT INTO %I.%I (\n", table.schema, table.table));
         frag.push(params.map((p) => pgfmt("    %I", p.name)).join(",\n"));
         frag.push(") VALUES ");
         const values = params[0].values.map((_, index) => {

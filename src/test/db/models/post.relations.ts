@@ -7,6 +7,12 @@ export const post = {
         type: "N:1",
         foreignKey: "authorId",
     },
+    reviewedBy: {
+        model: "user",
+        type: "N:1",
+        foreignKey: "reviewedById",
+        optional: true,
+    },
     tenant: {
         model: "tenant",
         type: "N:1",

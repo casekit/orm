@@ -15,6 +15,12 @@ export const post = {
             type: "uuid",
             references: { table: "user", column: "id" },
         },
+        reviewedById: {
+            name: "reviewed_by_id",
+            type: "uuid",
+            nullable: true,
+            references: { table: "user", column: "id" },
+        },
         publishedAt: { type: "timestamp", nullable: true },
         tags: { type: "text[][][][]", nullable: true },
         tenantId: {

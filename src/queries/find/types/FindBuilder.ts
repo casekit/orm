@@ -12,12 +12,12 @@ export type FindBuilder = {
         path: string[];
     }[];
 
-    tables: {
-        name: string;
+    table: {
+        table: string;
         model: string;
         schema: string;
         alias: string;
-        joins?: Join[];
+        joins: Join[];
         conditions?: WhereClause<
             LooseModelDefinitions,
             ModelName<LooseModelDefinitions>
@@ -26,7 +26,7 @@ export type FindBuilder = {
             LooseModelDefinitions,
             ModelName<LooseModelDefinitions>
         >;
-    }[];
+    };
 
     lateralBy?: {
         groupTable: string;
@@ -49,6 +49,23 @@ export type FindBuilder = {
     offset?: number;
 };
 export type Join = {
-    from: { table: string; columns: string[] };
-    to: { table: string; columns: string[] };
+    from: {
+        schema: string;
+        table: string;
+        alias: string;
+        model: string;
+        columns: string[];
+    };
+    to: {
+        schema: string;
+        table: string;
+        alias: string;
+        model: string;
+        columns: string[];
+    };
+    where?: WhereClause<
+        LooseModelDefinitions,
+        ModelName<LooseModelDefinitions>
+    >;
+    type?: "inner" | "left";
 };

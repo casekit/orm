@@ -16,6 +16,7 @@ describe("createTableSql", () => {
             CREATE TABLE casekit."user" (
                 id uuid NOT NULL DEFAULT uuid_generate_v4(),
                 username text NOT NULL,
+                invited_by_id uuid,
                 created_at timestamp,
                 updated_at timestamp,
                 deleted_at timestamp,

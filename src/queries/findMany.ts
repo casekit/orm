@@ -55,11 +55,14 @@ export const findMany = async (
                 return hash(fk.map((c) => result[c]));
             });
             for (const result of results) {
-                const key = hash(
-                    pk.map((c) => get(result, [...dropRight(path, 1), c])),
-                );
-                console.log([...path]);
-                set(result, [...path], lookup[key] ?? []);
+                const parent =
+                    path.length === 1
+                        ? result
+                        : get(result, dropRight(path, 1));
+                if (parent !== undefined) {
+                    const key = hash(pk.map((c) => get(parent, c)));
+                    set(result, path, lookup[key] ?? []);
+                }
             }
         });
     });
@@ -102,15 +105,19 @@ export const findMany = async (
                 return hash(fk.map((c) => result[c]));
             });
             for (const result of results) {
-                const key = hash(
-                    pk.map((c) => get(result, [...dropRight(path, 1), c])),
-                );
-                console.log([...path]);
-                set(
-                    result,
-                    [...path],
-                    (lookup[key] ?? []).map((r) => r[joinTo] ?? []),
-                );
+                const parent =
+                    path.length === 1
+                        ? result
+                        : get(result, dropRight(path, 1));
+
+                if (parent !== undefined) {
+                    const key = hash(pk.map((c) => get(parent, c)));
+                    set(
+                        result,
+                        path,
+                        (lookup[key] ?? []).map((r) => r[joinTo] ?? []),
+                    );
+                }
             }
         });
     });

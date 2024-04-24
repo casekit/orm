@@ -9,7 +9,7 @@ import { BaseDeleteParams } from "./types/BaseDeleteParams";
 
 export type DeleteBuilder = {
     tableIndex: number;
-    table: { name: string; model: string; alias: string; schema: string };
+    table: { table: string; model: string; alias: string; schema: string };
     where: WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>;
     returning: { name: string; path: string; alias: string }[];
 };
@@ -23,7 +23,7 @@ export const buildDelete = (
     const builder: DeleteBuilder = {
         tableIndex: _tableIndex,
         table: {
-            name: config.models[m].table,
+            table: config.models[m].table,
             schema: config.models[m].schema,
             model: m,
             alias: tableAlias(_tableIndex++),

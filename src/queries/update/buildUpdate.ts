@@ -9,7 +9,7 @@ import { BaseUpdateParams } from "./types/BaseUpdateParams";
 
 export type UpdateBuilder = {
     tableIndex: number;
-    table: { name: string; model: string; alias: string; schema: string };
+    table: { table: string; model: string; alias: string; schema: string };
     where: WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>;
     values: { name: string; value: unknown }[];
     returning: { name: string; path: string; alias: string }[];
@@ -24,7 +24,7 @@ export const buildUpdate = (
     const builder: UpdateBuilder = {
         tableIndex: _tableIndex,
         table: {
-            name: config.models[m].table,
+            table: config.models[m].table,
             schema: config.models[m].schema,
             model: m,
             alias: tableAlias(_tableIndex++),

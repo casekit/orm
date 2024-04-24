@@ -14,7 +14,9 @@ export const deleteResultSchema = (
 
     params.returning?.forEach((s) => {
         const col = config.models[m].columns[s];
-        obj[s] = col.nullable ? col.zodSchema.nullable() : col.zodSchema;
+        obj[s] = col.nullable
+            ? col.zodSchema.nullish().transform((x) => x ?? null)
+            : col.zodSchema;
     });
 
     return z.object(obj);

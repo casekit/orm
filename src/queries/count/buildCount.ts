@@ -13,23 +13,25 @@ export const buildCount = (
     _tableIndex = 0,
 ): CountBuilder => {
     const builder: CountBuilder = {
+        table: {
+            table: config.models[m]["table"],
+            model: m,
+            schema: config.models[m]["schema"],
+            alias: tableAlias(_tableIndex++),
+            joins: [],
+            where: config.middleware.count?.where
+                ? config.middleware.count.where(query.where, {
+                      config,
+                      model: m,
+                  })
+                : query.where,
+        },
         tableIndex: _tableIndex,
-        tables: [],
     };
 
     const model = config.models[m];
 
-    const alias = tableAlias(builder.tableIndex++);
-
-    builder.tables.push({
-        name: config.models[m]["table"],
-        model: m,
-        schema: config.models[m]["schema"],
-        alias: alias,
-        where: config.middleware.count?.where
-            ? config.middleware.count.where(query.where, { config, model: m })
-            : query.where,
-    });
+    const alias = builder.table.alias;
 
     for (const [r, subquery] of Object.entries(query.include ?? {})) {
         const relation = config.relations[m][r];
@@ -42,28 +44,32 @@ export const buildCount = (
                 [...path, r],
                 builder.tableIndex++,
             );
-            const [joinedTable, ...otherTables] = joinBuilder.tables;
-            builder.tables.push({
-                ...joinedTable,
-                joins: [
-                    ...(joinedTable.joins ?? []),
-                    {
-                        from: {
-                            table: alias,
-                            columns: ensureArray(relation.foreignKey).map(
-                                (c) => model.columns[c].name,
-                            ),
-                        },
-                        to: {
-                            table: joinedTable.alias,
-                            columns: joinedModel.primaryKey.map(
-                                (c) => joinedModel.columns[c].name,
-                            ),
-                        },
+            const joinedTable = joinBuilder.table;
+            builder.table.joins.push(
+                {
+                    from: {
+                        schema: config.models[m].schema,
+                        table: config.models[m].table,
+                        alias,
+                        model: m,
+                        columns: ensureArray(relation.foreignKey).map(
+                            (c) => model.columns[c].name,
+                        ),
                     },
-                ],
-            });
-            builder.tables.push(...otherTables);
+                    to: {
+                        schema: joinedModel.schema,
+                        table: joinedTable.table,
+                        alias: joinedTable.alias,
+                        model: relation.model,
+                        columns: joinedModel.primaryKey.map(
+                            (c) => joinedModel.columns[c].name,
+                        ),
+                    },
+                    where: joinedTable.where,
+                    type: relation.optional ? "left" : "inner",
+                },
+                ...joinedTable.joins,
+            );
         }
     }
 

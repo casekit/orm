@@ -135,7 +135,7 @@ describe("buildWhereClauses", () => {
         ) => {
             const clause = buildWhereClauses(
                 db.config,
-                { name: "foo", schema: "casekit", model: "foo", alias: "a" },
+                { table: "foo", schema: "casekit", model: "foo", alias: "a" },
                 where,
             );
             expect(clause.text).toEqual(sql);

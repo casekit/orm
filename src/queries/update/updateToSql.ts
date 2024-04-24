@@ -14,7 +14,7 @@ export const updateToSql = (
 
     const frag = sql`UPDATE %I.%I AS %I\nSET`.withIdentifiers(
         table.schema,
-        table.name,
+        table.table,
         table.alias,
     );
 
