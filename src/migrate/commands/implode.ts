@@ -33,7 +33,7 @@ export const implode = async (
         }
     }
 
-    if (output) console.log(statement.text);
+    if (output || process.env.ORM_VERBOSE_LOGGING) console.log(statement.text);
 
     if (!dryRun) {
         try {

@@ -27,7 +27,10 @@ export const findMany = async (
         values: statement.values,
     });
 
-    if (!process.env.CI) console.log(statement.text);
+    if (process.env.ORM_VERBOSE_LOGGING) {
+        console.log(statement.text);
+        console.log(statement.values);
+    }
 
     const results = await conn
         .query(statement)
@@ -38,7 +41,6 @@ export const findMany = async (
         m,
         query,
     ).map(({ model, relation, query, path }) => {
-        console.log("Fetching 1:N relation");
         const pk = config.models[model].primaryKey;
         const fk = ensureArray(relation.foreignKey);
         const lateralBy = fk.map((c, index) => ({
@@ -72,7 +74,6 @@ export const findMany = async (
         m,
         query,
     ).map(({ model, relation, query, path }) => {
-        console.log("Fetching N:N relation");
         const joinFrom = Object.entries(config.relations[model]).find(
             ([, rel]) => rel.type === "1:N" && rel.model === relation.through,
         )?.[0];

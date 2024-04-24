@@ -97,8 +97,6 @@ describe("findMany", () => {
                     },
                     orderBy: ["username"],
                 });
-                console.log(JSON.stringify(results));
-
                 expect(results).toEqual([
                     {
                         username: "Dan",
