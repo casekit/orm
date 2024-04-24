@@ -5,12 +5,12 @@ import { WhereClause } from "../../clauses/WhereClause";
 export type CountBuilder = {
     tableIndex: number;
 
-    tables: {
-        name: string;
+    table: {
+        table: string;
         model: string;
         schema: string;
         alias: string;
-        joins?: Join[];
+        joins: Join[];
         conditions?: WhereClause<
             LooseModelDefinitions,
             ModelName<LooseModelDefinitions>
@@ -19,10 +19,27 @@ export type CountBuilder = {
             LooseModelDefinitions,
             ModelName<LooseModelDefinitions>
         >;
-    }[];
+    };
 };
 
 export type Join = {
-    from: { table: string; columns: string[] };
-    to: { table: string; columns: string[] };
+    from: {
+        schema: string;
+        table: string;
+        alias: string;
+        model: string;
+        columns: string[];
+    };
+    to: {
+        schema: string;
+        table: string;
+        alias: string;
+        model: string;
+        columns: string[];
+    };
+    where?: WhereClause<
+        LooseModelDefinitions,
+        ModelName<LooseModelDefinitions>
+    >;
+    type?: "inner" | "left";
 };

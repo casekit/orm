@@ -21,7 +21,10 @@ export const updateMany = async (
         values: statement.values,
     });
 
-    if (!process.env.CI) console.log(statement.text);
+    if (process.env.ORM_VERBOSE_LOGGING) {
+        console.log(statement.text);
+        console.log(statement.values);
+    }
 
     const result = await conn.query(statement);
     return params.returning

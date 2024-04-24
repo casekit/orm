@@ -8,7 +8,7 @@ import { $and, $not, $or } from "./operators";
 
 export const buildWhereClauses = (
     config: BaseConfiguration,
-    table: { name: string; schema: string; alias: string; model: string },
+    table: { table: string; schema: string; alias: string; model: string },
     where: WhereClause<LooseModelDefinitions, ModelName<LooseModelDefinitions>>,
 ): SQLStatement => {
     const clauses: SQLStatement[] = [];

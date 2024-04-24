@@ -12,13 +12,20 @@ export const findResultSchema = (
 
     query.select.forEach((field) => {
         const col = config.models[m].columns[field];
-        obj[field] = col.nullable ? col.zodSchema.nullable() : col.zodSchema;
+        obj[field] = col.nullable
+            ? col.zodSchema.nullish().transform((x) => x ?? null)
+            : col.zodSchema;
     });
 
     for (const [field, subquery] of Object.entries(query.include || {})) {
         const relation = config.relations[m][field];
         const schema = findResultSchema(config, relation.model, subquery!);
-        obj[field] = relation.type === "N:1" ? schema : z.array(schema);
+        obj[field] =
+            relation.type === "N:1"
+                ? relation.optional
+                    ? schema.nullish().transform((x) => x ?? null)
+                    : schema
+                : z.array(schema);
     }
 
     return z.object(obj);

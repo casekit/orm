@@ -6,7 +6,7 @@ import { BaseCreateManyParams } from "./types/BaseCreateManyParams";
 
 export type CreateBuilder = {
     tableIndex: number;
-    table: { name: string; schema: string };
+    table: { table: string; schema: string };
     params: { name: string; path: string; values: unknown[] }[];
     onConflict?: { do: "nothing" };
     returning: { name: string; path: string; alias: string }[];
@@ -21,7 +21,7 @@ export const buildCreate = (
     const builder: CreateBuilder = {
         tableIndex: _tableIndex,
         table: {
-            name: config.models[m].table,
+            table: config.models[m].table,
             schema: config.models[m].schema,
         },
         params: [],

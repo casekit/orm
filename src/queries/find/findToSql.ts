@@ -13,7 +13,7 @@ export const findToSql = (
     builder: FindBuilder,
 ): SQLStatement => {
     const frag = new SQLStatement();
-    const [table, ...joinedTables] = builder.tables;
+    const table = builder.table;
 
     if (builder.lateralBy) {
         const { columns, groupTable, itemTable } = builder.lateralBy;
@@ -43,46 +43,41 @@ export const findToSql = (
         ),
     );
 
-    frag.push(pgfmt(`\nFROM %I.%I %I`, table.schema, table.name, table.alias));
+    frag.push(pgfmt(`\nFROM %I.%I %I`, table.schema, table.table, table.alias));
 
-    for (const joinedTable of joinedTables) {
-        if (!joinedTable.joins)
-            throw new OrmError("Joined table without join clauses", {
-                data: builder,
-            });
+    for (const join of table.joins ?? []) {
+        if (join.from.columns.length !== join.to.columns.length) {
+            throw new OrmError(
+                "Number of foreign keys doesn't match number of primary keys in join",
+                { data: builder },
+            );
+        }
+
+        frag.push(join.type === "left" ? "\nLEFT JOIN" : "\nJOIN");
         frag.push(
             pgfmt(
-                "\nJOIN %I.%I %I\n    ON ",
-                joinedTable.schema,
-                joinedTable.name,
-                joinedTable.alias,
+                " %I.%I %I\n    ON ",
+                join.to.schema,
+                join.to.table,
+                join.to.alias,
             ),
         );
         frag.push(
-            joinedTable.joins
-                .flatMap((join) => {
-                    if (join.from.columns.length !== join.to.columns.length) {
-                        throw new OrmError(
-                            "Number of foreign keys doesn't match number of primary keys in join",
-                            { data: builder },
-                        );
-                    }
-
-                    return join.from.columns.map((from, i) =>
-                        pgfmt(
-                            "%I.%I = %I.%I",
-                            table.alias,
-                            from,
-                            joinedTable.alias,
-                            join.to.columns[i],
-                        ),
-                    );
-                })
+            join.from.columns
+                .map((from, i) =>
+                    pgfmt(
+                        "%I.%I = %I.%I",
+                        join.from.alias,
+                        from,
+                        join.to.alias,
+                        join.to.columns[i],
+                    ),
+                )
                 .join(" AND "),
         );
-        if (hasConditions(joinedTable.where)) {
+        if (hasConditions(join.where)) {
             frag.push(
-                sql`\n    AND ${buildWhereClauses(config, joinedTable, joinedTable.where)}`,
+                sql`\n    AND ${buildWhereClauses(config, join.to, join.where)}`,
             );
         }
     }

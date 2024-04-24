@@ -16,7 +16,7 @@ export const deleteToSql = (
 
     const frag = sql`DELETE FROM %I.%I AS %I`.withIdentifiers(
         table.schema,
-        table.name,
+        table.table,
         table.alias,
     );
 

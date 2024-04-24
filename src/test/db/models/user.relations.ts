@@ -7,6 +7,22 @@ export const user = {
         model: "post",
         foreignKey: "authorId",
     },
+    reviewedPosts: {
+        type: "1:N",
+        model: "post",
+        foreignKey: "reviewedById",
+    },
+    invitedBy: {
+        type: "N:1",
+        model: "user",
+        foreignKey: "invitedById",
+        optional: true,
+    },
+    invitedUsers: {
+        type: "1:N",
+        model: "user",
+        foreignKey: "invitedById",
+    },
     tenancies: {
         type: "1:N",
         model: "tenantUser",

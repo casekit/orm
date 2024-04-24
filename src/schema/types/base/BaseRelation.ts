@@ -10,6 +10,7 @@ export type BaseRelation =
           model: string;
           type: "N:1";
           foreignKey: string | string[];
+          optional?: boolean;
       }
     | {
           model: string;
