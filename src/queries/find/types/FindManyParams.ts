@@ -12,12 +12,12 @@ export type FindManyParams<
     Relations extends LooseRelationsDefinitions<Models>,
     M extends ModelName<Models>,
 > = {
-    select: SelectClause<Models, M>;
+    select: SelectClause<Models[M]>;
     include?: IncludeClause<Models, Relations, M>;
     where?: WhereClause<Models, M>;
     limit?: number;
     offset?: number;
     orderBy?: NonEmptyArray<
-        ColumnName<Models, M> | [ColumnName<Models, M>, "asc" | "desc"]
+        ColumnName<Models[M]> | [ColumnName<Models[M]>, "asc" | "desc"]
     >;
 };

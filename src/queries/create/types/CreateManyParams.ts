@@ -8,7 +8,7 @@ export type CreateManyParams<
     M extends ModelName<Models>,
 > = {
     values: CreateValues<Models, M>[];
-    returning?: ReturningClause<Models, M>;
+    returning?: ReturningClause<Models[M]>;
     onConflict?: {
         do: "nothing";
     };

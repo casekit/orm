@@ -9,6 +9,6 @@ export type ManyToOneRelation<
     [M2 in ModelName<Models>]: {
         model: M2;
         type: "N:1";
-        foreignKey: ColumnName<Models, M> | ColumnName<Models, M>[];
+        foreignKey: ColumnName<Models[M]> | ColumnName<Models[M]>[];
     };
 }[ModelName<Models>];

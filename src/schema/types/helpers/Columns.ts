@@ -1,7 +1,3 @@
-import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
-import { ModelName } from "./ModelName";
+import { LooseModelDefinition } from "../loose/LooseModelDefinition";
 
-export type Columns<
-    Models extends LooseModelDefinitions,
-    M extends ModelName<Models>,
-> = Models[M]["columns"];
+export type Columns<Model extends LooseModelDefinition> = Model["columns"];

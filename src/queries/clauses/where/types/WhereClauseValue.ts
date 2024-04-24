@@ -19,7 +19,7 @@ import {
 export type WhereClauseValue<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
-    C extends ColumnName<Models, M>,
+    C extends ColumnName<Models[M]>,
     T = ColumnType<Models, M, C>,
 > =
     | ColumnType<Models, M, C>

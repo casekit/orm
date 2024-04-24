@@ -1,9 +1,7 @@
 import { ColumnName } from "../../schema/types/helpers/ColumnName";
-import { ModelName } from "../../schema/types/helpers/ModelName";
-import { LooseModelDefinitions } from "../../schema/types/loose/LooseModelDefinitions";
+import { LooseModelDefinition } from "../../schema/types/loose/LooseModelDefinition";
 import { NonEmptyArray } from "../../types/util/NonEmptyArray";
 
-export type ReturningClause<
-    Models extends LooseModelDefinitions,
-    M extends ModelName<Models>,
-> = NonEmptyArray<ColumnName<Models, M>>;
+export type ReturningClause<Model extends LooseModelDefinition> = NonEmptyArray<
+    ColumnName<Model>
+>;

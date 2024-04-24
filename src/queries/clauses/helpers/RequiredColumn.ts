@@ -1,9 +1,8 @@
 import { ColumnName } from "../../../schema/types/helpers/ColumnName";
-import { ModelName } from "../../../schema/types/helpers/ModelName";
-import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
+import { LooseModelDefinition } from "../../../schema/types/loose/LooseModelDefinition";
 import { OptionalColumn } from "./OptionalColumn";
 
-export type RequiredColumn<
-    Models extends LooseModelDefinitions,
-    M extends ModelName<Models>,
-> = Exclude<ColumnName<Models, M>, OptionalColumn<Models, M>>;
+export type RequiredColumn<Model extends LooseModelDefinition> = Exclude<
+    ColumnName<Model>,
+    OptionalColumn<Model>
+>;

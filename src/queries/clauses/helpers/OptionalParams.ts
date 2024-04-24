@@ -7,8 +7,8 @@ export type OptionalParams<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > =
-    OptionalColumn<Models, M> extends never
+    OptionalColumn<Models[M]> extends never
         ? unknown
         : {
-              [C in OptionalColumn<Models, M>]?: ColumnType<Models, M, C>;
+              [C in OptionalColumn<Models[M]>]?: ColumnType<Models, M, C>;
           };

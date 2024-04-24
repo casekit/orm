@@ -8,5 +8,5 @@ export type UpdateValues<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > = Simplify<{
-    [C in ColumnName<Models, M>]?: ColumnType<Models, M, C>;
+    [C in ColumnName<Models[M]>]?: ColumnType<Models, M, C>;
 }>;

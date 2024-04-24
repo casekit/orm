@@ -1,7 +1,6 @@
-import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
-import { ModelName } from "./ModelName";
+import { LooseModelDefinition } from "../loose/LooseModelDefinition";
 
-export type ColumnName<
-    Models extends LooseModelDefinitions,
-    M extends ModelName<Models>,
-> = Extract<keyof Models[M]["columns"], string>;
+export type ColumnName<Model extends LooseModelDefinition> = Extract<
+    keyof Model["columns"],
+    string
+>;

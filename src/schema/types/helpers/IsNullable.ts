@@ -1,9 +1,7 @@
-import { LooseModelDefinitions } from "../loose/LooseModelDefinitions";
+import { LooseModelDefinition } from "../loose/LooseModelDefinition";
 import { Columns } from "./Columns";
-import { ModelName } from "./ModelName";
 
 export type IsNullable<
-    Models extends LooseModelDefinitions,
-    M extends ModelName<Models>,
-    C extends keyof Columns<Models, M>,
-> = Columns<Models, M>[C]["nullable"] extends true ? true : false;
+    Model extends LooseModelDefinition,
+    C extends keyof Columns<Model>,
+> = Columns<Model>[C]["nullable"] extends true ? true : false;
