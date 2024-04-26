@@ -1,3 +1,4 @@
+import { uniq } from "lodash-es";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
 import { OrmError } from "../../errors";
@@ -43,7 +44,8 @@ export const buildCreate = (
             data: { m, params },
         });
 
-    for (const k of Object.keys(values[0])) {
+    const keys = uniq(values.flatMap((v) => Object.keys(v)));
+    for (const k of keys) {
         builder.params.push({
             name: model.columns[k]["name"],
             path: k,
