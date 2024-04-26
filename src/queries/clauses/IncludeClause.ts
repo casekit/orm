@@ -13,11 +13,27 @@ export type IncludeClause<
         model: ModelName<Models>;
     }
         ? Relations[M][R] extends { type: "N:1" }
-            ? FindOneParams<Models, Relations, Relations[M][R]["model"]>
+            ? Omit<
+                  FindOneParams<Models, Relations, Relations[M][R]["model"]>,
+                  // for can only be applied to the top level query
+                  "for"
+              >
             : Relations[M][R] extends { type: "1:N" }
-              ? FindManyParams<Models, Relations, Relations[M][R]["model"]>
+              ? Omit<
+                    FindManyParams<Models, Relations, Relations[M][R]["model"]>,
+                    // for can only be applied to the top level query
+                    "for"
+                >
               : Relations[M][R] extends { type: "N:N" }
-                ? FindManyParams<Models, Relations, Relations[M][R]["model"]>
+                ? Omit<
+                      FindManyParams<
+                          Models,
+                          Relations,
+                          Relations[M][R]["model"]
+                      >,
+                      // for can only be applied to the top level query
+                      "for"
+                  >
                 : never
         : never;
 };

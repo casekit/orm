@@ -13,4 +13,5 @@ export type FindOneParams<
     select: SelectClause<Models[M]>;
     where?: WhereClause<Models, M>;
     include?: IncludeClause<Models, Relations, M>;
+    for?: "update" | "no key update" | "share" | "key share";
 };

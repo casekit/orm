@@ -51,6 +51,7 @@ export const findMany = async (
         }));
         return findMany(conn, config, relation.model, {
             ...query,
+            for: builder.for,
             lateralBy,
         }).then((subqueryResults) => {
             const lookup = groupBy(subqueryResults, (result) => {
@@ -100,6 +101,7 @@ export const findMany = async (
         return findMany(conn, config, relation.through, {
             select: ensureArray(relation.foreignKey),
             include: { [joinTo]: query },
+            for: builder.for,
             lateralBy,
         }).then((subqueryResults) => {
             const lookup = groupBy(subqueryResults, (result) => {

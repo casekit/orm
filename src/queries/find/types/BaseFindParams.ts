@@ -5,7 +5,7 @@ import { WhereClause } from "../../clauses/WhereClause";
 
 export type BaseFindParams = {
     select: string[];
-    include?: Partial<Record<string, BaseFindParams>>;
+    include?: Partial<Record<string, Omit<BaseFindParams, "for">>>;
     where?: WhereClause<
         LooseModelDefinitions,
         ModelName<LooseModelDefinitions>
@@ -13,5 +13,6 @@ export type BaseFindParams = {
     limit?: number;
     offset?: number;
     lateralBy?: LateralByClause;
+    for?: "update" | "no key update" | "share" | "key share";
     orderBy?: (string | [string, "asc" | "desc"])[];
 };

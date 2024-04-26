@@ -20,4 +20,5 @@ export type FindManyParams<
     orderBy?: NonEmptyArray<
         ColumnName<Models[M]> | [ColumnName<Models[M]>, "asc" | "desc"]
     >;
+    for?: "update" | "no key update" | "share" | "key share";
 };

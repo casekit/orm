@@ -29,6 +29,7 @@ export const buildFind = (
             joins: [],
         },
         orderBy: [],
+        for: query.for,
         tableIndex: _tableIndex,
     };
 
