@@ -15,7 +15,7 @@ export type Middleware = {
         values?: ValuesMiddleware;
     };
     update?: {
-        values?: ValuesMiddleware;
+        set?: ValuesMiddleware;
         where?: WhereMiddleware;
     };
     count?: {
