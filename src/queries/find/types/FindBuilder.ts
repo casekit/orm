@@ -38,6 +38,8 @@ export type FindBuilder = {
         }[];
     };
 
+    for?: "update" | "no key update" | "share" | "key share";
+
     orderBy: {
         table: string;
         column: string;

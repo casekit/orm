@@ -128,6 +128,10 @@ export const findToSql = (
         frag.push(sql`\nOFFSET ${builder.offset}`);
     }
 
+    if (builder.for) {
+        frag.push(pgfmt(`\nFOR ${builder.for.toUpperCase()}`));
+    }
+
     if (builder.lateralBy) {
         const { itemTable } = builder.lateralBy;
         frag.push(pgfmt(`\n) %I ON TRUE`, itemTable));

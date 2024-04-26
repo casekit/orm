@@ -8,7 +8,7 @@ export type UpdateParams<
     Models extends LooseModelDefinitions,
     M extends ModelName<Models>,
 > = {
-    values: UpdateValues<Models, M>;
+    set: UpdateValues<Models, M>;
     where: WhereClause<Models, M>;
     returning?: ReturningClause<Models[M]>;
 };

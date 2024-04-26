@@ -27,7 +27,7 @@ export const composeMiddleware = (middleware: Middleware[]): Middleware => {
             values: compose(...middleware.map((m) => m.create?.values), values),
         },
         update: {
-            values: compose(...middleware.map((m) => m.update?.values), values),
+            set: compose(...middleware.map((m) => m.update?.set), values),
             where: compose(...middleware.map((m) => m.update?.where), where),
         },
         delete: {

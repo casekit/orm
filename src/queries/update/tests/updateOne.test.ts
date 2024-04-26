@@ -21,7 +21,7 @@ describe("updateOne", () => {
                 const user = users["Stewart House"];
 
                 const updated = await db.updateOne("user", {
-                    values: { username: "Stewart Home" },
+                    set: { username: "Stewart Home" },
                     where: { username: "Stewart House" },
                     returning: ["id", "username"],
                 });
@@ -56,7 +56,7 @@ describe("updateOne", () => {
 
                 await expect(
                     db.updateOne("user", {
-                        values: { username: "Stewart Home" },
+                        set: { username: "Stewart Home" },
                         where: { username: "Stewart Wrong" },
                         returning: ["id", "username"],
                     }),
@@ -91,7 +91,7 @@ describe("updateOne", () => {
 
                 await expect(
                     db.updateOne("user", {
-                        values: { joinedAt: new Date("2021-01-04") },
+                        set: { joinedAt: new Date("2021-01-04") },
                         where: { username: { [$like]: "Stewart %" } },
                         returning: ["id", "username"],
                     }),

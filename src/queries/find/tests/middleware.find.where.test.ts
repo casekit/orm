@@ -21,14 +21,14 @@ export const timestamps: Middleware = {
         },
     },
     update: {
-        values: (values, { model, config }) => {
+        set: (set, { model, config }) => {
             if ("updatedAt" in config.models[model].columns) {
                 return {
                     updatedAt: new Date(),
-                    ...values,
+                    ...set,
                 };
             } else {
-                return values;
+                return set;
             }
         },
     },
@@ -50,7 +50,7 @@ export const softdelete: Middleware = {
             if ("deletedAt" in config.models[model].columns) {
                 return updateOne({
                     ...params,
-                    values: {
+                    set: {
                         deletedAt: new Date(),
                     },
                 });
@@ -60,7 +60,7 @@ export const softdelete: Middleware = {
             if ("deletedAt" in config.models[model].columns) {
                 return updateMany({
                     ...params,
-                    values: {
+                    set: {
                         deletedAt: new Date(),
                     },
                 });
@@ -110,7 +110,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateMany("post", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { authorId: lynne.id },
                 });
 
@@ -158,7 +158,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateOne("user", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { id: lynne.id },
                 });
 
@@ -206,7 +206,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateOne("post", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { title: "Post a" },
                 });
 
@@ -260,7 +260,7 @@ describe("middleware.find.where", () => {
                 ]);
 
                 await db.updateOne("user", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { username: "Lynne Tillman" },
                 });
 
@@ -311,7 +311,7 @@ describe("middleware.find.where", () => {
                 ).toEqual([{ title: "Post a" }, { title: "Post b" }]);
 
                 await db.updateMany("post", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { authorId: lynne.id },
                 });
 
@@ -360,11 +360,11 @@ describe("middleware.find.where", () => {
                 ]);
 
                 await db.updateMany("post", {
-                    values: { title: "Post AAAAAA" },
+                    set: { title: "Post AAAAAA" },
                     where: { authorId: lynne.id, title: "Post a" },
                 });
                 await db.updateMany("post", {
-                    values: { deletedAt: new Date() },
+                    set: { deletedAt: new Date() },
                     where: { authorId: lynne.id, title: "Post b" },
                 });
 

@@ -10,7 +10,7 @@ export const updateToSql = (
     m: string,
     builder: UpdateBuilder,
 ): SQLStatement => {
-    const { table, where, values: update, returning } = builder;
+    const { table, where, set, returning } = builder;
 
     const frag = sql`UPDATE %I.%I AS %I\nSET`.withIdentifiers(
         table.schema,
@@ -18,7 +18,7 @@ export const updateToSql = (
         table.alias,
     );
 
-    const fields = update.map((field) => {
+    const fields = set.map((field) => {
         return sql`\n    %I = ${field.value}`.withIdentifiers(field.name);
     });
 

@@ -74,7 +74,7 @@ describe("findMany", () => {
                 });
                 await db.updateOne("user", {
                     where: { id: users["Dan"].id },
-                    values: {
+                    set: {
                         invitedById: users["Russell"].id,
                     },
                 });
