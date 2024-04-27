@@ -4,7 +4,17 @@
     "description": "A simple ORM",
     "type": "module",
     "main": "lib/index.js",
-    "types": "lib/index.d.js",
+    "types": "lib/index.d.ts",
+    "exports": {
+        ".": "./lib/index.js"
+    },
+    "files": [
+        "./lib/*",
+        "!./lib/**.test.js",
+        "!./lib/**.test.js.map",
+        "!./lib/**.test.d.ts",
+        "!./lib/**.test.d.ts.map"
+    ],
     "scripts": {
         "build": "rm -rf lib && tsc",
         "check:all": "CI=true pnpm test && CI=true pnpm lint && CI=true pnpm prettier && CI=true pnpm typecheck",
