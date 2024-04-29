@@ -48,7 +48,7 @@ devDependencies:
     version: 8.4.1
   '@fast-check/vitest':
     specifier: ^0.1.0
-    version: 0.1.0(vitest@1.4.0)
+    version: 0.1.1(vitest@1.4.0)
   '@trivago/prettier-plugin-sort-imports':
     specifier: ^4.3.0
     version: 4.3.0(prettier@3.2.5)
@@ -632,8 +632,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: true
 
-  /@fast-check/vitest@0.1.0(vitest@1.4.0):
-    resolution: {integrity: sha512-AKgtK1/TOvFC1U8YjYAz1okILr9+ePXPgpMsdlQ0w+slwRzxUYkidSduHE/nN+P9RWlE8VTJC0ma/P86APyxHA==}
+  /@fast-check/vitest@0.1.1(vitest@1.4.0):
+    resolution: {integrity: sha512-hxBUieogCiugTY0RZTBcFRfCVja4CxLMXwCKXyf6OtP65gGWoRI17iu/SwcGZp2hzlpxiSIgHFYfQXBEx+jxfQ==}
     peerDependencies:
       vitest: '>=0.28.1 <1.0.0 || ^1'
     dependencies:
