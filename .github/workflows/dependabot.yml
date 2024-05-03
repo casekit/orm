@@ -2,8 +2,8 @@ name: Dependabot
 on:
     workflow_dispatch: {}
     schedule:
-        # random HH:MM to avoid a load spike on GitHub Actions at 00:00
-        - cron: 34 2 * * *
+        # random MM to avoid a load spike on GitHub Actions at 00:00
+        - cron: 34 * * * *
 permissions:
     contents: write
     statuses: read
@@ -18,9 +18,13 @@ jobs:
             - name: Merge PRs
               run: |
                   set -e
-                  # Merge all Dependabot PRs that were created more than a week ago and have all checks passing
-                  for pr in `gh pr list --json number,author,createdAt --search "created:<=$(date -d "2 days ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[].number'`; do
-                      gh pr merge --squash "$pr"
+                  # Merge the first Dependabot PR that was created more than a week ago and has all checks passing.
+                  # We only merge one because we'll need to rebase after its merged, so we run this scheduled
+                  # action once every hour.
+                  for pr in `gh pr list --json number,author,createdAt --search "created:<=$(date -d "2 days ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[].number' | head -n 1`; do
+                      if [ -n "$pr" ]; then
+                          gh pr merge --squash "$pr"
+                      fi
                   done
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
