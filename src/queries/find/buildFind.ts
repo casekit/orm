@@ -121,7 +121,7 @@ export const buildFind = (
     if (query.orderBy) {
         builder.orderBy = query.orderBy.map((o) => ({
             table: alias,
-            column: Array.isArray(o) ? o[0] : o,
+            column: model.columns[Array.isArray(o) ? o[0] : o].name,
             direction: Array.isArray(o) ? o[1] : "asc",
         }));
     }
