@@ -60,7 +60,7 @@ devDependencies:
     version: 3.0.6
   '@types/pg':
     specifier: ^8.11.5
-    version: 8.11.5
+    version: 8.11.6
   '@types/pg-format':
     specifier: ^1.0.5
     version: 1.0.5
@@ -896,8 +896,8 @@ packages:
     resolution: {integrity: sha512-i+oEEJEC+1I3XAhgqtVp45Faj8MBbV0Aoq4rHsHD7avgLjyDkaWKObd514g0Q/DOUkdxU0P4CQ0iq2KR4SoJcw==}
     dev: true
 
-  /@types/pg@8.11.5:
-    resolution: {integrity: sha512-2xMjVviMxneZHDHX5p5S6tsRRs7TpDHeeK7kTTMe/kAC/mRRNjWHjZg0rkiY+e17jXSZV3zJYDxXV8Cy72/Vuw==}
+  /@types/pg@8.11.6:
+    resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
     dependencies:
       '@types/node': 20.11.30
       pg-protocol: 1.6.1
