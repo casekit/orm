@@ -9,11 +9,8 @@
         ".": "./lib/index.js"
     },
     "files": [
-        "./lib/*",
-        "!./lib/**.test.js",
-        "!./lib/**.test.js.map",
-        "!./lib/**.test.d.ts",
-        "!./lib/**.test.d.ts.map"
+        "./src/*",
+        "./lib/*"
     ],
     "scripts": {
         "build": "rm -rf lib && tsc",
