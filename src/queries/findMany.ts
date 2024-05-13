@@ -1,4 +1,4 @@
-import { dropRight, get, groupBy, set } from "lodash-es";
+import { dropRight, get, groupBy, set, uniq } from "lodash-es";
 import hash from "object-hash";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
@@ -45,8 +45,10 @@ export const findMany = async (
         const fk = ensureArray(relation.foreignKey);
         const lateralBy = fk.map((c, index) => ({
             column: c,
-            values: results.map((result) =>
-                get(result, [...dropRight(path, 1), pk[index]]),
+            values: uniq(
+                results.map((result) =>
+                    get(result, [...dropRight(path, 1), pk[index]]),
+                ),
             ),
         }));
         return findMany(conn, config, relation.model, {
@@ -93,8 +95,10 @@ export const findMany = async (
         const fk = ensureArray(relation.foreignKey);
         const lateralBy = fk.map((c, index) => ({
             column: c,
-            values: results.map((result) =>
-                get(result, [...dropRight(path, 1), pk[index]]),
+            values: uniq(
+                results.map((result) =>
+                    get(result, [...dropRight(path, 1), pk[index]]),
+                ),
             ),
         }));
 
