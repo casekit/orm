@@ -1,4 +1,12 @@
-import { dropRight, get, groupBy, set, uniq } from "lodash-es";
+import {
+    dropRight,
+    get,
+    groupBy,
+    isEqual,
+    mergeWith,
+    set,
+    uniqWith,
+} from "lodash-es";
 import hash from "object-hash";
 import { BaseConfiguration } from "src/schema/types/base/BaseConfiguration";
 
@@ -43,14 +51,28 @@ export const findMany = async (
     ).map(({ model, relation, query, path }) => {
         const pk = config.models[model].primaryKey;
         const fk = ensureArray(relation.foreignKey);
-        const lateralBy = fk.map((c, index) => ({
-            column: c,
-            values: uniq(
-                results.map((result) =>
-                    get(result, [...dropRight(path, 1), pk[index]]),
-                ),
+
+        const lateralValues = mergeWith(
+            Object.fromEntries(fk.map((c) => [c, []])),
+            ...uniqWith(
+                results.map((result) => {
+                    return Object.fromEntries(
+                        fk.map((c, index) => [
+                            c,
+                            [get(result, [...dropRight(path, 1), pk[index]])],
+                        ]),
+                    );
+                }),
+                isEqual,
             ),
+            (a: unknown[], b: unknown[]) => a.concat(b),
+        );
+
+        const lateralBy = fk.map((c) => ({
+            column: c,
+            values: lateralValues[c],
         }));
+
         return findMany(conn, config, relation.model, {
             ...query,
             for: builder.for,
@@ -93,13 +115,26 @@ export const findMany = async (
 
         const pk = config.models[model].primaryKey;
         const fk = ensureArray(relation.foreignKey);
-        const lateralBy = fk.map((c, index) => ({
-            column: c,
-            values: uniq(
-                results.map((result) =>
-                    get(result, [...dropRight(path, 1), pk[index]]),
-                ),
+
+        const lateralValues = mergeWith(
+            Object.fromEntries(fk.map((c) => [c, []])),
+            ...uniqWith(
+                results.map((result) => {
+                    return Object.fromEntries(
+                        fk.map((c, index) => [
+                            c,
+                            [get(result, [...dropRight(path, 1), pk[index]])],
+                        ]),
+                    );
+                }),
+                isEqual,
             ),
+            (a: unknown[], b: unknown[]) => a.concat(b),
+        );
+
+        const lateralBy = fk.map((c) => ({
+            column: c,
+            values: lateralValues[c],
         }));
 
         return findMany(conn, config, relation.through, {
