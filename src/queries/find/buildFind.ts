@@ -93,6 +93,10 @@ export const buildFind = (
                 },
                 ...joinedTable.joins,
             );
+            // update the parent builder's tableIndex with the one from the
+            // joinBuilder, so that we don't have overlapping table indices
+            builder.tableIndex = joinBuilder.tableIndex;
+
             // this is admittedly a bit weird,
             // we wouldn't expect N:1 relations to specify
             // ordering, skipping, and limiting, and typescript
