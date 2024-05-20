@@ -9,6 +9,9 @@ import { IncludedRelationQuery } from "../../clauses/include/IncludedRelationQue
 import { FindManyParams } from "./FindManyParams";
 import { FindOneParams } from "./FindOneParams";
 
+/**
+ * this is a mess and needs refactoring
+ */
 export type FindOneResult<
     Models extends LooseModelDefinitions,
     Relations extends LooseRelationsDefinitions<Models>,
@@ -32,19 +35,51 @@ export type FindOneResult<
                       Relations,
                       M,
                       Q
-                  >]: Relations[M][R] extends { type: "N:1" }
-                      ? FindOneResult<
-                            Models,
-                            Relations,
-                            IncludedRelationModel<Models, Relations, M, R>,
-                            IncludedRelationQuery<Models, Relations, M, R, Q>
-                        >
-                      : FindOneResult<
-                            Models,
-                            Relations,
-                            IncludedRelationModel<Models, Relations, M, R>,
-                            IncludedRelationQuery<Models, Relations, M, R, Q>
-                        >[];
+                      // for each optional N:1 relation
+                  >]: Relations[M][R] extends {
+                      type: "N:1";
+                      optional: true;
+                  }
+                      ? // if its foreign key is optional, the included relation
+                        // needs to be optional too
+                        // TODO this currently doesn't work for compound primary keys
+                        // need to figure out a way to make it work,
+                        // and also to refactor this mess to be more readable
+                        | FindOneResult<
+                                  Models,
+                                  Relations,
+                                  IncludedRelationModel<
+                                      Models,
+                                      Relations,
+                                      M,
+                                      R
+                                  >,
+                                  IncludedRelationQuery<
+                                      Models,
+                                      Relations,
+                                      M,
+                                      R,
+                                      Q
+                                  >
+                              >
+                            | undefined
+                      : Relations[M][R] extends {
+                              type: "N:1";
+                          }
+                        ? // otherwise the included relation is required
+                          FindOneResult<
+                              Models,
+                              Relations,
+                              IncludedRelationModel<Models, Relations, M, R>,
+                              IncludedRelationQuery<Models, Relations, M, R, Q>
+                          >
+                        : // for other types of relation, the included relation is an array
+                          FindOneResult<
+                              Models,
+                              Relations,
+                              IncludedRelationModel<Models, Relations, M, R>,
+                              IncludedRelationQuery<Models, Relations, M, R, Q>
+                          >[];
               })
     >
 >;
