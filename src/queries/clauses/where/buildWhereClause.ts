@@ -19,7 +19,7 @@ export const buildWhereClause = (
     column: string,
     v: unknown,
 ): SQLStatement => {
-    if (v === null) {
+    if (v === null || v === undefined) {
         return sql`%I.%I IS NULL`.withIdentifiers(table, column);
     } else if (
         typeof v === "string" ||
