@@ -51,6 +51,7 @@ export type FindBuilder = {
     offset?: number;
 };
 export type Join = {
+    relation: string;
     from: {
         schema: string;
         table: string;

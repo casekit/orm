@@ -117,15 +117,6 @@ describe("findMany", () => {
                                                                                                 [$not]: null,
                                                                                             },
                                                                                     },
-                                                                                    include:
-                                                                                        {
-                                                                                            author: {
-                                                                                                select: [
-                                                                                                    "id",
-                                                                                                    "username",
-                                                                                                ],
-                                                                                            },
-                                                                                        },
                                                                                 },
                                                                             },
                                                                         where: {

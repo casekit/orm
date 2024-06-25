@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 
 import { db } from "../../../test/db";
 import { seed } from "../../../test/seed";
+import { $in } from "../../clauses/where/operators";
 
 describe("findMany", () => {
     test("it can return data in the specified order", async () => {
@@ -176,6 +177,92 @@ describe("findMany", () => {
                     ["Russell", ["LRF", "Popova Park", "WFMA"]],
                     ["Fairooz", ["LRF", "WFMA"]],
                     ["Dan", ["LRF", "Popova Park"]],
+                ]);
+            },
+            { rollback: true },
+        );
+    });
+    test("it can order by fields on N:1 relations even if they're not included in the query", async () => {
+        await db.transact(
+            async (db) => {
+                await seed(db, {
+                    users: [
+                        {
+                            username: "Russell",
+                            tenants: [{ name: "WFMA", posts: 3 }],
+                        },
+                        {
+                            username: "Dan",
+                            tenants: [{ name: "WFMA", posts: 2 }],
+                        },
+                        {
+                            username: "Fairooz",
+                            tenants: [{ name: "WFMA", posts: 6 }],
+                        },
+                    ],
+                });
+                const results = await db.findMany("post", {
+                    select: ["title"],
+                    orderBy: [["author.username", "desc"], "title"],
+                });
+
+                // the extra joined table used for the ordering is not included in the result object
+                expect(Object.keys(results[0])).toEqual(["title"]);
+
+                expect(results.map((r) => r.title)).toEqual([
+                    "Post a",
+                    "Post b",
+                    "Post c",
+                    "Post f",
+                    "Post g",
+                    "Post h",
+                    "Post i",
+                    "Post j",
+                    "Post k",
+                    "Post d",
+                    "Post e",
+                ]);
+            },
+            { rollback: true },
+        );
+    });
+
+    test("it can order by fields on N:1 relations that are included in the query without issue", async () => {
+        await db.transact(
+            async (db) => {
+                await seed(db, {
+                    users: [
+                        {
+                            username: "Russell",
+                            tenants: [{ name: "WFMA", posts: 3 }],
+                        },
+                        {
+                            username: "Dan",
+                            tenants: [{ name: "WFMA", posts: 2 }],
+                        },
+                        {
+                            username: "Fairooz",
+                            tenants: [{ name: "WFMA", posts: 6 }],
+                        },
+                    ],
+                });
+                const results = await db.findMany("post", {
+                    select: ["title"],
+                    include: {
+                        author: {
+                            select: ["id"],
+                            where: { username: { [$in]: ["Russell", "Dan"] } },
+                        },
+                    },
+                    orderBy: [["author.username", "desc"], "title"],
+                });
+
+                expect(results.map((r) => r.title)).toEqual([
+                    "Post a",
+                    "Post b",
+                    "Post c",
+                    "Post d",
+                    "Post e",
                 ]);
             },
             { rollback: true },

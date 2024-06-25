@@ -39,10 +39,11 @@ describe("findMany", () => {
         );
     });
 
-    test("included N:1 relations cannot be ordered", () => {
+    test("included N:1 relations can be ordered", () => {
         assertType(
             db.findMany("post", {
                 select: ["id", "content"],
+                orderBy: ["author.username"],
                 include: {
                     author: {
                         select: ["username"],

@@ -1,9 +1,8 @@
-import { ColumnName } from "../../../schema/types/helpers/ColumnName";
 import { ModelName } from "../../../schema/types/helpers/ModelName";
 import { LooseModelDefinitions } from "../../../schema/types/loose/LooseModelDefinitions";
 import { LooseRelationsDefinitions } from "../../../schema/types/loose/LooseRelationsDefinitions";
-import { NonEmptyArray } from "../../../types/util/NonEmptyArray";
 import { IncludeClause } from "../../clauses/IncludeClause";
+import { OrderByClause } from "../../clauses/OrderByClause";
 import { SelectClause } from "../../clauses/SelectClause";
 import { WhereClause } from "../../clauses/WhereClause";
 
@@ -17,8 +16,6 @@ export type FindManyParams<
     where?: WhereClause<Models, M>;
     limit?: number;
     offset?: number;
-    orderBy?: NonEmptyArray<
-        ColumnName<Models[M]> | [ColumnName<Models[M]>, "asc" | "desc"]
-    >;
+    orderBy?: OrderByClause<Models, Relations, M>;
     for?: "update" | "no key update" | "share" | "key share";
 };

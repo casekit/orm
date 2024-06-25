@@ -56,7 +56,25 @@ export const buildFind = (
         });
     }
 
-    for (const [r, subquery] of Object.entries(query.include ?? {})) {
+    const relationQueries = { ...query.include };
+
+    // make sure we include a join to any relations we're ordering by
+    // (we'll use them later)
+    if (query.orderBy) {
+        query.orderBy.forEach((o) => {
+            const [col] = Array.isArray(o) ? o : [o, "asc"];
+            if (col.includes(".")) {
+                const r = col.split(".")[0]!;
+                if (!relationQueries[r]) {
+                    relationQueries[r] = {
+                        select: [],
+                    };
+                }
+            }
+        });
+    }
+
+    for (const [r, subquery] of Object.entries(relationQueries)) {
         const relation = config.relations[m][r];
         const joinedModel = config.models[relation.model];
         if (relation.type === "N:1") {
@@ -70,6 +88,7 @@ export const buildFind = (
             const joinedTable = joinBuilder.table;
             builder.table.joins.push(
                 {
+                    relation: r,
                     from: {
                         schema: config.models[m].schema,
                         table: config.models[m].table,
@@ -123,11 +142,25 @@ export const buildFind = (
     }
 
     if (query.orderBy) {
-        builder.orderBy = query.orderBy.map((o) => ({
-            table: alias,
-            column: model.columns[Array.isArray(o) ? o[0] : o].name,
-            direction: Array.isArray(o) ? o[1] : "asc",
-        }));
+        builder.orderBy = query.orderBy.map((o) => {
+            const [col, order] = Array.isArray(o) ? o : [o, "asc" as const];
+            if (col.includes(".")) {
+                const [r, c] = col.split(".");
+                const join = builder.table.joins.find((j) => j.relation === r)!;
+                const joinedModel = config.models[join.to.model]!;
+                return {
+                    table: join.to.alias,
+                    column: joinedModel.columns[c].name,
+                    direction: order,
+                };
+            } else {
+                return {
+                    table: alias,
+                    column: model.columns[Array.isArray(o) ? o[0] : o].name,
+                    direction: Array.isArray(o) ? o[1] : "asc",
+                };
+            }
+        });
     }
 
     if (query.limit) {
