@@ -101,7 +101,7 @@ importers:
         version: 5.5.2
       vite-tsconfig-paths:
         specifier: ^5.0.1
-        version: 5.0.1(typescript@5.5.2)(vite@5.4.8(@types/node@20.14.0))
+        version: 5.1.2(typescript@5.5.2)(vite@5.4.8(@types/node@20.14.0))
       vitest:
         specifier: ^1.4.0
         version: 1.6.0(@types/node@20.14.0)(@vitest/ui@1.6.0)
@@ -1015,6 +1015,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -2007,8 +2008,8 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
-  vite-tsconfig-paths@5.0.1:
-    resolution: {integrity: sha512-yqwv+LstU7NwPeNqajZzLEBVpUFU6Dugtb2P84FXuvaoYA+/70l9MHE+GYfYAycVyPSDYZ7mjOFuYBRqlEpTig==}
+  vite-tsconfig-paths@5.1.2:
+    resolution: {integrity: sha512-gEIbKfJzSEv0yR3XS2QEocKetONoWkbROj6hGx0FHM18qKUojhvcokQsxQx5nMkelZq2n37zbSGCJn+FSODSjA==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -4161,9 +4162,9 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@5.0.1(typescript@5.5.2)(vite@5.4.8(@types/node@20.14.0)):
+  vite-tsconfig-paths@5.1.2(typescript@5.5.2)(vite@5.4.8(@types/node@20.14.0)):
     dependencies:
-      debug: 4.3.5
+      debug: 4.3.7
       globrex: 0.1.2
       tsconfck: 3.1.0(typescript@5.5.2)
     optionalDependencies:
