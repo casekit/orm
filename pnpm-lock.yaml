@@ -50,7 +50,7 @@ importers:
         version: 8.4.1
       '@fast-check/vitest':
         specifier: ^0.1.0
-        version: 0.1.1(vitest@1.6.0)
+        version: 0.1.4(vitest@1.6.0)
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^4.3.0
         version: 4.3.0(prettier@3.3.2)
@@ -383,10 +383,10 @@ packages:
     resolution: {integrity: sha512-XQ3cU+Q8Uqmrbf2e0cIC/QN43sTBSC8KF12u29Mb47tWrt2hAgBXSgpZMj4Ao8Uk0iJcU99QsOCaIL8934obCg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
 
-  '@fast-check/vitest@0.1.1':
-    resolution: {integrity: sha512-hxBUieogCiugTY0RZTBcFRfCVja4CxLMXwCKXyf6OtP65gGWoRI17iu/SwcGZp2hzlpxiSIgHFYfQXBEx+jxfQ==}
+  '@fast-check/vitest@0.1.4':
+    resolution: {integrity: sha512-Rb8r6Ok8uIE6Hi3P5bO9P6JMeFUSpRWaZs0ARmmZLgnh0oFyQ8ZXqln+530rFJ9TVRNjrQzk/kRBQCVyIEt46Q==}
     peerDependencies:
-      vitest: '>=0.28.1 <1.0.0 || ^1'
+      vitest: '>=0.28.1 <1.0.0 || ^1 || ^2'
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -2374,7 +2374,7 @@ snapshots:
 
   '@faker-js/faker@8.4.1': {}
 
-  '@fast-check/vitest@0.1.1(vitest@1.6.0)':
+  '@fast-check/vitest@0.1.4(vitest@1.6.0)':
     dependencies:
       fast-check: 3.22.0
       vitest: 1.6.0(@types/node@20.14.0)(@vitest/ui@1.6.0)
