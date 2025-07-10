@@ -30,7 +30,7 @@
         "@anatine/zod-mock": "^3.13.4",
         "@casekit/unindent": "^1.0.3",
         "@faker-js/faker": "^8.4.1",
-        "@fast-check/vitest": "^0.1.0",
+        "@fast-check/vitest": "^0.2.2",
         "@trivago/prettier-plugin-sort-imports": "^4.3.0",
         "@types/lodash-es": "^4.17.12",
         "@types/object-hash": "^3.0.6",
