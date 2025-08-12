@@ -31,7 +31,7 @@ jobs:
                 ports:
                     - 5432:5432
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/ci-setup
 
             - name: Run tests
@@ -49,7 +49,7 @@ jobs:
         timeout-minutes: 10
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/ci-setup
             - name: Typecheck
               run: pnpm typecheck
@@ -59,7 +59,7 @@ jobs:
         timeout-minutes: 10
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/ci-setup
             - name: Lint
               run: pnpm lint
@@ -69,7 +69,7 @@ jobs:
         timeout-minutes: 10
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - uses: ./.github/actions/ci-setup
             - name: Prettier
               run: pnpm prettier
@@ -80,7 +80,7 @@ jobs:
         runs-on: ubuntu-latest
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v5
             - name: Set up Git config
               run: |
                   git config user.name "$(git log -n 1 --pretty=format:%an)"
