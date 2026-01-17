@@ -14,8 +14,8 @@ jobs:
         timeout-minutes: 60
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v5
-            - uses: actions/setup-node@v5
+            - uses: actions/checkout@v6
+            - uses: actions/setup-node@v6
               with:
                   node-version: lts/*
             - name: Install dependencies
@@ -24,7 +24,7 @@ jobs:
               run: pnpm -F @casekit/orm-docs exec playwright install --with-deps
             - name: Run Playwright tests
               run: pnpm -F @casekit/orm-docs exec playwright test
-            - uses: actions/upload-artifact@v4
+            - uses: actions/upload-artifact@v6
               if: ${{ !cancelled() }}
               with:
                   name: playwright-report
