@@ -1,0 +1,60 @@
+{
+    "name": "@casekit/orm-migrate",
+    "description": "",
+    "version": "0.0.1-release-candidate",
+    "author": "",
+    "dependencies": {
+        "@casekit/orm": "workspace:*",
+        "@casekit/orm-config": "workspace:*",
+        "@casekit/orm-schema": "workspace:*",
+        "@casekit/sql": "workspace:*",
+        "@casekit/toolbox": "workspace:*",
+        "camelcase": "^8.0.0",
+        "es-toolkit": "^1.39.3"
+    },
+    "devDependencies": {
+        "@casekit/orm-fixtures": "workspace:*",
+        "@casekit/prettier-config": "workspace:*",
+        "@casekit/tsconfig": "workspace:*",
+        "@casekit/unindent": "^1.0.5",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/node": "^24.0.3",
+        "@types/pg": "^8.15.4",
+        "@types/uuid": "^10.0.0",
+        "@vitest/coverage-v8": "^3.2.4",
+        "dotenv": "^16.5.0",
+        "prettier": "^3.5.3",
+        "prettier-plugin-svelte": "^3.4.0",
+        "typescript": "^5.8.3",
+        "uuid": "^11.1.0",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4"
+    },
+    "exports": {
+        ".": "./build/index.js"
+    },
+    "files": [
+        "/build"
+    ],
+    "imports": {
+        "#*": "./build/*"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "peerDependencies": {
+        "pg": "^8.13.1",
+        "zod": "^4.0.17"
+    },
+    "prettier": "@casekit/prettier-config",
+    "scripts": {
+        "build": "rm -rf ./build && tsc",
+        "format:check": "prettier --check .",
+        "format": "prettier --write .",
+        "lint": "eslint src --max-warnings 0",
+        "prepare": "pnpm run build",
+        "test": "vitest --run --typecheck --coverage",
+        "test:watch": "vitest",
+        "typecheck": "tsc --noEmit"
+    },
+    "type": "module"
+}
