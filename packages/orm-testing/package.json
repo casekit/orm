@@ -8,8 +8,8 @@
         "@casekit/orm-schema": "workspace:*",
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
-        "@faker-js/faker": "^9.8.0",
-        "es-toolkit": "^1.39.3"
+        "@faker-js/faker": "^10.2.0",
+        "es-toolkit": "^1.44.0"
     },
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",

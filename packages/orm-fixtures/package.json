@@ -7,7 +7,7 @@
         "@casekit/orm-config": "workspace:*",
         "@casekit/orm-schema": "workspace:*",
         "@casekit/sql": "workspace:*",
-        "es-toolkit": "^1.39.3"
+        "es-toolkit": "^1.44.0"
     },
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",
