@@ -1,0 +1,6 @@
+*.hbs
+*.mdx
+*.md
+build
+tsconfig.vitest-temp.json
+coverage

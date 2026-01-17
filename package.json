@@ -1,0 +1,35 @@
+{
+    "name": "@casekit/orm-root",
+    "private": true,
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/node": "^24.0.3",
+        "dotenv": "^16.5.0",
+        "eslint": "^9.29.0",
+        "syncpack": "^13.0.4",
+        "turbo": "^2.5.4",
+        "typescript": "^5.8.3",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4"
+    },
+    "packageManager": "pnpm@9.1.0",
+    "scripts": {
+        "check:all": "pnpm install && pnpm db:create && pnpm test && pnpm typecheck && pnpm lint && pnpm format && pnpm syncpack",
+        "build": "turbo build",
+        "build:watch": "turbo watch build",
+        "coverage": "pnpm test && ls packages/*/coverage/index.html | xargs open",
+        "db:create": "pnpm -F @casekit/orm-cli db:create ",
+        "format:check": "turbo format:check",
+        "dev": "turbo dev",
+        "format": "turbo format",
+        "lint": "turbo lint",
+        "sql": "psql postgresql://orm:password@127.0.0.1:54321/orm",
+        "syncpack:check": "syncpack list-mismatches",
+        "syncpack": "syncpack fix-mismatches",
+        "pg": "docker compose up -d",
+        "test": "pnpm db:create && turbo test",
+        "test:watch": "pnpm db:create && turbo test:watch",
+        "typecheck": "turbo typecheck"
+    },
+    "version": "1.0.2"
+}

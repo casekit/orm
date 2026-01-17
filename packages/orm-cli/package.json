@@ -1,0 +1,71 @@
+{
+    "name": "@casekit/orm-cli",
+    "description": "",
+    "version": "0.0.1",
+    "author": "",
+    "bin": {
+        "orm": "./build/cli.js"
+    },
+    "dependencies": {
+        "@casekit/orm": "workspace:*",
+        "@casekit/orm-migrate": "workspace:*",
+        "@casekit/sql": "workspace:*",
+        "@casekit/toolbox": "workspace:*",
+        "@casekit/unindent": "^1.0.5",
+        "@inquirer/prompts": "^7.5.3",
+        "@inquirer/testing": "^2.1.47",
+        "byline": "^5.0.0",
+        "camelcase": "^8.0.0",
+        "dotenv": "^16.5.0",
+        "es-toolkit": "^1.39.3",
+        "pluralize": "^8.0.0",
+        "tsx": "^4.20.3",
+        "yargs": "^18.0.0"
+    },
+    "devDependencies": {
+        "@casekit/orm-fixtures": "workspace:*",
+        "@casekit/prettier-config": "workspace:*",
+        "@casekit/tsconfig": "workspace:*",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/byline": "^4.2.36",
+        "@types/node": "^24.0.3",
+        "@types/pg": "^8.15.4",
+        "@types/pluralize": "^0.0.33",
+        "@types/yargs": "^17.0.33",
+        "@vitest/coverage-v8": "^3.2.4",
+        "memfs": "^4.17.2",
+        "prettier": "^3.5.3",
+        "prettier-plugin-svelte": "^3.4.0",
+        "typescript": "^5.8.3",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^3.2.4",
+        "zod": "^4.0.17"
+    },
+    "exports": {
+        ".": "./build/index.js"
+    },
+    "files": [
+        "/build"
+    ],
+    "imports": {
+        "#*": "./build/*"
+    },
+    "keywords": [],
+    "license": "ISC",
+    "peerDependencies": {
+        "pg": "^8.13.1"
+    },
+    "prettier": "@casekit/prettier-config",
+    "scripts": {
+        "build": "rm -rf ./build && tsc",
+        "db:create": "tsx src/cli.ts db drop && tsx src/cli.ts db push",
+        "format:check": "prettier --check .",
+        "format": "prettier --write .",
+        "lint": "eslint src --max-warnings 0",
+        "prepare": "pnpm run build",
+        "test": "vitest --run --typecheck --coverage",
+        "test:watch": "vitest",
+        "typecheck": "tsc --noEmit"
+    },
+    "type": "module"
+}

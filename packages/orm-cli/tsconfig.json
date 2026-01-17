@@ -1,0 +1,12 @@
+{
+    "extends": "@casekit/tsconfig/tsconfig.base.json",
+    "include": ["./src/**/*.ts"],
+    "exclude": ["./build/**/*", "src/test/orm.config.ts"],
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./build",
+        "paths": {
+            "#*": ["./src/*"]
+        }
+    }
+}

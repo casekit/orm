@@ -1,0 +1,627 @@
+# @casekit/orm
+
+> A type-safe, PostgreSQL-native ORM for TypeScript with deep relational querying, middleware support, and declarative schema definitions.
+
+## Overview
+
+@casekit/orm is a TypeScript ORM designed for PostgreSQL that prioritizes:
+- **Full compile-time type safety** for queries and results
+- **Deep relational queries** with 1:1, 1:N, N:1, and N:N relationships
+- **Middleware system** for query interception (multi-tenancy, timestamps, etc.)
+- **Typescript model definitions ** - no DSLs, just Typescript
+- **SQL for complex aggregations** - we don't try to do everything in the ORM, but instead give you tools to type your SQL queries easily.
+
+The ORM uses LATERAL JOINs for efficient multi-relation queries and validates all results with Zod schemas at runtime.
+
+## Installation
+
+```bash
+npm add @casekit/orm @casekit/orm-cli @casekit/orm-migrate pg zod
+```
+
+## Quick Start
+
+### 1. Initialize Project
+
+```bash
+npm orm init --directory ./src/db
+```
+
+This creates:
+- `src/db/index.ts` - Database connection
+- `src/db/models/index.ts` - Model exports
+- `orm.config.ts` - CLI configuration
+
+### 2. Define Models
+
+```typescript
+// src/db/models/author.ts
+import type { ModelDefinition } from "@casekit/orm";
+import { sql } from "@casekit/sql";
+
+export const author = {
+    fields: {
+        id: { type: "serial", primaryKey: true },
+        name: { type: "text" },
+        email: { type: "text", unique: true },
+        createdAt: { type: "timestamp", default: sql`now()` },
+    },
+    relations: {
+        books: {
+            type: "1:N",
+            model: "book",
+            fromField: "id",
+            toField: "authorId",
+        },
+    },
+} as const satisfies ModelDefinition;
+
+// src/db/models/book.ts
+export const book = {
+    fields: {
+        id: { type: "serial", primaryKey: true },
+        title: { type: "text" },
+        authorId: {
+            type: "integer",
+            references: { model: "author", field: "id" },
+        },
+        createdAt: { type: "timestamp", default: sql`now()` },
+    },
+    relations: {
+        author: {
+            type: "N:1",
+            model: "author",
+            fromField: "authorId",
+            toField: "id",
+        },
+    },
+} as const satisfies ModelDefinition;
+```
+
+### 3. Configure Database
+
+```typescript
+// src/db/index.ts
+import { orm, type Config, type ModelType, type Orm } from "@casekit/orm";
+import { snakeCase } from "es-toolkit";
+import { models } from "./models";
+
+const config = {
+    models,
+    naming: { column: snakeCase },
+    connection: { database: "myapp" },
+} as const satisfies Config;
+
+let db: Orm<typeof config>;
+
+// Reuse connection in development
+declare global {
+    var __db: Orm<typeof config>;
+}
+
+if (process.env.NODE_ENV === "production") {
+    db = orm(config);
+    await db.connect();
+} else {
+    if (!global.__db) {
+        global.__db = orm(config);
+        await global.__db.connect();
+    }
+    db = global.__db;
+}
+
+export type DB = Orm<typeof config>;
+export type Models = typeof models;
+export type Model<M extends keyof Models> = ModelType<Models[M]>;
+export { db };
+```
+
+### 4. Push Schema to Database
+
+```bash
+npm orm db push
+```
+
+## Core API
+
+### CRUD Operations
+
+```typescript
+// Find single record (throws if not found)
+const author = await db.findOne("author", {
+    select: ["id", "name", "email"],
+    where: { id: 1 },
+});
+
+// Find multiple records
+const authors = await db.findMany("author", {
+    select: ["id", "name"],
+    where: { name: { [$ilike]: "%john%" } },
+    orderBy: [["name", "asc"]],
+    limit: 10,
+    offset: 0,
+});
+
+// Count records
+const count = await db.count("author", {
+    where: { createdAt: { [$gte]: someDate } },
+});
+
+// Create single record
+const newAuthor = await db.createOne("author", {
+    values: { name: "Jane", email: "jane@example.com" },
+    returning: ["id", "createdAt"],
+});
+
+// Create multiple records
+const newBooks = await db.createMany("book", {
+    values: [
+        { title: "Book 1", authorId: 1 },
+        { title: "Book 2", authorId: 1 },
+    ],
+    returning: ["id"],
+});
+
+// Update single record (throws if != 1 match)
+await db.updateOne("author", {
+    set: { name: "Jane Doe" },
+    where: { id: 1 },
+    returning: ["id", "name"],
+});
+
+// Update multiple records
+await db.updateMany("book", {
+    set: { authorId: 2 },
+    where: { authorId: 1 },
+});
+
+// Delete single record (throws if != 1 match)
+await db.deleteOne("author", {
+    where: { id: 1 },
+    returning: ["id"],
+});
+
+// Delete multiple records
+await db.deleteMany("book", {
+    where: { authorId: 1 },
+});
+```
+
+### Relational Queries
+
+```typescript
+// Include related records
+const authorWithBooks = await db.findOne("author", {
+    select: ["id", "name"],
+    include: {
+        books: {
+            select: ["id", "title", "createdAt"],
+            where: { createdAt: { [$gte]: lastMonth } },
+            orderBy: [["title", "asc"]],
+            limit: 5,
+        },
+    },
+    where: { id: 1 },
+});
+
+// Deep nested includes
+const bookWithDetails = await db.findOne("book", {
+    select: ["id", "title"],
+    include: {
+        author: {
+            select: ["id", "name"],
+            include: {
+                books: {
+                    select: ["id", "title"],
+                },
+            },
+        },
+    },
+    where: { id: 1 },
+});
+```
+
+### WHERE Operators
+
+Import operators from the ORM:
+
+```typescript
+import {
+    $eq, $ne, $gt, $gte, $lt, $lte,
+    $in, $like, $ilike,
+    $is, $not, $and, $or
+} from "@casekit/orm";
+```
+
+Usage:
+
+```typescript
+// Comparison operators
+where: { age: { [$gte]: 18 } }
+where: { status: { [$in]: ["active", "pending"] } }
+where: { email: { [$ilike]: "%@gmail.com" } }
+
+// NULL checks
+where: { deletedAt: { [$is]: null } }
+where: { active: { [$is]: true } }
+
+// Logical operators
+where: {
+    [$or]: [
+        { role: "admin" },
+        { [$and]: [
+            { status: "active" },
+            { verified: true }
+        ]}
+    ]
+}
+```
+
+### Transactions
+
+```typescript
+await db.transact(async (tx) => {
+    const author = await tx.createOne("author", {
+        values: { name: "New Author", email: "new@example.com" },
+        returning: ["id"],
+    });
+
+    await tx.createOne("book", {
+        values: { title: "New Book", authorId: author.id },
+    });
+
+    // Auto-commits on success, auto-rollback on error
+});
+
+// Force rollback (useful for testing)
+await db.transact(async (tx) => {
+    // ... operations ...
+}, { rollback: true });
+```
+
+### Middleware
+
+Two example middlewares: 
+
+```typescript 
+export const tenancy = ({ org }: { org: Organisation }): Middleware => ({
+    where: (config, modelName, where) => {
+        if ("organisationId" in getModel(config.models, modelName).fields) {
+            return { ...where, organisaitonId: org.id };
+        } else {
+            return where;
+        }
+    },
+    values: (config, modelName, values) => {
+        if ("organisationId" in getModel(config.models, modelName).fields) {
+            return { ...values, organisationId: org.id };
+        } else {
+            return values;
+        }
+    },
+});
+
+export const userstamps = ({ user }: { user: User }): Middleware => ({
+    values: (config, modelName, values) => {
+        if ("createdById" in getModel(config.models, modelName).fields) {
+            return { ...values, updatedById: values["createdById"] ?? user.id };
+        } else {
+            return values;
+        }
+    },
+    set: (config, modelName, set) => {
+        if ("updatedById" in getModel(config.models, modelName).fields) {
+            return { ...set, updatedById: set["updatedById"] ?? user.id };
+        } else {
+            return set;
+        }
+    },
+});
+
+const dbWithMiddleware = db.middleware([
+    tenancy({ org }), // add a where clause on organisationId to every table that has an organisationId column
+    userstamps({ user: currentUser }), // Auto-set created_by/updated_by
+]);
+
+### Model Restriction
+
+```typescript
+// Restrict access to specific models
+const restrictedDb = db.restrict(["user", "profile"]);
+
+// Throws at runtime if code tries to access other models
+await restrictedDb.findMany("post", { ... }); // Error!
+```
+
+### Raw Queries
+
+```typescript
+import { sql } from "@casekit/sql";
+import { z } from "zod";
+
+// With Zod schema validation
+const results = await db.query(
+    z.object({ id: z.number(), name: z.string() }),
+    sql`SELECT id, name FROM authors WHERE id = ${authorId}`
+);
+
+// Template literal syntax
+const rows = await db.query<{ count: number }>`
+    SELECT COUNT(*) as count FROM books
+`;
+```
+
+## Model Definition Reference
+
+### Field Types
+
+PostgreSQL types supported (with array variants using `[]`):
+
+- **Numeric**: `integer`, `bigint`, `smallint`, `serial`, `bigserial`, `smallserial`, `numeric`, `decimal`, `real`, `double precision`, `money`
+- **Text**: `text`, `varchar`, `char`
+- **Boolean**: `boolean`
+- **Date/Time**: `date`, `time`, `timestamp`, `timestamptz`, `interval`
+- **JSON**: `json`, `jsonb`
+- **UUID**: `uuid`
+- **Binary**: `bytea`
+- **Network**: `inet`, `cidr`, `macaddr`
+- **Geometric**: `point`, `line`, `polygon`, `box`, etc.
+
+### Field Definition
+
+```typescript
+{
+    fields: {
+        id: {
+            type: "serial",
+            primaryKey: true,
+        },
+        email: {
+            type: "text",
+            column: "email_address",     // Override column name
+            unique: true,                // Simple unique constraint
+            nullable: false,             // NOT NULL (default)
+        },
+        status: {
+            type: "text",
+            default: "'active'",         // SQL default value
+            unique: {
+                where: sql`deleted_at IS NULL`,  // Partial unique
+                nullsNotDistinct: true,
+            },
+        },
+        orgId: {
+            type: "integer",
+            references: {
+                model: "organisation",
+                field: "id",
+                onDelete: "CASCADE",
+                onUpdate: "RESTRICT",
+            },
+            provided: true,              // Set by middleware, not required in inserts
+        },
+        data: {
+            type: "jsonb",
+            zodSchema: z.object({        // Custom Zod validation
+                key: z.string(),
+            }),
+        },
+        tags: {
+            type: "text[]",              // Array type
+            default: sql`ARRAY[]::text[]`,
+        },
+    },
+}
+```
+
+### Relation Types
+
+```typescript
+{
+    relations: {
+        // One-to-Many: Author has many Books
+        books: {
+            type: "1:N",
+            model: "book",
+            fromField: "id",        // this.id
+            toField: "authorId",    // book.authorId
+        },
+
+        // Many-to-One: Book belongs to Author
+        author: {
+            type: "N:1",
+            model: "author",
+            fromField: "authorId",  // this.authorId
+            toField: "id",          // author.id
+            optional: true,         // LEFT JOIN instead of INNER JOIN
+        },
+
+        // Many-to-Many: Post has many Tags through PostTag
+        tags: {
+            type: "N:N",
+            model: "tag",
+            through: {
+                model: "postTag",
+                fromRelation: "post",  // postTag.post relation
+                toRelation: "tag",     // postTag.tag relation
+            },
+        },
+    },
+}
+```
+
+### Constraints
+
+```typescript
+{
+    // Multi-column primary key
+    primaryKey: ["orgId", "slug"],
+
+    // Multi-column unique constraints
+    uniqueConstraints: [
+        {
+            name: "unique_org_email",
+            fields: ["orgId", "email"],
+            where: sql`deleted_at IS NULL`,
+            nullsNotDistinct: false,
+        },
+    ],
+
+    // Multi-column foreign keys
+    foreignKeys: [
+        {
+            name: "fk_location",
+            fields: ["countryCode", "regionCode"],
+            references: {
+                model: "region",
+                fields: ["countryCode", "code"],
+            },
+            onDelete: "SET NULL",
+            onUpdate: "CASCADE",
+        },
+    ],
+}
+```
+
+## CLI Reference
+
+### Commands
+
+```bash
+# Initialize new project
+npm orm init --directory ./src/db
+
+# Push schema to database (creates tables)
+npm orm db push
+
+# Pull schema from database (generates model files)
+npm orm db pull --schema public --schema other_schema
+
+# Drop all schemas
+npm orm db drop
+
+# Generate skeleton model file
+npm orm generate model user
+```
+
+### Configuration
+
+```typescript
+// orm.config.ts
+import { orm, type Config } from "@casekit/orm";
+import type { OrmCLIConfig } from "@casekit/orm-cli";
+import { sql } from "@casekit/sql";
+import { snakeCase } from "es-toolkit";
+import { models } from "./src/db/models";
+
+const config = {
+    models,
+    naming: { column: snakeCase },
+    connection: { database: "myapp" },
+} as const satisfies Config;
+
+export default {
+    db: orm(config),
+    directory: "./src/db",
+} satisfies OrmCLIConfig;
+```
+
+## Config Reference
+
+```typescript
+interface Config {
+    models: ModelDefinitions;                    // Required
+    schema?: string;                             // Default schema
+    connection?: pg.ConnectionConfig | pg.PoolConfig;
+    pool?: boolean;
+    extensions?: readonly string[];              // e.g., ["uuid-ossp"]
+    operators?: OperatorDefinitions;             // Custom WHERE operators
+    naming?: {
+        column?: (name: string) => string;       // e.g., snakeCase
+        table?: (name: string) => string;
+    };
+    logger?: Logger;
+}
+```
+
+## Type Exports
+
+```typescript
+import {
+    // Core
+    orm,
+    Orm,
+    Config,
+
+    // Model types
+    ModelDefinition,
+    ModelDefinitions,
+    ModelType,
+    ModelName,
+
+    // Field types
+    FieldDefinition,
+    FieldName,
+    FieldType,
+    RequiredField,
+    OptionalField,
+    NullableField,
+
+    // Relation types
+    RelationDefinition,
+    RelationName,
+    RelationModel,
+
+    // Query types
+    FindParams,
+    CountParams,
+    CreateOneParams,
+    CreateManyParams,
+    UpdateParams,
+    DeleteParams,
+
+    // Clause types
+    WhereClause,
+    SelectClause,
+    IncludeClause,
+    OrderByClause,
+    ReturningClause,
+
+    // Result types
+    FindResult,
+    CreateOneResult,
+    CreateManyResult,
+    UpdateOneResult,
+    UpdateManyResult,
+    DeleteOneResult,
+    DeleteManyResult,
+
+    // Middleware
+    Middleware,
+
+    // Operators
+    $eq, $ne, $gt, $gte, $lt, $lte,
+    $in, $like, $ilike, $is, $not, $and, $or,
+    DefaultOperators,
+} from "@casekit/orm";
+```
+
+## Package Structure
+
+```
+@casekit/orm           # Core ORM library
+@casekit/orm-cli       # CLI for init, push, pull, generate
+@casekit/orm-migrate   # Migration engine (push/pull/drop)
+@casekit/orm-schema    # Type definitions
+@casekit/orm-config    # Config normalization
+@casekit/sql            # SQL statement builder
+```
+
+## Optional Information
+
+For more details, see the source code at:
+- ORM core: packages/orm/src/
+- CLI: packages/orm-cli/src/
+- Migrations: packages/orm-migrate/src/
+- Types: packages/orm-schema/src/
+- Example app: examples/tanstack-start-example/

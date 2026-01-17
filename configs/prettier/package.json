@@ -1,0 +1,17 @@
+{
+    "name": "@casekit/prettier-config",
+    "private": true,
+    "version": "0.0.1",
+    "exports": "./index.js",
+    "license": "MIT",
+    "peerDependencies": {
+        "prettier": "^3.5.3"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "type": "module",
+    "devDependencies": {
+        "prettier-plugin-svelte": "^3.4.0"
+    }
+}

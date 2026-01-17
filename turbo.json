@@ -1,0 +1,26 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "ui": "tui",
+    "globalDependencies": ["pnpm-lock.yaml"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "inputs": ["$TURBO_DEFAULT$", ".env*"]
+        },
+        "format:check": {},
+        "format": {},
+        "lint": {
+            "cache": true
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "test": {},
+        "test:watch": {
+            "cache": false,
+            "persistent": true
+        },
+        "typecheck": {}
+    }
+}
