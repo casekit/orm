@@ -23,6 +23,10 @@ export const push = async (db: Orm) => {
             for (const schema of schemas) {
                 await db.query(createExtensionsSql(schema, extension));
             }
+
+            if (!schemas.has("public")) {
+                await db.query(createExtensionsSql("public", extension));
+            }
         }
         for (const model of Object.values(db.config.models)) {
             console.log(` - Creating table "${model.schema}"."${model.table}"`);
