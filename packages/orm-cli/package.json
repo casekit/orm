@@ -1,7 +1,7 @@
 {
     "name": "@casekit/orm-cli",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.0.1-release-candidate.2",
     "author": "",
     "bin": {
         "orm": "./build/cli.js"

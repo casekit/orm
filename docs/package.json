@@ -1,6 +1,6 @@
 {
     "name": "@casekit/orm-docs",
-    "version": "0.0.2",
+    "version": "0.0.1-release-candidate.2",
     "private": true,
     "scripts": {
         "docusaurus": "docusaurus",

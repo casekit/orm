@@ -1,7 +1,7 @@
 {
     "name": "@casekit/orm-fixtures",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.0.1-release-candidate.2",
     "author": "",
     "dependencies": {
         "@casekit/orm-config": "workspace:*",

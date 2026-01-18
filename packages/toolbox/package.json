@@ -1,7 +1,7 @@
 {
     "name": "@casekit/toolbox",
     "description": "",
-    "version": "0.0.1",
+    "version": "0.0.1-release-candidate.2",
     "author": "",
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",

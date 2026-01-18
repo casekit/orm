@@ -1,7 +1,7 @@
 {
     "name": "@casekit/prettier-config",
     "private": true,
-    "version": "0.0.1",
+    "version": "0.0.1-release-candidate.2",
     "exports": "./index.js",
     "license": "MIT",
     "peerDependencies": {
