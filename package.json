@@ -2,15 +2,15 @@
     "name": "@casekit/orm-root",
     "private": true,
     "devDependencies": {
-        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-        "@types/node": "^24.0.3",
+        "@trivago/prettier-plugin-sort-imports": "^6.0.2",
+        "@types/node": "^25.0.9",
         "dotenv": "^16.5.0",
         "eslint": "^9.29.0",
         "syncpack": "^13.0.4",
         "turbo": "^2.5.4",
         "typescript": "^5.8.3",
-        "vite-tsconfig-paths": "^5.1.4",
-        "vitest": "^3.2.4"
+        "vite-tsconfig-paths": "^6.0.4",
+        "vitest": "^4.0.17"
     },
     "packageManager": "pnpm@9.1.0",
     "scripts": {
