@@ -33,7 +33,7 @@
         "dotenv": "^17.2.3",
         "es-toolkit": "^1.39.3",
         "typescript": "^5.8.3",
-        "vitest": "^3.2.4",
+        "vitest": "^4.0.17",
         "zod": "^4.0.17"
     },
     "peerDependencies": {
