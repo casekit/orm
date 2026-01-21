@@ -10,8 +10,8 @@
         "@casekit/toolbox": "workspace:*",
         "es-toolkit": "^1.39.3",
         "object-hash": "^3.0.0",
-        "pino": "^9.7.0",
-        "uuid": "^11.1.0"
+        "pino": "^10.2.1",
+        "uuid": "^13.0.0"
     },
     "devDependencies": {
         "@casekit/orm-fixtures": "workspace:*",
@@ -20,14 +20,14 @@
         "@casekit/tsconfig": "workspace:*",
         "@casekit/unindent": "^1.0.5",
         "@eslint/js": "^9.29.0",
-        "@faker-js/faker": "^9.8.0",
+        "@faker-js/faker": "^10.2.0",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@types/node": "^24.0.3",
         "@types/object-hash": "^3.0.6",
         "@types/pg": "^8.15.4",
         "@types/uuid": "^10.0.0",
         "@vitest/coverage-v8": "^3.2.4",
-        "dotenv": "^16.5.0",
+        "dotenv": "^17.2.3",
         "prettier": "^3.5.3",
         "prettier-plugin-svelte": "^3.4.0",
         "ts-essentials": "^10.1.1",

@@ -30,7 +30,7 @@
         "@docusaurus/module-type-aliases": "3.9.2",
         "@docusaurus/tsconfig": "3.9.2",
         "@docusaurus/types": "3.9.2",
-        "dotenv": "^16.5.0",
+        "dotenv": "^17.2.3",
         "es-toolkit": "^1.39.3",
         "typescript": "^5.8.3",
         "vitest": "^3.2.4",
