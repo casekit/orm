@@ -17,7 +17,6 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-import { zip } from "es-toolkit";
 import pg from "pg";
 import { format } from "sql-formatter";
 import { ZodType, z } from "zod";
@@ -42,12 +41,35 @@ const joinFragments = (
     };
 };
 
+/**
+ * Process template literal fragments and values into an ExpandedFragment.
+ * Template literals always have one more fragment than values, so we pair
+ * each value with its preceding fragment, then append the final fragment.
+ */
+const processTemplateParts = (
+    fragments: readonly string[],
+    values: readonly unknown[],
+): ExpandedFragment => {
+    const fragmentsCopy = [...fragments];
+    const lastFragment = fragmentsCopy.pop()!;
+    const pairs = fragmentsCopy.map(
+        (frag, i) => [frag, values[i]] as [string, unknown],
+    );
+
+    const result = pairs
+        .map(expandFragment)
+        .reduce(joinFragments, { text: [""], values: [] });
+
+    result.text[result.text.length - 1]! += lastFragment;
+    return result;
+};
+
 const expandFragment = ([fragment, value]: [
     string,
     unknown,
 ]): ExpandedFragment => {
     if (value === undefined) {
-        return { text: [fragment], values: [] };
+        return { text: [fragment + "NULL"], values: [] };
     } else if (value === null) {
         return { text: [fragment + "NULL"], values: [] };
     } else if (value === true) {
@@ -55,12 +77,7 @@ const expandFragment = ([fragment, value]: [
     } else if (value === false) {
         return { text: [fragment + "FALSE"], values: [] };
     } else if (value instanceof SQLStatement) {
-        const expanded = zip(value._text, value._values)
-            .map(expandFragment)
-            .reduce(joinFragments, {
-                text: [""],
-                values: [],
-            });
+        const expanded = processTemplateParts(value._text, value._values);
         return {
             text: [fragment + expanded.text[0]!, ...expanded.text.slice(1)],
             values: [...expanded.values],
@@ -126,10 +143,8 @@ function sql<ResultType extends pg.QueryResultRow = pg.QueryResultRow>(
         return (fragments, ...values) =>
             sql<ResultType>(fragments, ...values).withSchema(fragmentsOrSchema);
     }
-    const result = zip(fragmentsOrSchema, values)
-        .map(expandFragment)
-        .reduce(joinFragments, { text: [""], values: [] });
 
+    const result = processTemplateParts(fragmentsOrSchema, values);
     return new SQLStatement<ResultType>(result.text, result.values);
 }
 
