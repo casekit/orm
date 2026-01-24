@@ -24,6 +24,12 @@ describe("sql", () => {
         expect(statement.values).toEqual([]);
     });
 
+    test("interpolating undefined adds it as null rather than as a parameter", () => {
+        const statement = sql`SELECT ${undefined} FROM dual`;
+        expect(statement.text).toEqual("SELECT NULL FROM dual");
+        expect(statement.values).toEqual([]);
+    });
+
     test("interpolating true and false adds them literally rather than as a parameter", () => {
         const statement = sql`SELECT ${true}, ${false} FROM dual`;
         expect(statement.text).toEqual("SELECT TRUE, FALSE FROM dual");
