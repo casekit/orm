@@ -10,7 +10,7 @@
         "@casekit/toolbox": "workspace:*",
         "es-toolkit": "^1.39.3",
         "object-hash": "^3.0.0",
-        "pino": "^10.2.1",
+        "pino": "^10.3.0",
         "uuid": "^13.0.0"
     },
     "devDependencies": {
