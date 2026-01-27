@@ -19,6 +19,8 @@ describe("guessManyToOneRelationName", () => {
         tableTo,
         columnsFrom,
         columnsTo: ["id"],
+        onUpdate: null,
+        onDelete: null,
     });
 
     it("handles single column foreign keys", () => {
@@ -103,6 +105,8 @@ describe("guessOneToManyRelationName", () => {
         tableTo,
         columnsFrom,
         columnsTo: ["id"],
+        onUpdate: null,
+        onDelete: null,
     });
 
     it("handles standard one-to-many relationships", () => {

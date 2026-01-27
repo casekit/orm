@@ -29,6 +29,8 @@ describe("renderRelations", () => {
         tableTo: "users",
         columnsFrom: ["user_id"],
         columnsTo: ["id"],
+        onUpdate: null,
+        onDelete: null,
         ...overrides,
     });
 
