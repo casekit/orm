@@ -67,10 +67,10 @@ export const orm = <const C extends Config>(config: C): Orm<C> => {
 export class Orm<
     const C extends Config = Config,
     const Models extends ModelDefinitions = C["models"],
-    const Operators extends
-        OperatorDefinitions = C["operators"] extends NonNullable<C["operators"]>
-        ? C["operators"]
-        : { where: never },
+    const Operators extends OperatorDefinitions =
+        C["operators"] extends NonNullable<C["operators"]>
+            ? C["operators"]
+            : { where: never },
 > {
     public readonly config: NormalizedConfig;
     private readonly _connection: Connection | Transaction;

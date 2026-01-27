@@ -21,7 +21,7 @@ npm add @casekit/orm @casekit/orm-cli @casekit/orm-migrate pg zod
 ### 1. Initialize your project
 
 ```bash
-npx orm init --directory ./src/db
+pnpm orm init --directory ./src/db
 ```
 
 ### 2. Define your models
@@ -69,7 +69,7 @@ export const db = orm(config);
 ### 4. Push schema to database
 
 ```bash
-npx orm db push
+pnpm orm db push
 ```
 
 ### 5. Query with full type safety

@@ -19,9 +19,8 @@ export const renderFieldDefinition = (column: Column, table: Table): string => {
 
     // Primary key (single column)
     const isPrimaryKey =
-        table.primaryKey &&
-        table.primaryKey.columns.length === 1 &&
-        table.primaryKey.columns[0] === column.column;
+        table.primaryKey?.columns.length === 1 &&
+        table.primaryKey?.columns[0] === column.column;
     if (isPrimaryKey) {
         parts.push("primaryKey: true");
     }

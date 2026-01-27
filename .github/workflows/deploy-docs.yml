@@ -8,6 +8,7 @@ on:
 
 permissions:
     contents: read
+    packages: read
     pages: write
     id-token: write
 
@@ -27,9 +28,12 @@ jobs:
               with:
                   node-version: 20
                   cache: pnpm
+                  registry-url: "https://npm.pkg.github.com"
 
             - name: Install dependencies
               run: pnpm install
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
             - name: Build docs
               run: pnpm --filter @casekit/orm-docs build

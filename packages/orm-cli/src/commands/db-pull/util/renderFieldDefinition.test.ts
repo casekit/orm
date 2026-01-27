@@ -107,6 +107,8 @@ describe("renderFieldDefinition", () => {
                     table: "test",
                     name: "test_email_key",
                     definition: "UNIQUE (email)",
+                    columns: ["email"],
+                    nullsNotDistinct: false,
                 },
             ],
         });
@@ -125,6 +127,8 @@ describe("renderFieldDefinition", () => {
                     table: "test",
                     name: "test_email_key",
                     definition: "UNIQUE NULLS NOT DISTINCT (email)",
+                    columns: ["email"],
+                    nullsNotDistinct: false,
                 },
             ],
         });
@@ -145,6 +149,8 @@ describe("renderFieldDefinition", () => {
                     tableTo: "users",
                     columnsFrom: ["user_id"],
                     columnsTo: ["id"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
         });
@@ -165,6 +171,8 @@ describe("renderFieldDefinition", () => {
                     tableTo: "users",
                     columnsFrom: ["email"],
                     columnsTo: ["email"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
         });
@@ -185,6 +193,8 @@ describe("renderFieldDefinition", () => {
                     tableTo: "users",
                     columnsFrom: ["user_id", "tenant_id"],
                     columnsTo: ["id", "tenant_id"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
         });
@@ -208,6 +218,8 @@ describe("renderFieldDefinition", () => {
                     table: "test",
                     name: "test_email_key",
                     definition: 'UNIQUE ("email")',
+                    columns: ["email"],
+                    nullsNotDistinct: false,
                 },
             ],
         });

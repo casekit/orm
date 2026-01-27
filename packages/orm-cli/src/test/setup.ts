@@ -5,7 +5,13 @@ import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 
 import * as loadConfig from "#util/loadConfig.js";
 
-vi.mock("fs");
+vi.mock("fs", async () => {
+    const memfs = await import("memfs");
+    return {
+        ...memfs.fs,
+        default: memfs.fs,
+    };
+});
 vi.mock("prettier");
 vi.mock("@inquirer/prompts");
 

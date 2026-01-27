@@ -196,6 +196,8 @@ describe("renderModel - constraints", () => {
                     name: "users_email_key",
                     definition:
                         "CREATE UNIQUE INDEX users_email_key ON public.users USING btree (email)",
+                    columns: ["email"],
+                    nullsNotDistinct: false,
                 },
             ],
         };
@@ -261,6 +263,8 @@ describe("renderModel - constraints", () => {
                     name: "users_email_key",
                     definition:
                         "CREATE UNIQUE INDEX users_email_key ON public.users USING btree (email) NULLS NOT DISTINCT",
+                    columns: ["email"],
+                    nullsNotDistinct: false,
                 },
             ],
         };
@@ -346,6 +350,8 @@ describe("renderModel - constraints", () => {
                     name: "products_name_category_key",
                     definition:
                         "CREATE UNIQUE INDEX products_name_category_key ON public.products USING btree (name, category)",
+                    columns: ["name", "category"],
+                    nullsNotDistinct: false,
                 },
             ],
         };
@@ -429,6 +435,8 @@ describe("renderModel - constraints", () => {
                     name: "users_email_deleted_at_key",
                     definition:
                         "CREATE UNIQUE INDEX users_email_deleted_at_key ON public.users USING btree (email, deleted_at) NULLS NOT DISTINCT",
+                    columns: ["email", "deleted_at"],
+                    nullsNotDistinct: false,
                 },
             ],
         };
@@ -497,6 +505,8 @@ describe("renderModel - constraints", () => {
                     columnsFrom: ["author_id"],
                     tableTo: "users",
                     columnsTo: ["id"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
             primaryKey: null,
@@ -575,6 +585,8 @@ describe("renderModel - constraints", () => {
                     columnsFrom: ["color_hex"],
                     tableTo: "colors",
                     columnsTo: ["hex"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
             primaryKey: null,
@@ -671,6 +683,8 @@ describe("renderModel - constraints", () => {
                     columnsFrom: ["company_id", "company_code"],
                     tableTo: "companies",
                     columnsTo: ["id", "code"],
+                    onUpdate: null,
+                    onDelete: null,
                 },
             ],
             primaryKey: null,

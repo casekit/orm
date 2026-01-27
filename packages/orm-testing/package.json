@@ -33,6 +33,14 @@
     },
     "keywords": [],
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/casekit/orm.git",
+        "directory": "packages/orm-testing"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "peerDependencies": {
         "zod": "^4.0.17"
     },

@@ -20,7 +20,7 @@ All commands support these options:
 Initialize a new project with ORM configuration.
 
 ```bash
-npx orm init [options]
+pnpm orm init [options]
 ```
 
 ### Options
@@ -33,7 +33,7 @@ npx orm init [options]
 ### Example
 
 ```bash
-npx orm init --directory ./src/db
+pnpm orm init --directory ./src/db
 ```
 
 ### Generated Files
@@ -48,12 +48,12 @@ npx orm init --directory ./src/db
 **DANGER** DO NOT USE THIS ON A PRODUCTION DATABASE, OR DATA LOSS MAY OCCUR.
 :::
 
-Proper migration support will come in a future release.
+This command is for development only. For production environments, use [migrations](./migrations.md) instead.
 
 Push the schema to the database, creating tables and constraints.
 
 ```bash
-npx orm db push
+pnpm orm db push
 ```
 
 This command:
@@ -66,7 +66,7 @@ This command:
 ### Example
 
 ```bash
-npx orm db push
+pnpm orm db push
 ```
 
 Output:
@@ -85,7 +85,7 @@ Pushing schemas public to database
 Introspect the database and generate model files.
 
 ```bash
-npx orm db pull [options]
+pnpm orm db pull [options]
 ```
 
 ### Options
@@ -99,13 +99,13 @@ npx orm db pull [options]
 
 ```bash
 # Pull from default schema
-npx orm db pull
+pnpm orm db pull
 
 # Pull from specific schemas
-npx orm db pull --schema public --schema audit
+pnpm orm db pull --schema public --schema audit
 
 # Force overwrite
-npx orm db pull --force
+pnpm orm db pull --force
 ```
 
 ### Generated Files
@@ -134,7 +134,7 @@ src/db/models/
 Drop all schemas used by your models.
 
 ```bash
-npx orm db drop
+pnpm orm db drop
 ```
 
 :::warning
@@ -144,7 +144,7 @@ This is a destructive operation that deletes all data. Use with caution.
 ### Example
 
 ```bash
-npx orm db drop
+pnpm orm db drop
 ```
 
 Output:
@@ -158,7 +158,7 @@ Output:
 Generate a skeleton model file.
 
 ```bash
-npx orm generate model <name> [options]
+pnpm orm generate model <name> [options]
 ```
 
 ### Arguments
@@ -176,7 +176,7 @@ npx orm generate model <name> [options]
 ### Example
 
 ```bash
-npx orm generate model user
+pnpm orm generate model user
 ```
 
 Creates `src/db/models/user.ts`:
@@ -197,22 +197,22 @@ And updates `src/db/models/index.ts` to export it.
 
 ```bash
 # 1. Initialize project
-npx orm init --directory ./src/db
+pnpm orm init --directory ./src/db
 
 # 2. Write your models in ./src/db/models/
 
 # 3. Push schema to database
-npx orm db push
+pnpm orm db push
 ```
 
 ### Database-First (Generate Models from Database)
 
 ```bash
 # 1. Initialize project
-npx orm init --directory ./src/db
+pnpm orm init --directory ./src/db
 
 # 2. Pull schema from existing database
-npx orm db pull --schema public
+pnpm orm db pull --schema public
 
 # 3. Customize generated models as needed
 ```
@@ -221,5 +221,5 @@ npx orm db pull --schema public
 
 ```bash
 # Drop and recreate
-npx orm db drop && npx orm db push
+pnpm orm db drop && pnpm orm db push
 ```

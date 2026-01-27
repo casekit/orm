@@ -16,7 +16,7 @@
         "@casekit/orm-fixtures": "workspace:*",
         "@casekit/prettier-config": "workspace:*",
         "@casekit/tsconfig": "workspace:*",
-        "@casekit/unindent": "^1.0.5",
+        "@casekit/unindent": "0.0.0-gh-packages.634dab0",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@types/node": "^24.0.3",
         "@types/pg": "^8.15.4",
@@ -41,6 +41,14 @@
     },
     "keywords": [],
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/casekit/orm.git",
+        "directory": "packages/orm-migrate"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "peerDependencies": {
         "pg": "^8.13.1",
         "zod": "^4.0.17"

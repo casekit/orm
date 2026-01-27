@@ -37,7 +37,7 @@ npm add @casekit/orm @casekit/orm-cli @casekit/orm-migrate pg zod
 The CLI can scaffold your project structure:
 
 ```bash
-npx orm init --directory ./src/db
+pnpm orm init --directory ./src/db
 ```
 
 This creates:
@@ -147,7 +147,7 @@ Create the tables in your database:
 
 ```bash
 createdb myapp
-npx orm db push
+pnpm orm db push
 ```
 
 ## Basic Operations

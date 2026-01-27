@@ -11,7 +11,7 @@
         "@casekit/orm-migrate": "workspace:*",
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
-        "@casekit/unindent": "^1.0.5",
+        "@casekit/unindent": "0.0.0-gh-packages.634dab0",
         "@inquirer/prompts": "^8.2.0",
         "@inquirer/testing": "^3.0.4",
         "byline": "^5.0.0",
@@ -52,6 +52,14 @@
     },
     "keywords": [],
     "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/casekit/orm.git",
+        "directory": "packages/orm-cli"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "peerDependencies": {
         "pg": "^8.13.1"
     },
