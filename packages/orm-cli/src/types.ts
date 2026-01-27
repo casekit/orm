@@ -10,6 +10,7 @@ export interface OrmCLIConfig {
     directory: string;
     migrate?: {
         connection?: ConnectionConfig;
+        migrationsPath?: string;
     };
 }
 

@@ -9,6 +9,8 @@ export const ForeignKeySchema = z.object({
     columnsFrom: z.array(z.string()),
     tableTo: z.string(),
     columnsTo: z.array(z.string()),
+    onUpdate: z.string().nullable(),
+    onDelete: z.string().nullable(),
 });
 
 export type ForeignKey = z.infer<typeof ForeignKeySchema>;
@@ -21,7 +23,21 @@ export const getForeignKeys = (schemas: string[]) =>
             table_from AS "tableFrom",
             array_agg(columns_from::text ORDER BY ordinality) AS "columnsFrom",
             table_to AS "tableTo",
-            array_agg(columns_to::text ORDER BY ordinality) AS "columnsTo"
+            array_agg(columns_to::text ORDER BY ordinality) AS "columnsTo",
+            CASE confupdtype
+                WHEN 'r' THEN 'RESTRICT'
+                WHEN 'c' THEN 'CASCADE'
+                WHEN 'n' THEN 'SET NULL'
+                WHEN 'd' THEN 'SET DEFAULT'
+                ELSE NULL
+            END AS "onUpdate",
+            CASE confdeltype
+                WHEN 'r' THEN 'RESTRICT'
+                WHEN 'c' THEN 'CASCADE'
+                WHEN 'n' THEN 'SET NULL'
+                WHEN 'd' THEN 'SET DEFAULT'
+                ELSE NULL
+            END AS "onDelete"
         FROM (
             SELECT
                 conname,
@@ -30,7 +46,9 @@ export const getForeignKeys = (schemas: string[]) =>
                 cf.relname AS table_to,
                 af.attname AS columns_to,
                 n.nspname,
-                ss2.ordinality
+                ss2.ordinality,
+                ss2.confupdtype,
+                ss2.confdeltype
             FROM
                 pg_attribute AS af,
                 pg_attribute AS a,
@@ -44,7 +62,9 @@ export const getForeignKeys = (schemas: string[]) =>
                         confrelid,
                         conkey[i] AS conkey,
                         confkey[i] AS confkey,
-                        i AS ordinality
+                        i AS ordinality,
+                        confupdtype,
+                        confdeltype
                     FROM (
                         SELECT
                             conname,
@@ -52,6 +72,8 @@ export const getForeignKeys = (schemas: string[]) =>
                             confrelid,
                             conkey,
                             confkey,
+                            confupdtype,
+                            confdeltype,
                             generate_series(1, array_upper(conkey, 1)) AS i
                         FROM
                             pg_constraint
@@ -70,7 +92,9 @@ export const getForeignKeys = (schemas: string[]) =>
             nspname,
             conname,
             table_to,
-            table_from
+            table_from,
+            confupdtype,
+            confdeltype
         ORDER BY
             nspname,
             table_from,
