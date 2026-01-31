@@ -125,17 +125,17 @@ const diffTable = (
     const desiredColMap = new Map(desired.columns.map((c) => [c.name, c]));
 
     const currentFkMap = new Map(
-        current.foreignKeys.map((fk) => [fk.name, fk]),
+        current.foreignKeys.map((fk) => [foreignKeyContentKey(fk), fk]),
     );
     const desiredFkMap = new Map(
-        desired.foreignKeys.map((fk) => [fk.name, fk]),
+        desired.foreignKeys.map((fk) => [foreignKeyContentKey(fk), fk]),
     );
 
     const currentUcMap = new Map(
-        current.uniqueConstraints.map((uc) => [uc.name, uc]),
+        current.uniqueConstraints.map((uc) => [uniqueConstraintContentKey(uc), uc]),
     );
     const desiredUcMap = new Map(
-        desired.uniqueConstraints.map((uc) => [uc.name, uc]),
+        desired.uniqueConstraints.map((uc) => [uniqueConstraintContentKey(uc), uc]),
     );
 
     // 1. Add columns
@@ -173,27 +173,27 @@ const diffTable = (
     );
 
     // 4. Drop foreign keys (before dropping columns they may reference)
-    for (const [name, currentFk] of currentFkMap) {
-        const desiredFk = desiredFkMap.get(name);
-        if (!desiredFk || !foreignKeysEqual(currentFk, desiredFk)) {
+    // Constraints are matched by content, not by name - if the content exists in both, keep it
+    for (const [contentKey, currentFk] of currentFkMap) {
+        if (!desiredFkMap.has(contentKey)) {
             ops.push({
                 type: "dropForeignKey",
                 schema,
                 table,
-                constraintName: name,
+                constraintName: currentFk.name,
             });
         }
     }
 
     // 5. Drop unique constraints (before dropping columns they may reference)
-    for (const [name, currentUc] of currentUcMap) {
-        const desiredUc = desiredUcMap.get(name);
-        if (!desiredUc || !uniqueConstraintsEqual(currentUc, desiredUc)) {
+    // Constraints are matched by content, not by name - if the content exists in both, keep it
+    for (const [contentKey, currentUc] of currentUcMap) {
+        if (!desiredUcMap.has(contentKey)) {
             ops.push({
                 type: "dropUniqueConstraint",
                 schema,
                 table,
-                constraintName: name,
+                constraintName: currentUc.name,
             });
         }
     }
@@ -206,9 +206,9 @@ const diffTable = (
     }
 
     // 7. Add foreign keys
-    for (const [name, desiredFk] of desiredFkMap) {
-        const currentFk = currentFkMap.get(name);
-        if (!currentFk || !foreignKeysEqual(currentFk, desiredFk)) {
+    // Constraints are matched by content, not by name - only add if content doesn't exist
+    for (const [contentKey, desiredFk] of desiredFkMap) {
+        if (!currentFkMap.has(contentKey)) {
             ops.push({
                 type: "addForeignKey",
                 schema,
@@ -219,9 +219,9 @@ const diffTable = (
     }
 
     // 8. Add unique constraints
-    for (const [name, desiredUc] of desiredUcMap) {
-        const currentUc = currentUcMap.get(name);
-        if (!currentUc || !uniqueConstraintsEqual(currentUc, desiredUc)) {
+    // Constraints are matched by content, not by name - only add if content doesn't exist
+    for (const [contentKey, desiredUc] of desiredUcMap) {
+        if (!currentUcMap.has(contentKey)) {
             ops.push({
                 type: "addUniqueConstraint",
                 schema,
@@ -287,27 +287,29 @@ const diffPrimaryKey = (
     ];
 };
 
-const foreignKeysEqual = (
-    a: ForeignKeySnapshot,
-    b: ForeignKeySnapshot,
-): boolean => {
-    return (
-        a.columns.join(",") === b.columns.join(",") &&
-        a.referencesSchema === b.referencesSchema &&
-        a.referencesTable === b.referencesTable &&
-        a.referencesColumns.join(",") === b.referencesColumns.join(",") &&
-        a.onDelete === b.onDelete &&
-        a.onUpdate === b.onUpdate
-    );
+/**
+ * Generate a content-based key for a foreign key constraint.
+ * This allows matching constraints by their actual definition rather than name.
+ */
+const foreignKeyContentKey = (fk: ForeignKeySnapshot): string => {
+    return [
+        fk.columns.join(","),
+        fk.referencesSchema,
+        fk.referencesTable,
+        fk.referencesColumns.join(","),
+        fk.onDelete ?? "",
+        fk.onUpdate ?? "",
+    ].join("|");
 };
 
-const uniqueConstraintsEqual = (
-    a: UniqueConstraintSnapshot,
-    b: UniqueConstraintSnapshot,
-): boolean => {
-    return (
-        a.columns.join(",") === b.columns.join(",") &&
-        (a.nullsNotDistinct ?? false) === (b.nullsNotDistinct ?? false) &&
-        (a.where ?? null) === (b.where ?? null)
-    );
+/**
+ * Generate a content-based key for a unique constraint.
+ * This allows matching constraints by their actual definition rather than name.
+ */
+const uniqueConstraintContentKey = (uc: UniqueConstraintSnapshot): string => {
+    return [
+        uc.columns.join(","),
+        uc.nullsNotDistinct ?? false,
+        uc.where ?? "",
+    ].join("|");
 };

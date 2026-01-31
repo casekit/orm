@@ -17,7 +17,7 @@ export interface MigrationFile {
 
 /**
  * Generate a timestamped migration filename.
- * Format: YYYYMMDDHHMMSS_description.sql
+ * Format: YYYYMMDDHHMMSS-description.sql
  */
 export const generateMigrationFilename = (description: string): string => {
     // toISOString() returns UTC in ISO 8601 format which sorts alphabetically
@@ -31,7 +31,7 @@ export const generateMigrationFilename = (description: string): string => {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "");
 
-    return `${timestamp}_${slug}.sql`;
+    return `${timestamp}-${slug}.sql`;
 };
 
 /**

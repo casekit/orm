@@ -75,7 +75,7 @@ describe("db migrate", () => {
 
         const migrations = fs.readdirSync(migrationsPath) as string[];
         expect(migrations.length).toBe(1);
-        expect(migrations[0]).toMatch(/^\d{14}_create-users\.sql$/);
+        expect(migrations[0]).toMatch(/^\d{14}-create-users\.sql$/);
 
         const content = fs.readFileSync(
             `${migrationsPath}/${migrations[0]}`,
@@ -233,7 +233,7 @@ describe("db migrate", () => {
 
         const migrations = fs.readdirSync(migrationsPath) as string[];
         expect(migrations.length).toBe(1);
-        expect(migrations[0]).toMatch(/^\d{14}_add-created-at\.sql$/);
+        expect(migrations[0]).toMatch(/^\d{14}-add-created-at\.sql$/);
 
         const content = fs.readFileSync(
             `${migrationsPath}/${migrations[0]}`,
