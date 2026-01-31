@@ -151,7 +151,7 @@ describe("db migrate", () => {
             SELECT name, checksum FROM public._orm_migrations
         `);
         expect(migrationRecord.rows.length).toBe(1);
-        expect(migrationRecord.rows[0].name).toMatch(/^\d{14}_create-users$/);
+        expect(migrationRecord.rows[0].name).toMatch(/^\d{14}-create-users$/);
     });
 
     test("returns no changes when schema is in sync", async () => {
