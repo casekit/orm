@@ -89,7 +89,7 @@ export const configToSnapshot = (config: NormalizedConfig): SchemaSnapshot => {
                 name: uc.name,
                 columns: uc.columns,
                 nullsNotDistinct: uc.nullsNotDistinct ?? false,
-                where: uc.where ? uc.where.text : null,
+                where: uc.where ? uc.where.text.trim() : null,
             }));
 
         return {

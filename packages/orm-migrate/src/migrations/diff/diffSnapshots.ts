@@ -336,6 +336,6 @@ const uniqueConstraintContentKey = (uc: UniqueConstraintSnapshot): string => {
     return [
         uc.columns.join(","),
         uc.nullsNotDistinct ?? false,
-        uc.where ?? "",
+        (uc.where ?? "").trim(),
     ].join("|");
 };

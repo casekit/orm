@@ -16,7 +16,7 @@ import type {
  */
 const extractWhereClause = (definition: string): string | null => {
     const match = /\bWHERE\s+\((.+)\)\s*$/i.exec(definition);
-    return match?.[1] ?? null;
+    return match?.[1]?.trim() ?? null;
 };
 
 /**

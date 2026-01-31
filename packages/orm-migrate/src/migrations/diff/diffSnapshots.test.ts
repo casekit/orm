@@ -754,6 +754,55 @@ describe("diffSnapshots", () => {
             );
         });
 
+        test("detects renamed unique constraint with WHERE clause", () => {
+            const oldUc = {
+                name: "activity_field_activity_id_field_id_ordinal",
+                columns: ["activity_id", "field_id", "ordinal"],
+                nullsNotDistinct: false,
+                where: "deleted_at IS NULL",
+            };
+            const newUc = {
+                ...oldUc,
+                name: "activity_field_activity_id_field_id_ordinal_ukey",
+            };
+
+            const current: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [
+                    makeTable({
+                        name: "activity_field",
+                        uniqueConstraints: [oldUc],
+                    }),
+                ],
+            };
+            const desired: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [
+                    makeTable({
+                        name: "activity_field",
+                        uniqueConstraints: [newUc],
+                    }),
+                ],
+            };
+
+            const ops = diffSnapshots(current, desired);
+            expect(ops).toContainEqual({
+                type: "renameUniqueConstraint",
+                schema: "app",
+                table: "activity_field",
+                oldName: "activity_field_activity_id_field_id_ordinal",
+                newName: "activity_field_activity_id_field_id_ordinal_ukey",
+            });
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "dropUniqueConstraint" }),
+            );
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "addUniqueConstraint" }),
+            );
+        });
+
         test("does not emit rename when unique constraint is unchanged", () => {
             const uc = {
                 name: "users_email_key",
