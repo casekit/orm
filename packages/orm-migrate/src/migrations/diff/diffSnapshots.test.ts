@@ -738,6 +738,7 @@ describe("diffSnapshots", () => {
             expect(ops).toContainEqual({
                 type: "renameUniqueConstraint",
                 schema: "app",
+                table: "users",
                 oldName: "users_email_key",
                 newName: "users_email_unique",
             });

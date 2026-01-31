@@ -244,6 +244,7 @@ const diffTable = (
             ops.push({
                 type: "renameUniqueConstraint",
                 schema,
+                table,
                 oldName: currentUc.name,
                 newName: desiredUc.name,
             });

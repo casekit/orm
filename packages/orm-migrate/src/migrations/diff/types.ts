@@ -73,6 +73,7 @@ export type SchemaDiffOperation =
     | {
           type: "renameUniqueConstraint";
           schema: string;
+          table: string;
           oldName: string;
           newName: string;
       }
