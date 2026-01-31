@@ -1,0 +1,98 @@
+name: Publish Preview Packages
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - "dependabot/**"
+    paths:
+      - "packages/**"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ".tool-versions"
+          cache: "pnpm"
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Generate version string
+        id: version
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          # Sanitize branch name for npm (replace / with -)
+          BRANCH_SAFE=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//')
+          SHORT_SHA="${GITHUB_SHA::7}"
+          VERSION="0.0.0-${BRANCH_SAFE}.${SHORT_SHA}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Update package versions
+        run: pnpm -r exec npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+      - name: Publish packages
+        run: pnpm -r publish --access public --tag preview --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "## Published Packages" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Version: \`${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Install with:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "pnpm add @casekit/orm@${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: publish
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        package:
+          - orm
+          - orm-cli
+          - orm-schema
+          - orm-config
+          - orm-migrate
+          - orm-testing
+          - orm-fixtures
+          - sql
+          - toolbox
+
+    steps:
+      - name: Delete old ${{ matrix.package }} versions
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: ${{ matrix.package }}
+          package-type: npm
+          min-versions-to-keep: 50
+          delete-only-pre-release-versions: true
+          token: ${{ secrets.GITHUB_TOKEN }}

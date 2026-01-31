@@ -148,7 +148,7 @@ DB_PASSWORD=secret
 Specify a different config file:
 
 ```bash
-npx orm db push --config ./config/orm.config.ts
+pnpm orm db push --config ./config/orm.config.ts
 ```
 
 ## Complete Example

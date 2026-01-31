@@ -159,8 +159,8 @@ importers:
         specifier: workspace:*
         version: link:../../configs/tsconfig
       '@casekit/unindent':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: 0.0.0-gh-packages.634dab0
+        version: 0.0.0-gh-packages.634dab0
       '@eslint/js':
         specifier: ^9.29.0
         version: 9.39.2
@@ -225,8 +225,8 @@ importers:
         specifier: workspace:*
         version: link:../toolbox
       '@casekit/unindent':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: 0.0.0-gh-packages.634dab0
+        version: 0.0.0-gh-packages.634dab0
       '@inquirer/prompts':
         specifier: ^8.2.0
         version: 8.2.0(@types/node@24.10.9)
@@ -466,8 +466,8 @@ importers:
         specifier: workspace:*
         version: link:../../configs/tsconfig
       '@casekit/unindent':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: 0.0.0-gh-packages.634dab0
+        version: 0.0.0-gh-packages.634dab0
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^5.2.2
         version: 5.2.2(@vue/compiler-sfc@3.5.19)(prettier-plugin-svelte@3.4.1(prettier@3.8.0)(svelte@5.8.1))(prettier@3.8.0)(svelte@5.8.1)
@@ -615,8 +615,8 @@ importers:
         specifier: workspace:*
         version: link:../toolbox
       '@casekit/unindent':
-        specifier: ^1.0.5
-        version: 1.0.5
+        specifier: 0.0.0-gh-packages.634dab0
+        version: 0.0.0-gh-packages.634dab0
       es-toolkit:
         specifier: ^1.39.3
         version: 1.44.0
@@ -1404,8 +1404,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@casekit/unindent@1.0.5':
-    resolution: {integrity: sha512-psC2hzmmgBh76EHWTKiLXP6LDZjyBmdCLND/in/7q+asW83wjRRANUUfL9zOzIC6R1sxbR29X9b0VGBOomK5Mg==}
+  '@casekit/unindent@0.0.0-gh-packages.634dab0':
+    resolution: {integrity: sha512-AMx0+IWrJ/X/FSA9AZaTy2zPxw7+RnMDeKwMxyVPY3SUy9wgdONXYYM7hv/OqUi/anihgXV/KogxjQTRUnw87Q==, tarball: https://npm.pkg.github.com/download/@casekit/unindent/0.0.0-gh-packages.634dab0/861c611f7b508405a826466b356d95fae584f86a}
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -8314,7 +8314,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@casekit/unindent@1.0.5': {}
+  '@casekit/unindent@0.0.0-gh-packages.634dab0': {}
 
   '@colors/colors@1.5.0':
     optional: true

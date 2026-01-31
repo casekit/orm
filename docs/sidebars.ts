@@ -33,7 +33,7 @@ const sidebars: SidebarsConfig = {
             type: "category",
             label: "CLI",
             collapsed: true,
-            items: ["cli/commands", "cli/configuration"],
+            items: ["cli/commands", "cli/configuration", "cli/migrations"],
         },
     ],
 };
