@@ -58,6 +58,12 @@ export const operationToSql = (op: SchemaDiffOperation): SQLStatement => {
         case "dropUniqueConstraint":
             return sql`DROP INDEX IF EXISTS ${sql.ident(op.schema)}.${sql.ident(op.constraintName)};`;
 
+        case "renameForeignKey":
+            return sql`ALTER TABLE ${sql.ident(op.schema)}.${sql.ident(op.table)} RENAME CONSTRAINT ${sql.ident(op.oldName)} TO ${sql.ident(op.newName)};`;
+
+        case "renameUniqueConstraint":
+            return sql`ALTER INDEX ${sql.ident(op.schema)}.${sql.ident(op.oldName)} RENAME TO ${sql.ident(op.newName)};`;
+
         case "alterPrimaryKey":
             return alterPrimaryKeySql(op);
     }

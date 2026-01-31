@@ -595,6 +595,69 @@ describe("diffSnapshots", () => {
                 foreignKey: newFk,
             });
         });
+
+        test("detects renamed foreign key (same content, different name)", () => {
+            const oldFk = {
+                name: "fk_posts_user",
+                columns: ["user_id"],
+                referencesSchema: "app",
+                referencesTable: "users",
+                referencesColumns: ["id"],
+                onDelete: null,
+                onUpdate: null,
+            };
+            const newFk = {
+                ...oldFk,
+                name: "posts_user_id_fkey",
+            };
+
+            const current: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "posts", foreignKeys: [oldFk] })],
+            };
+            const desired: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "posts", foreignKeys: [newFk] })],
+            };
+
+            const ops = diffSnapshots(current, desired);
+            expect(ops).toContainEqual({
+                type: "renameForeignKey",
+                schema: "app",
+                table: "posts",
+                oldName: "fk_posts_user",
+                newName: "posts_user_id_fkey",
+            });
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "dropForeignKey" }),
+            );
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "addForeignKey" }),
+            );
+        });
+
+        test("does not emit rename when foreign key is unchanged", () => {
+            const fk = {
+                name: "fk_posts_user",
+                columns: ["user_id"],
+                referencesSchema: "app",
+                referencesTable: "users",
+                referencesColumns: ["id"],
+                onDelete: null,
+                onUpdate: null,
+            };
+
+            const snapshot: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "posts", foreignKeys: [fk] })],
+            };
+
+            const ops = diffSnapshots(snapshot, snapshot);
+            expect(ops).toEqual([]);
+        });
     });
 
     describe("unique constraints", () => {
@@ -648,6 +711,58 @@ describe("diffSnapshots", () => {
                 table: "users",
                 constraintName: "users_email_key",
             });
+        });
+
+        test("detects renamed unique constraint (same content, different name)", () => {
+            const oldUc = {
+                name: "users_email_key",
+                columns: ["email"],
+            };
+            const newUc = {
+                ...oldUc,
+                name: "users_email_unique",
+            };
+
+            const current: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "users", uniqueConstraints: [oldUc] })],
+            };
+            const desired: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "users", uniqueConstraints: [newUc] })],
+            };
+
+            const ops = diffSnapshots(current, desired);
+            expect(ops).toContainEqual({
+                type: "renameUniqueConstraint",
+                schema: "app",
+                oldName: "users_email_key",
+                newName: "users_email_unique",
+            });
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "dropUniqueConstraint" }),
+            );
+            expect(ops).not.toContainEqual(
+                expect.objectContaining({ type: "addUniqueConstraint" }),
+            );
+        });
+
+        test("does not emit rename when unique constraint is unchanged", () => {
+            const uc = {
+                name: "users_email_key",
+                columns: ["email"],
+            };
+
+            const snapshot: SchemaSnapshot = {
+                schemas: ["app"],
+                extensions: [],
+                tables: [makeTable({ name: "users", uniqueConstraints: [uc] })],
+            };
+
+            const ops = diffSnapshots(snapshot, snapshot);
+            expect(ops).toEqual([]);
         });
     });
 

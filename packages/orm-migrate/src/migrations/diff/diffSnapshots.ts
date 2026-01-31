@@ -205,28 +205,47 @@ const diffTable = (
         }
     }
 
-    // 7. Add foreign keys
-    // Constraints are matched by content, not by name - only add if content doesn't exist
+    // 7. Add or rename foreign keys
     for (const [contentKey, desiredFk] of desiredFkMap) {
-        if (!currentFkMap.has(contentKey)) {
+        const currentFk = currentFkMap.get(contentKey);
+        if (!currentFk) {
+            // Content doesn't exist - add new constraint
             ops.push({
                 type: "addForeignKey",
                 schema,
                 table,
                 foreignKey: desiredFk,
             });
+        } else if (currentFk.name !== desiredFk.name) {
+            // Content matches but name differs - rename
+            ops.push({
+                type: "renameForeignKey",
+                schema,
+                table,
+                oldName: currentFk.name,
+                newName: desiredFk.name,
+            });
         }
     }
 
-    // 8. Add unique constraints
-    // Constraints are matched by content, not by name - only add if content doesn't exist
+    // 8. Add or rename unique constraints
     for (const [contentKey, desiredUc] of desiredUcMap) {
-        if (!currentUcMap.has(contentKey)) {
+        const currentUc = currentUcMap.get(contentKey);
+        if (!currentUc) {
+            // Content doesn't exist - add new constraint
             ops.push({
                 type: "addUniqueConstraint",
                 schema,
                 table,
                 constraint: desiredUc,
+            });
+        } else if (currentUc.name !== desiredUc.name) {
+            // Content matches but name differs - rename
+            ops.push({
+                type: "renameUniqueConstraint",
+                schema,
+                oldName: currentUc.name,
+                newName: desiredUc.name,
             });
         }
     }

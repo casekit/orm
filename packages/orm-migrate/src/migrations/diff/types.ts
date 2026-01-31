@@ -64,6 +64,19 @@ export type SchemaDiffOperation =
           constraintName: string;
       }
     | {
+          type: "renameForeignKey";
+          schema: string;
+          table: string;
+          oldName: string;
+          newName: string;
+      }
+    | {
+          type: "renameUniqueConstraint";
+          schema: string;
+          oldName: string;
+          newName: string;
+      }
+    | {
           type: "alterPrimaryKey";
           schema: string;
           table: string;
