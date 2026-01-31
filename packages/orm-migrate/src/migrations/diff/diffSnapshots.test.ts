@@ -726,12 +726,16 @@ describe("diffSnapshots", () => {
             const current: SchemaSnapshot = {
                 schemas: ["app"],
                 extensions: [],
-                tables: [makeTable({ name: "users", uniqueConstraints: [oldUc] })],
+                tables: [
+                    makeTable({ name: "users", uniqueConstraints: [oldUc] }),
+                ],
             };
             const desired: SchemaSnapshot = {
                 schemas: ["app"],
                 extensions: [],
-                tables: [makeTable({ name: "users", uniqueConstraints: [newUc] })],
+                tables: [
+                    makeTable({ name: "users", uniqueConstraints: [newUc] }),
+                ],
             };
 
             const ops = diffSnapshots(current, desired);

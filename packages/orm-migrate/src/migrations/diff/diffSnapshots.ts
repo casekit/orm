@@ -132,10 +132,16 @@ const diffTable = (
     );
 
     const currentUcMap = new Map(
-        current.uniqueConstraints.map((uc) => [uniqueConstraintContentKey(uc), uc]),
+        current.uniqueConstraints.map((uc) => [
+            uniqueConstraintContentKey(uc),
+            uc,
+        ]),
     );
     const desiredUcMap = new Map(
-        desired.uniqueConstraints.map((uc) => [uniqueConstraintContentKey(uc), uc]),
+        desired.uniqueConstraints.map((uc) => [
+            uniqueConstraintContentKey(uc),
+            uc,
+        ]),
     );
 
     // 1. Add columns
