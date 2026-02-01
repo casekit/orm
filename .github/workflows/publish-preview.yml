@@ -38,23 +38,40 @@ jobs:
       - name: Build packages
         run: pnpm build
 
-      - name: Generate version string
+      - name: Generate version string and tag
         id: version
         run: |
           BRANCH="${GITHUB_REF_NAME}"
-          # Sanitize branch name for npm (replace / with -)
+
+          # Error if branch is named "preview" (reserved for main branch tag)
+          if [ "$BRANCH" = "preview" ]; then
+            echo "::error::Branch name 'preview' is reserved. The 'preview' tag is used for main branch publishes."
+            exit 1
+          fi
+
+          # Determine the npm tag: "preview" for main, branch name for others
+          if [ "$BRANCH" = "main" ]; then
+            TAG="preview"
+          else
+            # Sanitize branch name for npm tag (replace invalid chars with -)
+            TAG=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//')
+          fi
+
+          # Sanitize branch name for version string
           BRANCH_SAFE=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//')
           SHORT_SHA="${GITHUB_SHA::7}"
           VERSION="0.0.0-${BRANCH_SAFE}.${SHORT_SHA}"
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-          echo "Publishing version: $VERSION"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION with tag: $TAG"
 
       - name: Update package versions
         run: pnpm -r exec npm version ${{ steps.version.outputs.version }} --no-git-tag-version
 
       - name: Publish packages
-        run: pnpm -r publish --access public --tag preview --no-git-checks
+        run: pnpm -r publish --access public --tag ${{ steps.version.outputs.tag }} --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -63,10 +80,11 @@ jobs:
           echo "## Published Packages" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Version: \`${{ steps.version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "Tag: \`${{ steps.version.outputs.tag }}\`" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Install with:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "pnpm add @casekit/orm@${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "pnpm add @casekit/orm@${{ steps.version.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
   cleanup:
