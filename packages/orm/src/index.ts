@@ -10,6 +10,8 @@ export type {
     ModelDefinition,
     ModelDefinitions,
     ModelType,
+    OperatorDefinition,
+    OperatorDefinitions,
     PostgresDataTypes,
     RelationDefinition,
     UniqueConstraintDefinition,
