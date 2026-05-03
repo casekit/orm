@@ -3,6 +3,7 @@ import { ModelDefinitions, OperatorDefinitions } from "@casekit/orm-schema";
 
 import { buildUpdate } from "./builders/buildUpdate.js";
 import { Connection } from "./connection.js";
+import { NotFoundError, TooManyRowsError } from "./errors.js";
 import { updateToSql } from "./sql/updateToSql.js";
 import { Middleware } from "./types/Middleware.js";
 import { UpdateParams } from "./types/UpdateParams.js";
@@ -32,9 +33,19 @@ export const updateOne = async (
         const result = await tx.query(statement);
 
         if (!result.rowCount || result.rowCount === 0) {
-            throw new Error("Update one failed to update a row");
+            throw new NotFoundError("Update one failed to update a row", {
+                modelName,
+                operation: "updateOne",
+            });
         } else if (result.rowCount > 1) {
-            throw new Error("Update one would have updated more than one row");
+            throw new TooManyRowsError(
+                "Update one would have updated more than one row",
+                {
+                    modelName,
+                    operation: "updateOne",
+                    rowCount: result.rowCount,
+                },
+            );
         }
 
         await tx.commit();

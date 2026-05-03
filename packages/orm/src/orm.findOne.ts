@@ -2,6 +2,7 @@ import { NormalizedConfig } from "@casekit/orm-config";
 import { ModelDefinitions, OperatorDefinitions } from "@casekit/orm-schema";
 
 import { Connection } from "./connection.js";
+import { NotFoundError, TooManyRowsError } from "./errors.js";
 import { findMany } from "./orm.findMany.js";
 import { FindParams } from "./types/FindParams.js";
 import { Middleware } from "./types/Middleware.js";
@@ -18,10 +19,17 @@ export const findOne = async (
     const results = await findMany(config, conn, middleware, modelName, query);
 
     if (results.length === 0) {
-        throw new Error("Expected one row, but found none");
+        throw new NotFoundError("Expected one row, but found none", {
+            modelName,
+            operation: "findOne",
+        });
     }
     if (results.length > 1) {
-        throw new Error("Expected one row, but found more");
+        throw new TooManyRowsError("Expected one row, but found more", {
+            modelName,
+            operation: "findOne",
+            rowCount: results.length,
+        });
     }
     return results[0]!;
 };
