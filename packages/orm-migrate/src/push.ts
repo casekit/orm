@@ -13,21 +13,22 @@ export const push = async (db: Orm) => {
     );
     console.log(`Pushing schemas ${toSentence(schemas)} to database`);
 
-    await db.transact(async (db) => {
-        for (const schema of schemas.values()) {
-            console.log(` - Creating schema "${schema}"`);
-            await db.query(createSchemaSql(schema));
+    for (const schema of schemas.values()) {
+        console.log(` - Creating schema "${schema}"`);
+        await db.query(createSchemaSql(schema));
+    }
+    for (const extension of db.config.extensions) {
+        console.log(` - Creating extension "${extension}"`);
+        for (const schema of schemas) {
+            await db.query(createExtensionsSql(schema, extension));
         }
-        for (const extension of db.config.extensions) {
-            console.log(` - Creating extension "${extension}"`);
-            for (const schema of schemas) {
-                await db.query(createExtensionsSql(schema, extension));
-            }
 
-            if (!schemas.has("public")) {
-                await db.query(createExtensionsSql("public", extension));
-            }
+        if (!schemas.has("public")) {
+            await db.query(createExtensionsSql("public", extension));
         }
+    }
+
+    await db.transact(async (db) => {
         for (const model of Object.values(db.config.models)) {
             console.log(` - Creating table "${model.schema}"."${model.table}"`);
             await db.query(createTableSql(model));
