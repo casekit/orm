@@ -64,6 +64,9 @@
         "pg": "^8.13.1"
     },
     "prettier": "@casekit/prettier-config",
+    "sideEffects": [
+        "./build/cli.js"
+    ],
     "scripts": {
         "build": "rm -rf ./build && tsc",
         "db:create": "tsx src/cli.ts db drop && tsx src/cli.ts db push",

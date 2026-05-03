@@ -41,6 +41,7 @@
         "zod": "^4.0.17"
     },
     "prettier": "@casekit/prettier-config",
+    "sideEffects": false,
     "scripts": {
         "build": "rm -rf ./build && tsc --build",
         "format:check": "prettier --check .",
