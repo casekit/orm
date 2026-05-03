@@ -11,7 +11,7 @@
         "es-toolkit": "^1.39.3",
         "object-hash": "^3.0.0",
         "pino": "^10.3.0",
-        "uuid": "^13.0.0"
+        "uuid": "^14.0.0"
     },
     "devDependencies": {
         "@casekit/orm-fixtures": "workspace:*",
