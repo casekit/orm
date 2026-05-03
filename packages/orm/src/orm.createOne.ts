@@ -3,6 +3,7 @@ import { ModelDefinitions } from "@casekit/orm-schema";
 
 import { buildCreate } from "./builders/buildCreate.js";
 import { Connection } from "./connection.js";
+import { CreateFailedError } from "./errors.js";
 import { createToSql } from "./sql/createToSql.js";
 import { CreateOneParams } from "./types/CreateOneParams.js";
 import { Middleware } from "./types/Middleware.js";
@@ -31,7 +32,9 @@ export const createOne = async (
         const result = await tx.query(statement);
 
         if (!result.rowCount && query.onConflict?.do !== "nothing") {
-            throw new Error("createOne failed to create a row");
+            throw new CreateFailedError("createOne failed to create a row", {
+                modelName,
+            });
         }
 
         await tx.commit();

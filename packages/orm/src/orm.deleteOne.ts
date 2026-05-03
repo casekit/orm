@@ -3,6 +3,7 @@ import { ModelDefinitions, OperatorDefinitions } from "@casekit/orm-schema";
 
 import { buildDelete } from "./builders/buildDelete.js";
 import { Connection } from "./connection.js";
+import { NotFoundError, TooManyRowsError } from "./errors.js";
 import { deleteToSql } from "./sql/deleteToSql.js";
 import { DeleteParams } from "./types/DeleteParams.js";
 import { Middleware } from "./types/Middleware.js";
@@ -28,9 +29,19 @@ export const deleteOne = async (
         const result = await tx.query(statement);
 
         if (!result.rowCount || result.rowCount === 0) {
-            throw new Error("Delete one failed to delete a row");
+            throw new NotFoundError("Delete one failed to delete a row", {
+                modelName,
+                operation: "deleteOne",
+            });
         } else if (result.rowCount > 1) {
-            throw new Error("Delete one would have deleted more than one row");
+            throw new TooManyRowsError(
+                "Delete one would have deleted more than one row",
+                {
+                    modelName,
+                    operation: "deleteOne",
+                    rowCount: result.rowCount,
+                },
+            );
         }
 
         await tx.commit();

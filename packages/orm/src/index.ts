@@ -3,6 +3,14 @@ export * from "./operators.js";
 
 export { orm, type Orm } from "./orm.js";
 
+export {
+    CreateFailedError,
+    NotFoundError,
+    OrmError,
+    type SingleRowOperation,
+    TooManyRowsError,
+} from "./errors.js";
+
 export type {
     Config,
     FieldDefinition,
