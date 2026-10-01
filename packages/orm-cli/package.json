@@ -11,7 +11,7 @@
         "@casekit/orm-migrate": "workspace:*",
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
-        "@casekit/unindent": "0.0.0-gh-packages.634dab0",
+        "@casekit/unindent": "^1.0.5",
         "@inquirer/prompts": "^8.2.0",
         "@inquirer/testing": "^3.0.4",
         "byline": "^5.0.0",

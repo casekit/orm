@@ -5,7 +5,7 @@
     "author": "",
     "dependencies": {
         "@casekit/toolbox": "workspace:*",
-        "@casekit/unindent": "0.0.0-gh-packages.634dab0",
+        "@casekit/unindent": "^1.0.5",
         "es-toolkit": "^1.39.3",
         "sql-formatter": "^15.6.5"
     },
