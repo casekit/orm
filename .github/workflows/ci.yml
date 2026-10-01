@@ -12,10 +12,12 @@ on:
         branches: [main]
         paths:
             - "packages/**"
+            - ".github/workflows/ci.yml"
     pull_request:
         branches: [main]
         paths:
             - "packages/**"
+            - ".github/workflows/ci.yml"
 
 jobs:
     build:
@@ -49,11 +51,6 @@ jobs:
                   node-version-file: ".tool-versions"
                   cache: "pnpm"
                   registry-url: "https://npm.pkg.github.com"
-
-            - name: Get pnpm store directory
-              shell: bash
-              run: |
-                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
