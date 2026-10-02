@@ -12,15 +12,15 @@
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
         "@casekit/unindent": "^1.0.5",
-        "@inquirer/prompts": "^8.2.0",
-        "@inquirer/testing": "^3.0.4",
+        "@inquirer/prompts": "^8.7.2",
+        "@inquirer/testing": "^3.3.13",
         "byline": "^5.0.0",
         "camelcase": "^9.0.0",
-        "dotenv": "^17.2.3",
-        "es-toolkit": "^1.39.3",
+        "dotenv": "^18.0.4",
+        "es-toolkit": "^1.52.0",
         "pluralize": "^8.0.0",
-        "tsx": "^4.20.3",
-        "yargs": "^18.0.0"
+        "tsx": "^4.23.15",
+        "yargs": "^18.2.0"
     },
     "devDependencies": {
         "@casekit/orm-fixtures": "workspace:*",
