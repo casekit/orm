@@ -13,6 +13,15 @@ import { applyWhereMiddleware } from "../util/applyWhereMiddleware.js";
 import { hasClauses } from "../util/hasClauses.js";
 import { Table } from "./types.js";
 
+/**
+ * Builds the SQL for a where clause, applying any where middleware to it first.
+ *
+ * NB. the middleware is applied here, once, to the top-level clause only - not
+ * in `buildWhereClause` as it recurses. Injecting the middleware's conditions
+ * into every logical subclause would be redundant inside `$and` and `$or`, and
+ * actively wrong inside `$not`, where negating them contradicts the copy
+ * applied at the top level and the query matches nothing.
+ */
 export const buildWhere = (
     config: NormalizedConfig,
     middleware: Middleware[],
@@ -22,11 +31,22 @@ export const buildWhere = (
         OperatorDefinitions,
         ModelName<ModelDefinitions>
     >,
-): SQLStatement | null => {
-    // Apply middleware to the where clause
-    const processedWhere =
-        applyWhereMiddleware(config, middleware, table.model, where) ?? {};
+): SQLStatement | null =>
+    buildWhereClause(
+        config,
+        table,
+        applyWhereMiddleware(config, middleware, table.model, where) ?? {},
+    );
 
+const buildWhereClause = (
+    config: NormalizedConfig,
+    table: Table,
+    processedWhere: WhereClause<
+        ModelDefinitions,
+        OperatorDefinitions,
+        ModelName<ModelDefinitions>
+    >,
+): SQLStatement | null => {
     if (!hasClauses(processedWhere)) {
         return null;
     }
@@ -99,7 +119,7 @@ export const buildWhere = (
     // logical operators
     if (processedWhere[$and]) {
         const subclauses = processedWhere[$and].map((clause) => {
-            const subclause = buildWhere(config, middleware, table, clause);
+            const subclause = buildWhereClause(config, table, clause);
             if (!subclause) {
                 throw new Error("AND clause must not be empty");
             }
@@ -110,7 +130,7 @@ export const buildWhere = (
 
     if (processedWhere[$or]) {
         const subclauses = processedWhere[$or].map((clause) => {
-            const subclause = buildWhere(config, middleware, table, clause);
+            const subclause = buildWhereClause(config, table, clause);
             if (!subclause) {
                 throw new Error("OR clause must not be empty");
             }
@@ -120,16 +140,13 @@ export const buildWhere = (
     }
 
     if (processedWhere[$not]) {
-        const subclause = buildWhere(
-            config,
-            middleware,
-            table,
-            processedWhere[$not],
-        );
+        const subclause = buildWhereClause(config, table, processedWhere[$not]);
         if (!subclause) {
             throw new Error("NOT clause must not be empty");
         }
-        clauses.push(sql`NOT ${subclause}`);
+        // the brackets matter: without them NOT binds to the first conjunct
+        // of the subclause only, rather than to the subclause as a whole
+        clauses.push(sql`NOT (${subclause})`);
     }
 
     return sql.join(clauses, " AND ");

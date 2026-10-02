@@ -1095,6 +1095,75 @@ describe("where middleware", () => {
                 { rollback: true },
             );
         });
+
+        test("does not apply middleware inside a $not clause", async () => {
+            await db.transact(
+                async (db) => {
+                    await db.createMany("user", {
+                        values: [
+                            {
+                                id: 130,
+                                name: "Keep",
+                                email: "keep@example.com",
+                                role: "user",
+                                deletedAt: null,
+                            },
+                            {
+                                id: 131,
+                                name: "Drop 1",
+                                email: "drop1@example.com",
+                                role: "user",
+                                deletedAt: null,
+                            },
+                            {
+                                id: 132,
+                                name: "Drop 2",
+                                email: "drop2@example.com",
+                                role: "user",
+                                deletedAt: null,
+                            },
+                            {
+                                id: 133,
+                                name: "Already Deleted",
+                                email: "already-deleted@example.com",
+                                role: "user",
+                                deletedAt: new Date(),
+                            },
+                        ],
+                    });
+
+                    // delete everything in this set except id 130. the
+                    // middleware's `deletedAt IS NULL` must be applied once, to
+                    // the top level: applied inside the $not as well it becomes
+                    // `deletedAt IS NULL AND NOT (deletedAt IS NULL AND ...)`,
+                    // which matches no row at all
+                    const count = await db.deleteMany("user", {
+                        where: {
+                            id: { [$in]: [130, 131, 132, 133] },
+                            [$not]: { id: { [$in]: [130] } },
+                        },
+                    });
+
+                    expect(count).toBe(2);
+
+                    const remaining = await db.findMany("user", {
+                        where: { id: { [$in]: [130, 131, 132, 133] } },
+                        select: ["id"],
+                        orderBy: ["id"],
+                    });
+
+                    // 130 excluded by the $not, 133 excluded by the middleware
+                    expect(remaining).toEqual([{ id: 130 }]);
+
+                    const softDeleted = await db.findMany("user", {
+                        where: { id: 133, deletedAt: { [$not]: null } },
+                        select: ["id"],
+                    });
+                    expect(softDeleted).toEqual([{ id: 133 }]);
+                },
+                { rollback: true },
+            );
+        });
     });
 
     describe("count", () => {
