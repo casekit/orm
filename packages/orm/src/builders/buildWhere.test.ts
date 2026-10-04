@@ -84,7 +84,17 @@ describe("buildWhere", () => {
     test("builds NOT clause", () => {
         const where = { [$not]: { active: true } };
         const result = buildWhere(db.config, [], table, where)!;
-        expect(result.text).toBe('NOT "u"."active" IS TRUE');
+        expect(result.text).toBe('NOT ("u"."active" IS TRUE)');
+    });
+
+    test("brackets a NOT clause over several conditions", () => {
+        // without brackets the NOT would bind to the first condition only
+        const where = { [$not]: { active: true, id: 1 } };
+        const result = buildWhere(db.config, [], table, where)!;
+        expect(result.text).toBe(
+            'NOT ("u"."active" IS TRUE AND "u"."id" = $1)',
+        );
+        expect(result.values).toEqual([1]);
     });
 
     test("throws error for unrecognized field", () => {
@@ -223,5 +233,65 @@ describe("buildWhere", () => {
         // Should include both the original where clause and the middleware-added clause
         expect(result.text).toBe('"u"."active" IS TRUE AND "u"."id" = $1');
         expect(result.values).toEqual([1]);
+    });
+
+    describe("where middleware with logical operators", () => {
+        // a stand-in for the soft delete / org scope middleware: it injects a
+        // condition that must hold for every row the query touches
+        const middleware: Middleware[] = [
+            {
+                where: (_config, _modelName, where) => ({
+                    active: true,
+                    ...where,
+                }),
+            },
+        ];
+
+        test("applies middleware once, outside a NOT clause", () => {
+            const where = { [$not]: { id: { [$in]: [1, 2] } } };
+            const result = buildWhere(db.config, middleware, table, where)!;
+
+            // the middleware's condition must not be negated: injecting it
+            // inside the NOT as well would give `active IS TRUE AND NOT
+            // (active IS TRUE AND ...)`, which no row can satisfy
+            expect(result.text).toBe(
+                '"u"."active" IS TRUE AND NOT ("u"."id" IN ($1, $2))',
+            );
+            expect(result.values).toEqual([1, 2]);
+        });
+
+        test("applies middleware once, outside an AND clause", () => {
+            const where = { [$and]: [{ id: 1 }, { name: "test" }] };
+            const result = buildWhere(db.config, middleware, table, where)!;
+
+            expect(result.text).toBe(
+                '"u"."active" IS TRUE AND ("u"."id" = $1 AND "u"."name" = $2)',
+            );
+            expect(result.values).toEqual([1, "test"]);
+        });
+
+        test("applies middleware once, outside an OR clause", () => {
+            const where = { [$or]: [{ id: 1 }, { name: "test" }] };
+            const result = buildWhere(db.config, middleware, table, where)!;
+
+            // the middleware's condition applies to the whole clause, rather
+            // than being repeated inside each branch of the OR
+            expect(result.text).toBe(
+                '"u"."active" IS TRUE AND ("u"."id" = $1 OR "u"."name" = $2)',
+            );
+            expect(result.values).toEqual([1, "test"]);
+        });
+
+        test("applies middleware once to nested logical operators", () => {
+            const where = {
+                [$or]: [{ id: 1 }, { [$not]: { name: "test" } }],
+            };
+            const result = buildWhere(db.config, middleware, table, where)!;
+
+            expect(result.text).toBe(
+                '"u"."active" IS TRUE AND ("u"."id" = $1 OR NOT ("u"."name" = $2))',
+            );
+            expect(result.values).toEqual([1, "test"]);
+        });
     });
 });
