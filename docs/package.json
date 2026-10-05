@@ -27,14 +27,14 @@
         "@casekit/orm": "workspace:*",
         "@casekit/orm-migrate": "workspace:*",
         "@casekit/sql": "workspace:*",
-        "@docusaurus/module-type-aliases": "3.9.2",
-        "@docusaurus/tsconfig": "3.9.2",
-        "@docusaurus/types": "3.9.2",
+        "@docusaurus/module-type-aliases": "3.10.2",
+        "@docusaurus/tsconfig": "3.10.2",
+        "@docusaurus/types": "3.10.2",
         "dotenv": "^17.2.3",
         "es-toolkit": "^1.39.3",
-        "typescript": "^5.8.3",
-        "vitest": "^3.2.4",
-        "zod": "^4.0.17"
+        "typescript": "^7.0.2",
+        "vitest": "^5.0.3",
+        "zod": "^4.6.5"
     },
     "peerDependencies": {
         "pg": "^8.13.1"
