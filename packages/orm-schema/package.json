@@ -19,7 +19,7 @@
         "typescript": "^7.0.2",
         "typescript-eslint": "^8.71.2",
         "vite-tsconfig-paths": "^6.1.1",
-        "vitest": "^5.0.4"
+        "vitest": "^5.0.5"
     },
     "exports": {
         ".": "./build/index.js"

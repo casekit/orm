@@ -32,13 +32,13 @@
         "@types/pg": "^8.23.1",
         "@types/pluralize": "^0.0.33",
         "@types/yargs": "^17.0.33",
-        "@vitest/coverage-v8": "^5.0.4",
+        "@vitest/coverage-v8": "^5.0.5",
         "memfs": "^4.80.0",
         "prettier": "^3.9.10",
         "prettier-plugin-svelte": "^4.1.1",
         "typescript": "^7.0.2",
         "vite-tsconfig-paths": "^6.1.1",
-        "vitest": "^5.0.4",
+        "vitest": "^5.0.5",
         "zod": "^4.6.7"
     },
     "exports": {
