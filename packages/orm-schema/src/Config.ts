@@ -10,10 +10,7 @@ export interface Config {
     readonly operators?: OperatorDefinitions;
     readonly extensions?: readonly string[];
     readonly connection?:
-        | pg.ConnectionConfig
-        | pg.PoolConfig
-        | pg.PoolOptions
-        | null;
+        pg.ConnectionConfig | pg.PoolConfig | pg.PoolOptions | null;
     readonly pool?: boolean;
     readonly logger?: Logger;
     readonly naming?: {

@@ -10,7 +10,7 @@ const generateInner = <T>(schema: $ZodType<T>): unknown => {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             result[key] = generateInner(shape[key]);
         }
-        return result as T;
+        return result;
     } else if (schema instanceof z.ZodOptional) {
         return generateInner(schema.def.innerType);
     } else if (schema instanceof z.ZodRecord) {

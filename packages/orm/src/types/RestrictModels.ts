@@ -29,19 +29,23 @@ export type RestrictModel<
     relations: Models[M]["relations"] extends infer Relations extends
         RelationDefinitions
         ? keyof {
-              [R in keyof Relations as RestrictRelation<
-                  Relations,
-                  R,
-                  Allowed
-              >]: Relations[R];
-          } extends never
-            ? undefined
-            : {
-                  [R in keyof Relations as RestrictRelation<
+              [
+                  R in keyof Relations as RestrictRelation<
                       Relations,
                       R,
                       Allowed
-                  >]: Relations[R];
+                  >
+              ]: Relations[R];
+          } extends never
+            ? undefined
+            : {
+                  [
+                      R in keyof Relations as RestrictRelation<
+                          Relations,
+                          R,
+                          Allowed
+                      >
+                  ]: Relations[R];
               }
         : undefined;
 };

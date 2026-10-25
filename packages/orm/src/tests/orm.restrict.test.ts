@@ -119,7 +119,7 @@ describe("orm.restrict", () => {
     //                 },
     //                 { rollback: true },
     //             ),
-    //         ).rejects.toThrowError("Cannot create restricted ORM in a transaction");
+    //         ).rejects.toThrow("Cannot create restricted ORM in a transaction");
     //     });
 
     //     test("allows querying through permitted N:1 relations", async () => {

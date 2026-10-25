@@ -14,12 +14,15 @@ describe("init", () => {
 
         await yargs().command(init).parseAsync("init");
 
-        const dbFile = vol.readFileSync("./app/db.server/index.ts", "utf-8");
-        const modelFile = vol.readFileSync(
-            "./app/db.server/models/index.ts",
+        const dbFile = vol.readFileSync(
+            "/project/app/db.server/index.ts",
             "utf-8",
         );
-        const configFile = vol.readFileSync("./orm.config.ts", "utf-8");
+        const modelFile = vol.readFileSync(
+            "/project/app/db.server/models/index.ts",
+            "utf-8",
+        );
+        const configFile = vol.readFileSync("/project/orm.config.ts", "utf-8");
 
         expect(dbFile).toEqual(unindent`
             import { type Config, type ModelType, type Orm, orm } from "@casekit/orm";
@@ -98,12 +101,15 @@ describe("init", () => {
 
         await yargs().command(init).parseAsync("init");
 
-        const dbFile = vol.readFileSync("./app/db.server/index.ts", "utf-8");
-        const modelFile = vol.readFileSync(
-            "./app/db.server/models/index.ts",
+        const dbFile = vol.readFileSync(
+            "/project/app/db.server/index.ts",
             "utf-8",
         );
-        const configFile = vol.readFileSync("./orm.config.ts", "utf-8");
+        const modelFile = vol.readFileSync(
+            "/project/app/db.server/models/index.ts",
+            "utf-8",
+        );
+        const configFile = vol.readFileSync("/project/orm.config.ts", "utf-8");
 
         expect(dbFile).toEqual(unindent`
             import { type Config, type ModelType, type Orm, orm } from "@casekit/orm";

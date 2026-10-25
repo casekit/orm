@@ -47,7 +47,7 @@ describe("orm generate model", () => {
             .parseAsync("model --name post");
 
         const modelFile = vol.readFileSync(
-            "./app/db.server/models/post.ts",
+            "/project/app/db.server/models/post.ts",
             "utf8",
         ) as string;
         expect(modelFile.trim()).toEqual(unindent`
@@ -59,7 +59,7 @@ describe("orm generate model", () => {
         `);
 
         const indexFile = vol.readFileSync(
-            "./app/db.server/models/index.ts",
+            "/project/app/db.server/models/index.ts",
             "utf8",
         ) as string;
 

@@ -114,7 +114,8 @@ describe("deleteMany", () => {
                 });
 
                 expect(deletedUsers).toHaveLength(2);
-                expect(deletedUsers).toEqual([
+                // DELETE ... RETURNING doesn't guarantee row order
+                expect([...deletedUsers].sort((a, b) => a.id - b.id)).toEqual([
                     {
                         id: 1,
                         name: "Delete User 1",

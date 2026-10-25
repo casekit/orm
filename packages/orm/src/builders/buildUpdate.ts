@@ -31,7 +31,7 @@ export const buildUpdate = (
     const table: Table = {
         schema: model.schema,
         name: model.table,
-        alias: makeTableAlias(tableIndex++),
+        alias: makeTableAlias(tableIndex),
         model: modelName,
     };
 

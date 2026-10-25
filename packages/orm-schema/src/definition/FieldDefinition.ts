@@ -58,8 +58,7 @@ export interface FieldDefinition {
      * distinct.
      */
     unique?:
-        | boolean
-        | { where?: SQLStatement | null; nullsNotDistinct?: boolean };
+        boolean | { where?: SQLStatement | null; nullsNotDistinct?: boolean };
 
     /**
      * Is this column a single-column primary key?

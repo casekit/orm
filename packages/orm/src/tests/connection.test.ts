@@ -63,7 +63,7 @@ describe("Connection", () => {
                 }),
             );
 
-            await expect(connection.connect()).rejects.toThrowError();
+            await expect(connection.connect()).rejects.toThrow();
             expect(logger.logs.error[0]?.message).toEqual(
                 "Error connecting to database",
             );
@@ -87,7 +87,7 @@ describe("Connection", () => {
         test("error on trying to run query without connecting", async () => {
             await expect(
                 connection.query(sql`SELECT ${1}::int as num`),
-            ).rejects.toThrowError("Tried to run query but not connected");
+            ).rejects.toThrow("Tried to run query but not connected");
         });
     });
 
@@ -192,9 +192,7 @@ describe("Transaction", () => {
                 }),
             );
 
-            await expect(() =>
-                connection.startTransaction(),
-            ).rejects.toThrowError(
+            await expect(() => connection.startTransaction()).rejects.toThrow(
                 "Tried to start transaction but not connected",
             );
         });
@@ -214,14 +212,14 @@ describe("Transaction", () => {
 
         test("trying to connect while in a transaction", async () => {
             const tx = await connection.startTransaction();
-            await expect(() => tx.connect()).rejects.toThrowError(
+            await expect(() => tx.connect()).rejects.toThrow(
                 "Cannot connect in transaction - already connected",
             );
         });
 
         test("trying to close while in a transaction", async () => {
             const tx = await connection.startTransaction();
-            await expect(() => tx.close()).rejects.toThrowError(
+            await expect(() => tx.close()).rejects.toThrow(
                 "Cannot close connection while in transaction",
             );
         });
@@ -235,7 +233,7 @@ describe("Transaction", () => {
                 new pg.Client(),
             );
 
-            await expect(tx.startTransaction()).rejects.toThrowError(
+            await expect(tx.startTransaction()).rejects.toThrow(
                 "Tried to open nested transaction but parent transaction is closed",
             );
         });
@@ -255,7 +253,7 @@ describe("Transaction", () => {
 
         test("error on trying to commit twice", async () => {
             await transaction.commit();
-            await expect(transaction.commit()).rejects.toThrowError(
+            await expect(transaction.commit()).rejects.toThrow(
                 "Tried to commit transaction but it is closed",
             );
         });
@@ -329,9 +327,7 @@ describe("Transaction", () => {
             );
             await expect(
                 transaction.query(sql`SELECT * FROM non_existent_table`),
-            ).rejects.toThrowError(
-                'relation "non_existent_table" does not exist',
-            );
+            ).rejects.toThrow('relation "non_existent_table" does not exist');
             expect(logger.logs.error[0]?.message).toContain(
                 "Error running query",
             );
@@ -410,7 +406,7 @@ describe("Transaction", () => {
 
         test("error on trying to commit twice", async () => {
             await transaction.commit();
-            await expect(transaction.commit()).rejects.toThrowError(
+            await expect(transaction.commit()).rejects.toThrow(
                 "Tried to commit transaction but it is closed",
             );
         });
@@ -484,9 +480,7 @@ describe("Transaction", () => {
             );
             await expect(
                 transaction.query(sql`SELECT * FROM non_existent_table`),
-            ).rejects.toThrowError(
-                'relation "non_existent_table" does not exist',
-            );
+            ).rejects.toThrow('relation "non_existent_table" does not exist');
             expect(logger.logs.error[0]?.message).toContain(
                 "Error running query",
             );
@@ -503,9 +497,7 @@ describe("Transaction", () => {
             );
             await expect(
                 nestedTx.query(sql`SELECT * FROM non_existent_table`),
-            ).rejects.toThrowError(
-                'relation "non_existent_table" does not exist',
-            );
+            ).rejects.toThrow('relation "non_existent_table" does not exist');
 
             expect(logger.logs.error[0]?.message).toContain(
                 "Error running query",

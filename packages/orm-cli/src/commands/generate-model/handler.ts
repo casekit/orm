@@ -21,7 +21,7 @@ export const handler: Handler<typeof builder> = async (opts) => {
     );
 
     const models = fs
-        .readdirSync(`${config.directory}/models`)
+        .readdirSync(path.join(process.cwd(), `${config.directory}/models`))
         .filter((f) => f !== "index.ts")
         .map((f) => camelCase(f.replace(/\.ts$/, "")));
 

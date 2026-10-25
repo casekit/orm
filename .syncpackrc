@@ -1,3 +1,10 @@
 {
-  "dependencyTypes": ["prod", "dev", "peer"]
+    "versionGroups": [
+        {
+            "label": "Peer dependency ranges only need to overlap with the versions we use",
+            "dependencyTypes": ["peer"],
+            "dependencies": ["**"],
+            "policy": "sameRange"
+        }
+    ]
 }

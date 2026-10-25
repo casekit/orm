@@ -9,7 +9,7 @@
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
         "@faker-js/faker": "^10.6.0",
-        "es-toolkit": "^1.52.0"
+        "es-toolkit": "^1.53.0"
     },
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",

@@ -17,15 +17,17 @@ export type IncludeCountClause<
         ? Record<string, never>
         : NonNullable<Model["relations"]>,
 > = keyof {
-    [R in keyof Relations as Relations[R] extends { type: "N:1" }
-        ? R
-        : never]: true;
+    [
+        R in keyof Relations as Relations[R] extends { type: "N:1" } ? R : never
+    ]: true;
 } extends never
     ? never
     : {
-          [R in keyof Relations as Relations[R] extends { type: "N:1" }
-              ? R
-              : never]?: CountParams<
+          [
+              R in keyof Relations as Relations[R] extends { type: "N:1" }
+                  ? R
+                  : never
+          ]?: CountParams<
               Models,
               Operators,
               Extract<Relations[R]["model"], string>

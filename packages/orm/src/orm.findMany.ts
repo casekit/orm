@@ -94,8 +94,7 @@ export const findMany = async (
                     path.length === 1
                         ? result
                         : (get(result, dropRight(path, 1)) as
-                              | Record<string, unknown>
-                              | undefined);
+                              Record<string, unknown> | undefined);
                 // if the relation is on an _optional_ N:1 relation of
                 // the query's top level model, then the value being joined from
                 // may not exist on the result. in that case there won't be any
