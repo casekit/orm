@@ -1,0 +1,10 @@
+{
+    "versionGroups": [
+        {
+            "label": "Every range we declare for a dependency, peers included, must overlap",
+            "dependencyTypes": ["prod", "dev", "peer"],
+            "dependencies": ["**"],
+            "policy": "sameRange"
+        }
+    ]
+}
