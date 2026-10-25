@@ -31,7 +31,7 @@ describe("createSchemaSql", () => {
     });
 
     test("should throw on empty schema name", () => {
-        expect(() => createSchemaSql("")).toThrowError(
+        expect(() => createSchemaSql("")).toThrow(
             "Cannot create schema with empty name",
         );
     });

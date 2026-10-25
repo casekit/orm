@@ -7,7 +7,7 @@
         "@casekit/orm-config": "workspace:*",
         "@casekit/orm-schema": "workspace:*",
         "@casekit/sql": "workspace:*",
-        "es-toolkit": "^1.52.0"
+        "es-toolkit": "^1.53.0"
     },
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",
@@ -15,7 +15,6 @@
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
         "@types/node": "^26.6.5",
         "@types/pg": "^8.23.1",
-        "@types/uuid": "^11.0.0",
         "prettier": "^3.9.10",
         "ts-essentials": "^10.2.1",
         "typescript": "^7.0.2",

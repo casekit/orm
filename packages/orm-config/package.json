@@ -7,17 +7,16 @@
         "@casekit/orm-schema": "workspace:*",
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
-        "es-toolkit": "^1.52.0"
+        "es-toolkit": "^1.53.0"
     },
     "devDependencies": {
+        "@casekit/orm-schema": "workspace:*",
         "@casekit/prettier-config": "workspace:*",
         "@casekit/tsconfig": "workspace:*",
-        "@casekit/orm-schema": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
         "@types/node": "^26.6.5",
         "@types/pg": "^8.23.1",
-        "@types/uuid": "^11.0.0",
-        "dotenv": "^18.0.8",
+        "dotenv": "^18.0.9",
         "prettier": "^3.9.10",
         "ts-essentials": "^10.2.1",
         "typescript": "^7.0.2",

@@ -252,7 +252,7 @@ describe("findOne: N:1 relations", () => {
                             },
                         },
                     }),
-                ).rejects.toThrowError("Expected one row, but found none");
+                ).rejects.toThrow("Expected one row, but found none");
             },
             { rollback: true },
         );

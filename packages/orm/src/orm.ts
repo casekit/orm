@@ -569,9 +569,7 @@ export class Orm<
 
     public query<const ResultType extends QueryResultRow = QueryResultRow>(
         schemaOrStatementOrFragments:
-            | SQLStatement
-            | TemplateStringsArray
-            | ZodType<ResultType>,
+            SQLStatement | TemplateStringsArray | ZodType<ResultType>,
         ...values: unknown[]
     ):
         | Promise<ResultType[]>

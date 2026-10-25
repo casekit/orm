@@ -58,6 +58,6 @@ export function mockLogger({ silence } = { silence: true }): MockLogger {
             }
             entries.error.push({ message, args });
         },
-    } as MockLogger;
+    };
 }
 /* v8 ignore stop */

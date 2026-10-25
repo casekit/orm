@@ -9,8 +9,7 @@ export const applyWhereMiddleware = (
     middleware: Middleware[],
     modelName: string,
     where:
-        | WhereClause<ModelDefinitions, OperatorDefinitions, string>
-        | undefined,
+        WhereClause<ModelDefinitions, OperatorDefinitions, string> | undefined,
 ): WhereClause<ModelDefinitions, OperatorDefinitions, string> | undefined => {
     return middleware
         .filter((m) => !!m.where)

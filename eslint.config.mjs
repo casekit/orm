@@ -103,6 +103,13 @@ export default tseslint.config(
         },
     },
     {
+        // this rule runs out of memory on the heavily generic Orm class
+        files: ["packages/orm/src/orm.ts"],
+        rules: {
+            "@typescript-eslint/no-unnecessary-type-parameters": "off",
+        },
+    },
+    {
         files: ["**/*.test.ts", "**/*.test.tsx", "**/*.test-d.ts"],
         rules: {
             "@typescript-eslint/no-unsafe-assignment": "off",

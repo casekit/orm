@@ -13,10 +13,9 @@ type OrderByField<
     | {
           // don't really understand why we have to do Extract<..., string> here,
           // but we do
-          [R in Extract<
-              keyof Models[M]["relations"],
-              string
-          >]: Models[M]["relations"][R] extends {
+          [
+              R in Extract<keyof Models[M]["relations"], string>
+          ]: Models[M]["relations"][R] extends {
               type: "N:1";
               model: infer M2 extends ModelName<Models>;
           }

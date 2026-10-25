@@ -47,12 +47,9 @@ export type FindResult<
     } & (undefined extends Q["include"]
         ? unknown
         : {
-              [R in IncludedRelationName<
-                  Models,
-                  Operators,
-                  M,
-                  Q
-              >]: Models[M]["relations"][R] extends { optional: true }
+              [
+                  R in IncludedRelationName<Models, Operators, M, Q>
+              ]: Models[M]["relations"][R] extends { optional: true }
                   ? FindResult<
                         Models,
                         Operators,
