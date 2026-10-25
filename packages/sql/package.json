@@ -1,7 +1,7 @@
 {
     "name": "@casekit/sql",
     "description": "",
-    "version": "0.0.1-release-candidate.2",
+    "version": "0.0.1-release-candidate.4",
     "author": "",
     "dependencies": {
         "@casekit/toolbox": "workspace:*",
