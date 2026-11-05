@@ -32,7 +32,7 @@
         "@docusaurus/tsconfig": "3.10.2",
         "@docusaurus/types": "3.10.2",
         "dotenv": "^18.0.9",
-        "es-toolkit": "^1.53.0",
+        "es-toolkit": "^1.53.1",
         "typescript": "^7.0.2",
         "vitest": "^5.0.5",
         "zod": "^4.6.7"
