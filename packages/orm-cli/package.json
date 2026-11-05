@@ -1,7 +1,7 @@
 {
     "name": "@casekit/orm-cli",
     "description": "",
-    "version": "0.0.1-release-candidate.2",
+    "version": "0.0.1-release-candidate.4",
     "author": "",
     "bin": {
         "orm": "./build/cli.js"
@@ -61,7 +61,8 @@
         "registry": "https://npm.pkg.github.com"
     },
     "peerDependencies": {
-        "pg": "^8.13.1"
+        "pg": "^8.13.1",
+        "prettier": "^3.5.3"
     },
     "prettier": "@casekit/prettier-config",
     "sideEffects": [
