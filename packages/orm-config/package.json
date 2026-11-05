@@ -7,7 +7,7 @@
         "@casekit/orm-schema": "workspace:*",
         "@casekit/sql": "workspace:*",
         "@casekit/toolbox": "workspace:*",
-        "es-toolkit": "^1.53.0"
+        "es-toolkit": "^1.53.1"
     },
     "devDependencies": {
         "@casekit/orm-schema": "workspace:*",
