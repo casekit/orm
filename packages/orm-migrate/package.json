@@ -20,14 +20,14 @@
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
         "@types/node": "^26.6.6",
         "@types/pg": "^8.23.1",
-        "@vitest/coverage-v8": "^5.1.0",
+        "@vitest/coverage-v8": "^5.1.1",
         "dotenv": "^18.0.10",
-        "prettier": "^3.9.10",
-        "prettier-plugin-svelte": "^4.1.1",
+        "prettier": "^3.10.1",
+        "prettier-plugin-svelte": "^4.2.0",
         "typescript": "^7.0.2",
         "uuid": "^14.0.3",
         "vite-tsconfig-paths": "^6.1.1",
-        "vitest": "^5.1.0"
+        "vitest": "^5.1.1"
     },
     "exports": {
         ".": "./build/index.js"
