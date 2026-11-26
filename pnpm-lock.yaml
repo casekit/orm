@@ -23,8 +23,8 @@ importers:
         specifier: ^10.15.0
         version: 10.15.0(jiti@2.7.0)
       syncpack:
-        specifier: ^15.3.3
-        version: 15.3.3
+        specifier: ^15.3.4
+        version: 15.3.4
       turbo:
         specifier: ^2.11.13
         version: 2.11.13
@@ -1400,8 +1400,8 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@bramus/specificity@2.4.3':
-    resolution: {integrity: sha512-0GEz8qJWokkUVYQYRukmkSHIFNoBH8QTreeHrAFbvz1XFYc3Y+puhMs8PQ5x8GNugiC2l5jvDBXKLbBIByeSBw==}
+  '@bramus/specificity@2.4.4':
+    resolution: {integrity: sha512-TRvTbeibL1ORTXe5NbH+9XUZdbjns55AmFfg8BroI1Ge13CqNF58Txg3Zd/+gjUCSh0ROHqJ1qJfnoX2MAxUZg==}
     hasBin: true
 
   '@cacheable/memory@2.2.0':
@@ -3222,6 +3222,9 @@ packages:
 
   '@types/estree@1.0.10':
     resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
+
+  '@types/estree@1.0.11':
+    resolution: {integrity: sha512-YBdNe5JcjYR0sPhJW1QIeRCmI11YhYvaRuGCs9+WCeTTb+Yhb2BE2XMe5/wAqF10FK5g3+q1PDhQABfT7aX0gg==}
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
@@ -7179,48 +7182,48 @@ packages:
       '@swc/core': ^1.2.147
       webpack: '>=2'
 
-  syncpack-darwin-arm64@15.3.3:
-    resolution: {integrity: sha512-sFnHOUT7ZYShxAXfzK8zIxNvY5ciW6c71fHYOJIgZ8Ry25IMWkaGfyLc894wxIPaYTbgEmeeZN6BV7G5Gu27mA==}
+  syncpack-darwin-arm64@15.3.4:
+    resolution: {integrity: sha512-hkajipwYSSS6ngwfBOR5ei3ObZ0sE9Qb1VWpR/m+PF8s8OMUc0icxhCH8u5Ctz04vFBKh/vcPuKoiH3V2fff8w==}
     cpu: [arm64]
     os: [darwin]
 
-  syncpack-darwin-x64@15.3.3:
-    resolution: {integrity: sha512-gtWysFMwG3W8ieF8+aLMy1qVkehdy40hc02LGEjckmejZxtjDbTKE9vDhBAaXcLbqIsvQ1ImEymHU5N2I4llWQ==}
+  syncpack-darwin-x64@15.3.4:
+    resolution: {integrity: sha512-FrxMjCH5pFPQTGxYJkrONkiea+VFyv/WmBUAeYI7VZ+yE8RJQIE0DU7jz1x803+boksIbIjARiAes8E+p5v9LQ==}
     cpu: [x64]
     os: [darwin]
 
-  syncpack-linux-arm64-musl@15.3.3:
-    resolution: {integrity: sha512-mvj6TGhdwO5bHo1cM638esCx9+7ur0BA+RTdg+YiOD/CZJMP8iMj6ruF8htFNPEOKpAEOmfkOVKNs4yCbvkgyQ==}
+  syncpack-linux-arm64-musl@15.3.4:
+    resolution: {integrity: sha512-HswAwaVtFUw/DpC6cmZzN64/J538LWqypMekesTpTKjapMy53zHqe1j9mnx/0vSMePZUfvg588p8kOp9yQV+KQ==}
     cpu: [arm64]
     os: [linux]
 
-  syncpack-linux-arm64@15.3.3:
-    resolution: {integrity: sha512-6hlHPrG+V457fpKEURqshNLaFQENkC416IZ4ngFY+2uBjFsmlA7ax4p4EJlFsxuHiQbx/4Yo27pVXmNJEs/bZQ==}
+  syncpack-linux-arm64@15.3.4:
+    resolution: {integrity: sha512-dD7fevAPTb+LCtwJqxKO1E9P6cnty6XwGy0EllFAdporJgKwdJ25CJXNhlTC9A4wbjjk+FJHPrqo+0r0eLWB6A==}
     cpu: [arm64]
     os: [linux]
 
-  syncpack-linux-x64-musl@15.3.3:
-    resolution: {integrity: sha512-7KHIb9b9VCSyQq2GwoshVU9Pt/2qCqhOPusuwkXadI+p1qW7fK5FukjZbG0Y4VRa6mszrD2W28OxWAswwrn1lQ==}
+  syncpack-linux-x64-musl@15.3.4:
+    resolution: {integrity: sha512-E0lvelfYwCNtP8rGeq3Fj26NFS+MibjtUQSxsProUCCS7/9XV61Lo5ptx2zD2ux2rSpiBdLzPT5vGJ1mpj49bA==}
     cpu: [x64]
     os: [linux]
 
-  syncpack-linux-x64@15.3.3:
-    resolution: {integrity: sha512-DcnZPKFGEFoktzIrufGGwk2ARTEhlvII6yQsETCaO/Z1xagOjJquxiDvagKnb4GQsQQCuih2ouzQZFCiKImrXA==}
+  syncpack-linux-x64@15.3.4:
+    resolution: {integrity: sha512-Ep7jAeFwS5GUTzeb981ixsPiPoHjzKE6YBT0WriyfB21Tg2z1qaFHZrShAYALjOL31BMH8MCJHvZUAblwAt41Q==}
     cpu: [x64]
     os: [linux]
 
-  syncpack-windows-arm64@15.3.3:
-    resolution: {integrity: sha512-6pPWh3+uTO7g1FF8ugC+UqektaNXphdmDXqG3rWepFdCS+DrWj/7Gfbtlx/zISTdx//T7zoZZ2fvW4fzN/6ztQ==}
+  syncpack-windows-arm64@15.3.4:
+    resolution: {integrity: sha512-UcB72GOXMPogye2gswk/Z3cXuWvYZMLbaZpScLddUUvsmU5gNkJge6KUFCvhi5EO6DMT7DO2uq4Qf8JJXF0z2w==}
     cpu: [arm64]
     os: [win32]
 
-  syncpack-windows-x64@15.3.3:
-    resolution: {integrity: sha512-9CrrEzXE/MdWJuxyB7JvR1b6kiTNQPZh1dDJbWiRgtpNyCbEiddM1/viOsyaufftWDrQFV6RCGQzqCvWEas45g==}
+  syncpack-windows-x64@15.3.4:
+    resolution: {integrity: sha512-nqSEAPNPMNrnQKkJXRIxLBUZkj0Uc6m9HwEuHP7mC2crlD1uxxN6ovMRTxRYPc4MOUlLGz0jKsgIVF8svK4UTw==}
     cpu: [x64]
     os: [win32]
 
-  syncpack@15.3.3:
-    resolution: {integrity: sha512-MC99meBhgc/E5xbB5mFUS99wj4bquTbKLKHLXYh3qPbmPZl2HD8KA4ls29a9Xv67oZ03isCaJaqSl+JIfXIfpA==}
+  syncpack@15.3.4:
+    resolution: {integrity: sha512-QbCyCAscOKrp1wmF1zqA1jEgsGiPNjogMVn/S5wRC9Jtvljkeq2kebWtvgzAIRl48ukEzE88uCHF0NwnNq6o/w==}
     engines: {node: '>=14.17.0'}
     hasBin: true
 
@@ -7315,11 +7318,11 @@ packages:
     resolution: {integrity: sha512-LgO3D9yZJjApUiuUfl9iFAwrtaX4+lok3wJIqttGoKCHlWUqHqbQpnxCf82L8FjgKsh4iGo78hqJwgL8F6To2A==}
     engines: {node: '>=14.0.0'}
 
-  tldts-core@7.5.5:
-    resolution: {integrity: sha512-rEJz/8cJFY/bdF354gl14yxavbrIbvM+FcbkYVQ6CSCMQTJdUFUIm39TTWSiGPvcpQh7/F6qHrD3SkwwdgtDCw==}
+  tldts-core@7.6.0:
+    resolution: {integrity: sha512-0By9U6fw2hNzfJAbBMuo1bsX/OyVlsj0wjGyMPV50RZKoLCRwXBOX0FQqgZDaMo2WjjaEW/ZGyVXicLUFTmXqQ==}
 
-  tldts@7.5.5:
-    resolution: {integrity: sha512-Hy6IImaWALzJOgCIss4gIFi4G0M9lqk95pFKCUVxQPZw+biZ1Pv6f28JpYgahpJB+BufA0HYsIU/aP/WIx3KRg==}
+  tldts@7.6.0:
+    resolution: {integrity: sha512-IFk9SJW/EhTZMpJA1zRdP+69JK4NmJbMx1aRdJvLBR9em1k62eWiwolSWlDRpRdkaAnZ1dDCwFPmRPBNuLGGHA==}
     hasBin: true
 
   to-regex-range@5.0.1:
@@ -8783,7 +8786,7 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@bramus/specificity@2.4.3':
+  '@bramus/specificity@2.4.4':
     dependencies:
       css-tree: 3.2.1
     optional: true
@@ -11471,6 +11474,8 @@ snapshots:
 
   '@types/estree@1.0.10': {}
 
+  '@types/estree@1.0.11': {}
+
   '@types/estree@1.0.9': {}
 
   '@types/express-serve-static-core@4.19.9':
@@ -13632,7 +13637,7 @@ snapshots:
 
   is-reference@3.0.3:
     dependencies:
-      '@types/estree': 1.0.10
+      '@types/estree': 1.0.11
 
   is-regexp@1.0.0: {}
 
@@ -13707,7 +13712,7 @@ snapshots:
     dependencies:
       '@asamuzakjp/css-color': 7.2.0
       '@asamuzakjp/dom-selector': 10.0.7
-      '@bramus/specificity': 2.4.3
+      '@bramus/specificity': 2.4.4
       '@csstools/css-syntax-patches-for-csstree': 1.1.17(css-tree@3.2.1)
       '@exodus/bytes': 1.16.0
       css-tree: 3.2.1
@@ -16032,7 +16037,7 @@ snapshots:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.19.0)
-      '@types/estree': 1.0.10
+      '@types/estree': 1.0.11
       acorn: 8.19.0
       aria-query: 5.3.1
       axobject-query: 4.1.0
@@ -16065,40 +16070,40 @@ snapshots:
       '@swc/counter': 0.1.3
       webpack: 5.112.2(@swc/core@1.16.20)(@swc/html@1.16.20)(esbuild@0.28.2)(lightningcss@1.33.0)(postcss@8.5.31)
 
-  syncpack-darwin-arm64@15.3.3:
+  syncpack-darwin-arm64@15.3.4:
     optional: true
 
-  syncpack-darwin-x64@15.3.3:
+  syncpack-darwin-x64@15.3.4:
     optional: true
 
-  syncpack-linux-arm64-musl@15.3.3:
+  syncpack-linux-arm64-musl@15.3.4:
     optional: true
 
-  syncpack-linux-arm64@15.3.3:
+  syncpack-linux-arm64@15.3.4:
     optional: true
 
-  syncpack-linux-x64-musl@15.3.3:
+  syncpack-linux-x64-musl@15.3.4:
     optional: true
 
-  syncpack-linux-x64@15.3.3:
+  syncpack-linux-x64@15.3.4:
     optional: true
 
-  syncpack-windows-arm64@15.3.3:
+  syncpack-windows-arm64@15.3.4:
     optional: true
 
-  syncpack-windows-x64@15.3.3:
+  syncpack-windows-x64@15.3.4:
     optional: true
 
-  syncpack@15.3.3:
+  syncpack@15.3.4:
     optionalDependencies:
-      syncpack-darwin-arm64: 15.3.3
-      syncpack-darwin-x64: 15.3.3
-      syncpack-linux-arm64: 15.3.3
-      syncpack-linux-arm64-musl: 15.3.3
-      syncpack-linux-x64: 15.3.3
-      syncpack-linux-x64-musl: 15.3.3
-      syncpack-windows-arm64: 15.3.3
-      syncpack-windows-x64: 15.3.3
+      syncpack-darwin-arm64: 15.3.4
+      syncpack-darwin-x64: 15.3.4
+      syncpack-linux-arm64: 15.3.4
+      syncpack-linux-arm64-musl: 15.3.4
+      syncpack-linux-x64: 15.3.4
+      syncpack-linux-x64-musl: 15.3.4
+      syncpack-windows-arm64: 15.3.4
+      syncpack-windows-x64: 15.3.4
 
   tapable@2.3.3: {}
 
@@ -16151,12 +16156,12 @@ snapshots:
 
   tinyrainbow@3.2.0: {}
 
-  tldts-core@7.5.5:
+  tldts-core@7.6.0:
     optional: true
 
-  tldts@7.5.5:
+  tldts@7.6.0:
     dependencies:
-      tldts-core: 7.5.5
+      tldts-core: 7.6.0
     optional: true
 
   to-regex-range@5.0.1:
@@ -16169,7 +16174,7 @@ snapshots:
 
   tough-cookie@6.1.0:
     dependencies:
-      tldts: 7.5.5
+      tldts: 7.6.0
     optional: true
 
   tr46@7.0.0:
