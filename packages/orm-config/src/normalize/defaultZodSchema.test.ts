@@ -120,6 +120,8 @@ describe("defaultZodSchema", () => {
         // Eight hex digits after the slash: Postgres 19 zero-pads that half
         // to eight ("0/1234567" comes back as "0/01234567"), earlier versions
         // don't, and CI runs against postgres:latest.
+        // Postgres 19 zero-pads the part after the slash to eight digits, so
+        // a value with all eight reads back the same from every version.
         ["pg_lsn", "16/B374D848", "16/B374D848"],
         ["regclass", "pg_class", "pg_class"],
         ["regnamespace", "pg_catalog", "pg_catalog"],

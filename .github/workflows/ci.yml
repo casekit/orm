@@ -7,6 +7,9 @@ permissions:
     pull-requests: write
 
 on:
+    # Only for dependabot.yml: a merge made with its GITHUB_TOKEN triggers no
+    # push event, so it runs CI on main itself.
+    workflow_dispatch: {}
     push:
         branches: [main]
         paths:
