@@ -117,7 +117,9 @@ describe("defaultZodSchema", () => {
         ["daterange", "[2023-01-01,2023-01-02)", "[2023-01-01,2023-01-02)"],
         ["int2vector", "1 2 3", "1 2 3"],
         ["oid", "1234", 1234],
-        ["pg_lsn", "0/1234567", "0/1234567"],
+        // Postgres 19 zero-pads the part after the slash to eight digits, so
+        // a value with all eight reads back the same from every version.
+        ["pg_lsn", "16/B374D848", "16/B374D848"],
         ["regclass", "pg_class", "pg_class"],
         ["regnamespace", "pg_catalog", "pg_catalog"],
         ["regproc", "now", "now"],
