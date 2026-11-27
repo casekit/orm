@@ -7,7 +7,7 @@
         "@casekit/toolbox": "workspace:*",
         "@casekit/unindent": "^1.0.5",
         "es-toolkit": "^1.53.2",
-        "sql-formatter": "^15.9.0"
+        "sql-formatter": "^15.10.0"
     },
     "devDependencies": {
         "@casekit/prettier-config": "workspace:*",
