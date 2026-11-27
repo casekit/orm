@@ -117,7 +117,10 @@ describe("defaultZodSchema", () => {
         ["daterange", "[2023-01-01,2023-01-02)", "[2023-01-01,2023-01-02)"],
         ["int2vector", "1 2 3", "1 2 3"],
         ["oid", "1234", 1234],
-        ["pg_lsn", "0/1234567", "0/1234567"],
+        // Eight hex digits after the slash: Postgres 19 zero-pads that half
+        // to eight ("0/1234567" comes back as "0/01234567"), earlier versions
+        // don't, and CI runs against postgres:latest.
+        ["pg_lsn", "16/B374D848", "16/B374D848"],
         ["regclass", "pg_class", "pg_class"],
         ["regnamespace", "pg_catalog", "pg_catalog"],
         ["regproc", "now", "now"],
