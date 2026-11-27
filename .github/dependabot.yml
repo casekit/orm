@@ -24,7 +24,8 @@ updates:
       open-pull-requests-limit: 25
       schedule:
           interval: "daily"
-      # Merged without a person once CI passes (workflows/dependabot.yml), so
+      # Merged without a person once CI passes (by a scheduled Claude task:
+      # workflows/dependabot.yml's token can't merge workflow changes), so
       # each release is left to settle first: a compromised one is usually
       # pulled within days.
       cooldown:
