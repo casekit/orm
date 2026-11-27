@@ -5,6 +5,7 @@ on:
         # random MM to avoid a load spike on GitHub Actions at 00:00
         - cron: 34 * * * *
 permissions:
+    actions: write # run CI on main after merging; see "Merge PRs"
     contents: write
     statuses: read
     checks: read
@@ -26,6 +27,10 @@ jobs:
                   for pr in `gh pr list --json number,author,createdAt,headRefName --search "created:<=$(date -d "2 days ago" +"%Y-%m-%d") author:app/dependabot status:success" --jq '.[] | select(.headRefName | startswith("dependabot/github_actions/") | not) | .number' | head -n 1`; do
                       if [ -n "$pr" ]; then
                           gh pr merge --squash "$pr"
+                          # A merge made with this token triggers no push event, so
+                          # main's CI would never run on it: start it here, so two
+                          # bumps that pass alone but break together show as red.
+                          gh workflow run ci.yml --ref main
                       fi
                   done
               env:
